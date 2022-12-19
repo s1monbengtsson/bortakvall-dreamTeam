@@ -104,8 +104,40 @@ p {
   }
 
 
+<<<<<<< HEAD
   .customer-details {
     width: 75%;
     margin: 0 auto;
   }
 
+=======
+  /* start info-section */
+.info-wrap {
+    margin: 0 auto;
+    width: 600px;
+    display: flex;
+}
+.info-section-l {
+    width: 50%;
+}
+.info-section-r {
+    width: 50%;
+    font-size: 0.8em;
+}
+.info-img {
+    width: 250px;
+}
+.info-wrap > p {
+    flex-wrap: wrap;
+    color: #000;
+    margin: 0 auto;
+    width: 200px;
+}
+.info-section > button {
+    margin: 0 auto;
+    padding: 0.5em 1em;
+
+}
+
+  /* end info-section */
+>>>>>>> 3a8cda94bb7caa58cb2eb0836d2936a9b415f134
