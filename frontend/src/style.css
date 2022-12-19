@@ -74,3 +74,49 @@ p {
     height: 20vh;
 }
 
+/* från jonas css */
+/* start produkt */
+.product-main {
+    padding: 1em 0;
+    max-width: 500px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(255, 255, 255, 1);
+  }
+  .product-wrap {
+    /* border: 1px solid #000; */
+    width: 100vw;
+    margin-bottom: 0.5em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .product-wrap > img {
+    width: 50px;
+    margin-left: 1em;
+  }
+  .product-wrap > button {
+    padding: 0.25em 0.5em;
+    margin-right: 1em;
+    outline: none;
+    border-style: none;
+    border-radius: 7px;
+  }
+  #product-name {
+    text-align: center;
+    font-size: 0.9em;
+  }
+   #price {
+    /* display: block; */
+    margin-left: 0.5em;
+    text-align: right;
+   }
+  
+  
+  
+  /* slut produkt */
+  
