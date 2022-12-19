@@ -119,6 +119,7 @@ document.querySelector('.info-background')!.addEventListener('click', e => {
     if (target.tagName === 'BUTTON') {
         console.log(Number(target.dataset.prodId))
         console.log('added to cart')
+        document.querySelector('.info-background')!.classList.add('d-none')
         // findClickedProduct(clickedId)
     }
     else {
