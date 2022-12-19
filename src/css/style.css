@@ -1,0 +1,122 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+
+
+.content-wrapper {
+    height: 100vh;
+    background-image: url("https://images.unsplash.com/photo-1576712967455-c8d22580e9be?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80");
+    background-repeat: no-repeat;
+    background-size: cover;
+
+} 
+
+.content-container {
+    width: 60%;
+    margin: 0 auto;
+}
+
+.header-wrapper {
+    position: sticky;
+}
+
+.banner > h1 {
+    font-size: 3rem;
+    font-weight: bold;
+}
+
+.nav-menu,
+.sub-nav {
+    background-color: rgb(214, 87, 108);
+}
+
+.nav-item {
+    text-decoration: none;
+    color: whitesmoke;
+    font-size: .85rem;
+    font-weight: bold;
+}
+
+.hero {
+    background-color: #34aaff;
+}
+
+.hero > h2,
+p {
+    color: whitesmoke;
+    font-weight: bold;
+}
+
+.hero-images {
+    width: 100%;
+}
+
+.hero-images > img {
+    height: 400px;
+    width: 33.33%;
+}
+
+.sub-nav {
+    width: 100%;
+}
+
+.sub-nav-search {
+    margin: 0 auto;
+    color: whitesmoke;
+    background-color: transparent;
+    border: none;
+}
+
+.products {
+    height: 20vh;
+}
+
+/* från jonas css */
+/* start produkt */
+.product-main {
+    padding: 1em 0;
+    max-width: 500px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(255, 255, 255, 1);
+  }
+  .product-wrap {
+    /* border: 1px solid #000; */
+    width: 100vw;
+    margin-bottom: 0.5em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .product-wrap > img {
+    width: 50px;
+    margin-left: 1em;
+  }
+  .product-wrap > button {
+    padding: 0.25em 0.5em;
+    margin-right: 1em;
+    outline: none;
+    border-style: none;
+    border-radius: 7px;
+  }
+  #product-name {
+    text-align: center;
+    font-size: 0.9em;
+  }
+   #price {
+    /* display: block; */
+    margin-left: 0.5em;
+    text-align: right;
+   }
+  
+  
+  
+  /* slut produkt */
+  
