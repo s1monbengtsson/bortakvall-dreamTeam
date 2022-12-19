@@ -1,8 +1,8 @@
 import 'bootstrap/dist/css/bootstrap.css'
-import './style.css'
+import '../css/style.css'
 
-import { fetchProducts } from "./ts/api"
-import { IData, IProduct } from "./ts/interface"
+import { fetchProducts } from "./api"
+import { IData, IProduct } from "./interface"
 
 let products: IData[] = []
 // let products: IProduct[] = []
