@@ -4,6 +4,9 @@
     padding: 0;
 }
 
+.hide {
+    display: none;
+}
 
 
 .content-wrapper {
@@ -17,6 +20,8 @@
     width: 70%;
     margin: 0 auto;
 }
+
+/* styling for navigation */
 
 .header-wrapper {
     position: sticky;
@@ -39,6 +44,8 @@
     font-weight: bold;
 }
 
+/* styling for hero section */
+
 .hero {
     background-color: #34aaff;
 }
@@ -58,6 +65,8 @@ p {
     width: 33.33%;
 }
 
+/* styling for sub navigation */
+
 .sub-nav {
     width: 100%;
 }
@@ -68,6 +77,8 @@ p {
     background-color: transparent;
     border: none;
 }
+
+/* styling for product page */
 
 .product-main {
     margin: 0 auto;
@@ -97,3 +108,4 @@ p {
     width: 75%;
     margin: 0 auto;
   }
+

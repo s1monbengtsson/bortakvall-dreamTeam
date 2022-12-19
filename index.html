@@ -7,18 +7,20 @@
     <title>Bortakväll - Lösgodis online</title>
     <link rel="stylesheet" href="/src/css/style.css">
   </head>
+
   <body>
 
     <div class="content-wrapper">
         <div class="content-container text-center">
-            <!-- <div class="header-wrapper">
 
-
-
+            <!-- header section -->
+            <div class="header-wrapper">
                 <header class="banner p-4 bg-black">
                     <h1>BORTAKVÄLL</h1>
                 </header>
 
+
+                <!-- navigation menu -->
                 <nav class="nav-menu d-flex justify-content-evenly p-3">
                     <a href="#" class="nav-item">SORTIMENT</a>
                     <a href="#" class="nav-item">KUNDKLUBBEN</a>
@@ -31,6 +33,7 @@
                 </nav>
             </div>
 
+            <!-- hero section -->
             <div class="hero pt-5">
                 <h2 class="hero-heading pb-2">Lösvikt</h2>
                 <p class="hero-description px-5">Skapa din egen favoritmix - du beställer och vi plockar ihop! <br> Alla priser nedan är per skopa. Då godisbitarna väger olika mycket så varierar priset per skopa beroende på godissort. Hur mycket en skopa väger ser du på respektive godissort. Vår definition av en skopa är som på följande bilder.</p>
@@ -42,6 +45,7 @@
                 </div>
             </div>
 
+            <!-- sub navigation -->
             <div class="sub-nav-wrapper d-flex justify-content-center" >
                 <nav class="sub-nav py-5">
                     <a href="#" class="nav-item px-2">ALLA PRODUKTER</a>
@@ -50,23 +54,24 @@
                     <a href="#" class="nav-item px-2">FÖRETAG - B2B</a>
                     <input type="text" placeholder="Search for products" class="sub-nav-search d-block mt-2">
                 </nav>
-            </div> -->
+            </div>
 
-            <!-- Product section -->
-            <!-- <main class="product-main d-flex justify-content-evenly row col-12 bg-light">
+            <!-- product section -->
+            <main class="product-main d-flex justify-content-evenly row col-12 bg-light">
 
-            </main> -->
+            </main>
         </div>
     </div>
 
-    <form action="" class="customer-details">
+    <!-- customer details form -->
+    <form action="" class="customer-details hide">
         <h2 class="form-heading text-center mt-5">Dina Uppgifter</h2>
         <div class="form-row">
-            <div class="form-group col-5">
+            <div class="form-group">
                 <label for="customer-first-name"></label>
                 <input type="text" placeholder="Förnamn" id="customer-first-name" required class="form-control">
             </div>
-            <div class="form-group col-5">
+            <div class="form-group">
                 <label for="customer-last-name"></label>
                 <input type="text" placeholder="Efternamn" id="customer-last-name" required class="form-control">
             </div>
@@ -77,25 +82,31 @@
             </div>
 
 
-            <div class="form-group col-5">
+            <div class="form-group">
                 <label for="customer-postal-number"></label>
                 <input type="text" placeholder="Postnummer" id="customer-postal-number" required class="form-control">
             </div>
 
-            <div class="form-group col-5">
+            <div class="form-group">
                 <label for="customer-city"></label>
                 <input type="text" placeholder="Ort" id="customer-city" required class="form-control">
-
             </div>
 
-            <label for="customer-phone"></label>
-            <input type="text" placeholder="Telefon" id="customer-phone" class="form-control">
+            <div class="form-group">
+                <label for="customer-phone"></label>
+                <input type="text" placeholder="Telefon" id="customer-phone" class="form-control">
+            </div>
 
-            <label for="customer-email"></label>
-            <input type="email" placeholder="Email" id="customer-email" required class="form-control mb-3">
+            <div class="form-group">
+                <label for="customer-email"></label>
+                <input type="email" placeholder="Email" id="customer-email" required class="form-control mb-3">
+            </div>
 
-            <input type="checkbox" value="" id="customer-checkbox" class="form-check-input">
-            <label for="customer-checkbox" class="form-check-label">Jag har kontrollerat att informationen jag angett stämmer</label>
+
+            <div class="form-group">
+                <input type="checkbox" value="" id="customer-checkbox" class="form-check-input">
+                <label for="customer-checkbox" class="form-check-label">Jag har kontrollerat att informationen jag angett stämmer</label>
+            </div>  
 
             <button type="submit" class="send-order btn btn-primary mt-3 py-2">Skicka beställning</button>
         </div> 
