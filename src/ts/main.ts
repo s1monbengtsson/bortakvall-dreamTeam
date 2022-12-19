@@ -37,16 +37,13 @@ const getProducts = async () => {
 const renderProducts = () => {
     document.querySelector('.product-main')!.innerHTML = products.data
         .map( prod => `
-            <div class="product-cards row col-3 my-5 bg-white>
-                <div class="product-wrap"  data-product-id="${prod.id}">
+            <div class="col-12 col-md-6 col-lg-3 product-cards">
+                <div class="card product-wrap border-0"  data-product-id="${prod.id}">
                     <img src="https://www.bortakvall.se${prod.images.thumbnail}" alt="${prod.name}" class="card-img-top card-img product-wrap-child" data-product-id="${prod.id}">
-                    
                     <div class="card-body product-wrap-child" data-product-id="${prod.id}">
                         <p id="product-name" class="card-title text-dark product-wrap-child" data-product-id="${prod.id}">${prod.name}</p>
-
                         <p id="product-price" class="card-text text-dark product-wrap-child" data-product-id="${prod.id}">${prod.price} kr</p>
-                        
-                        <button class="btn btn-warning py-2 product-wrap-child" data-product-id="${prod.id}">Lägg till i<br> varukorg</button>
+                        <button class="btn btn-warning btn-span mb-0 py-1 product-wrap-child product-btn" data-product-id="${prod.id}">LÄGG I VARUKORG</button>
                     </div>
                 </div>
             </div>
