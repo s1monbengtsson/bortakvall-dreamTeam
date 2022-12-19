@@ -124,6 +124,10 @@
     box-shadow: 1px 1px 10px #e5e5e5;
   }
 
+  .card-body {
+    font-weight: bold;
+  }
+
 .card-img {
     cursor: pointer;
 }
