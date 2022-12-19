@@ -11,7 +11,10 @@
 
     <div class="content-wrapper">
         <div class="content-container text-center">
-            <div class="header-wrapper">
+            <!-- <div class="header-wrapper">
+
+
+
                 <header class="banner p-4 bg-black">
                     <h1>BORTAKVÄLL</h1>
                 </header>
@@ -47,14 +50,57 @@
                     <a href="#" class="nav-item px-2">FÖRETAG - B2B</a>
                     <input type="text" placeholder="Search for products" class="sub-nav-search d-block mt-2">
                 </nav>
-            </div>
+            </div> -->
 
             <!-- Product section -->
-            <main class="product-main d-flex justify-content-evenly row col-12 bg-light">
+            <!-- <main class="product-main d-flex justify-content-evenly row col-12 bg-light">
 
-            </main>
+            </main> -->
         </div>
     </div>
+
+    <form action="" class="customer-details">
+        <h2 class="form-heading text-center mt-5">Dina Uppgifter</h2>
+        <div class="form-row">
+            <div class="form-group col-5">
+                <label for="customer-first-name"></label>
+                <input type="text" placeholder="Förnamn" id="customer-first-name" required class="form-control">
+            </div>
+            <div class="form-group col-5">
+                <label for="customer-last-name"></label>
+                <input type="text" placeholder="Efternamn" id="customer-last-name" required class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label for="customer-address"></label>
+                <input type="text" placeholder="Adress" id="customer-address" required class="form-control">
+            </div>
+
+
+            <div class="form-group col-5">
+                <label for="customer-postal-number"></label>
+                <input type="text" placeholder="Postnummer" id="customer-postal-number" required class="form-control">
+            </div>
+
+            <div class="form-group col-5">
+                <label for="customer-city"></label>
+                <input type="text" placeholder="Ort" id="customer-city" required class="form-control">
+
+            </div>
+
+            <label for="customer-phone"></label>
+            <input type="text" placeholder="Telefon" id="customer-phone" class="form-control">
+
+            <label for="customer-email"></label>
+            <input type="email" placeholder="Email" id="customer-email" required class="form-control mb-3">
+
+            <input type="checkbox" value="" id="customer-checkbox" class="form-check-input">
+            <label for="customer-checkbox" class="form-check-label">Jag har kontrollerat att informationen jag angett stämmer</label>
+
+            <button type="submit" class="send-order btn btn-primary mt-3 py-2">Skicka beställning</button>
+        </div> 
+    </form>
+
     
     <script type="module" src="/src/ts/main.ts"></script>
   </body>
