@@ -4,12 +4,14 @@ import '../css/style.css'
 import { fetchProducts } from "./api"
 import { IData } from "./interface"
 
-let products: IData[] = []
+let products: IData
 // let products: IProduct[] = []
 const getProducts = async () => {
   products = await fetchProducts()
+  console.log(products)
   renderProducts()
   renderInfo() // temp.  info-section, should only run when user clicked on product div
+  
 }
 
 const renderProducts = () => {
@@ -26,7 +28,7 @@ document.querySelector('.product-main')!.innerHTML = products.data.map( prod => 
 
 }
 // start info-section
-const renderInfo = () => {
+const renderInfo = (x) => {
     const temp = products.data[0] // changes to what user clicked on, dataset.Setid?
     document.getElementById('#info-section')!.innerHTML = `    
     <div class="info-section-l">
@@ -40,4 +42,32 @@ const renderInfo = () => {
 }
 // end info-section
 getProducts()
+
+
+
+
+// Click event on each product
+document.querySelector('main')?.addEventListener('click', e => {
+    const target = e.target as HTMLElement
+
+    // console.log(target.className)
+
+    if (target.className.includes('product-wrap' || 'product-wrap-child')) {
+
+        if (target.tagName === 'BUTTON') {
+            console.log('added to cart')
+            // addToCart()
+
+            const productId = Number(target.dataset.productId)
+            console.log('product id:', productId)
+        }
+        else {
+            console.log('viewing product')
+            // showInfo()
+
+            const productId = Number(target.dataset.productId)
+            console.log('product id:', productId)
+        }
+    }
+})
 
