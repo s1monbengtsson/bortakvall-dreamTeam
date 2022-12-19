@@ -1,5 +1,5 @@
 * {
-    box-sizing: border-box;
+    /* box-sizing: border-box; */
     margin: 0;
     padding: 0;
 }
@@ -73,6 +73,11 @@ p {
 /* start produkt */
 .product-main {
     margin: 0 auto;
+  }
+
+  .btn {
+    padding: 0 3rem;
+    margin-bottom: 1rem;
   }
 
   .product-wrap {

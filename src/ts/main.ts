@@ -22,7 +22,7 @@ document.querySelector('.product-main')!.innerHTML = products.data.map( prod => 
         <div class="card-body">
             <p id="product-name" class="card-title text-dark">${prod.name}</p>
             <p id="product-price" class="card-text text-dark">${prod.price} kr</p>
-            <button type="" class="btn btn-warning" id="${prod.id}" value="${prod.id}">Lägg till i<br> varukorg</button>
+            <button type="" class="btn btn-warning py-2" id="${prod.id}" value="${prod.id}">Lägg till i<br> varukorg</button>
         </div>
     </div>
 </div>
