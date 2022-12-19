@@ -2,6 +2,7 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    /* border: 1px solid black; */
 }
 
 .hide {
@@ -36,10 +37,9 @@
 
 .content-wrapper {
     background-image: url("https://images.unsplash.com/photo-1576712967455-c8d22580e9be?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80");
-    background-size:cover;
+    background-size: cover;
     background-attachment: fixed;
-
-} 
+}
 
 .content-container {
     width: 85%;
@@ -71,8 +71,6 @@
 
 /* styling for hero section */
 
-.hero {
-}
 
 .hero-description {
     position: absolute;
@@ -93,9 +91,6 @@
     font-weight: bold;
 }
 
-/* .hero-images {
-    width: 100%;
-} */
 
 
 /* styling for sub navigation */
@@ -115,7 +110,7 @@
 
 .product-main {
     margin: 0 auto;
-  }
+}
 
   .product-btn {
     padding: 0 3rem;
@@ -129,42 +124,64 @@
     box-shadow: 1px 1px 10px #e5e5e5;
   }
 
-  .card-img {
+.card-img {
     cursor: pointer;
-  }
+}
 
 
   .customer-details {
     width: 75%;
     margin: 0 auto;
-  }
+}
 
-  /* start info-section */
+/* start info-section */
+.info-background {
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.7);
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+}
+.bi-x-lg {
+    font-size: 2.5em;
+}
+.info-close {
+    padding-top: 3em;
+}
 .info-wrap {
+    background-color: #fff;
+    z-index: 3;
+    border-radius: 15px;
+    padding: 1em;
     margin: 0 auto;
     width: 600px;
     display: flex;
+    color: #000;
 }
 .info-section-l {
     width: 50%;
 }
+.info-name {
+    font-size: 1.2em;
+}
+.info-price {
+    display: block;
+    font-size: 1.9em;
+}
 .info-section-r {
     width: 50%;
-    font-size: 0.8em;
+    font-size: 0.8em;    
 }
 .info-img {
     width: 250px;
 }
-.info-wrap > p {
-    flex-wrap: wrap;
-    color: #000;
+.info-section-r > p {
     margin: 0 auto;
-    width: 200px;
-}
-.info-section > button {
-    margin: 0 auto;
-    padding: 0.5em 1em;
-
+    width: 75%;
 }
 
-  /* end info-section */
+
+/* end info-section */
