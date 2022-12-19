@@ -2,6 +2,7 @@
     /* box-sizing: border-box; */
     margin: 0;
     padding: 0;
+    /* border: 1px solid black; */
 }
 
 .hide {
@@ -115,7 +116,12 @@ p {
     justify-content: center;
     align-items: center;
     z-index: 2;
-
+}
+.bi-x-lg {
+    font-size: 2.5em;
+}
+.info-close {
+    padding-top: 3em;
 }
 .info-wrap {
     background-color: #fff;
@@ -126,10 +132,6 @@ p {
     width: 600px;
     display: flex;
     color: #000;
-}
-.info.close {
-    text-align: right;
-    display: block
 }
 .info-section-l {
     width: 50%;
