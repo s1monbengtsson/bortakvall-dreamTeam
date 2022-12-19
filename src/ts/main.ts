@@ -16,11 +16,17 @@ const renderProducts = () => {
   console.log(products.status)
   console.log(products.data)
 document.querySelector('.product-main')!.innerHTML = products.data.map( prod => `
-<div class="product-wrap">
-<img src="https://www.bortakvall.se${prod.images.thumbnail}" alt="${prod.name}">
-  <p id="product-name">${prod.name}<span id="price">${prod.price}<span>kr</span></span></p>
-  <button type="" id="${prod.id}">Lägg till i<br> varukorg</button>
+<div class="product-cards row col-3 my-5 bg-white>
+    <div class="product-wrap">
+        <img src="https://www.bortakvall.se${prod.images.thumbnail}" alt="${prod.name}" class="card-img-top card-img">
+        <div class="card-body">
+            <p id="product-name" class="card-title text-dark">${prod.name}</p>
+            <p id="product-price" class="card-text text-dark">${prod.price} kr</p>
+            <button type="" class="btn btn-warning" id="${prod.id}" value="${prod.id}">Lägg till i<br> varukorg</button>
+        </div>
+    </div>
 </div>
+
  `).join('')
 }
 
