@@ -1,21 +1,40 @@
+/**
+ ********************************************************************************
+ * IMPORTS
+ */
+
+
 import 'bootstrap/dist/css/bootstrap.css'
 import '../css/style.css'
 
 import { fetchProducts } from "./api"
 import { IData, IProduct } from "./interface"
 
+
+/**
+ ********************************************************************************
+ * VARIABLES
+ */
+
+
 let products: IData
 // let products: IProduct[] = []
 
+
+/**
+ ********************************************************************************
+ * FUNCTIONS
+ */
+
+
 const getProducts = async () => {
-  products = await fetchProducts()
-  console.log(products)
-  renderProducts()
+    products = await fetchProducts()
+    // console.log(products)
+    renderProducts()
   
 }
 
 const renderProducts = () => {
-
     document.querySelector('.product-main')!.innerHTML = products.data
         .map( prod => `
             <div class="product-cards row col-3 my-5 bg-white>
@@ -35,32 +54,51 @@ const renderProducts = () => {
         .join('')
 }
 
-getProducts()
+const findClickedProduct = async (target: HTMLElement) => {
+
+    let clickedId: number
+
+    clickedId = Number(target.dataset.productId)
+    console.log('clicked product id:', clickedId)
+
+    const products = await fetchProducts()
+    const foundProduct = products.data.find(prod => clickedId === prod.id)
+    console.log('foundProduct:', foundProduct)
+
+    return foundProduct
+}
 
 
+/**
+ ********************************************************************************
+ * EVENT LISTENERS
+ */
 
 
 // Click event on each product
 document.querySelector('main')?.addEventListener('click', e => {
     const target = e.target as HTMLElement
 
-    // console.log(target.className)
-
     if (target.className.includes('product-wrap' || 'product-wrap-child')) {
 
         if (target.tagName === 'BUTTON') {
             console.log('added to cart')
-            // addToCart()
 
-            const productId = Number(target.dataset.productId)
-            console.log('product id:', productId)
+            findClickedProduct(target)
         }
         else {
             console.log('viewing product')
-            // showInfo()
 
-            const productId = Number(target.dataset.productId)
-            console.log('product id:', productId)
+            findClickedProduct(target)
         }
     }
 })
+
+
+/**
+ ********************************************************************************
+ * START
+ */
+
+
+getProducts()
