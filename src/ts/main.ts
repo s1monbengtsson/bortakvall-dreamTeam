@@ -54,15 +54,10 @@ const renderProducts = () => {
         .join('')
 }
 
-const findClickedProduct = async (target: HTMLElement) => {
-
-    let clickedId: number
-
-    clickedId = Number(target.dataset.productId)
-    console.log('clicked product id:', clickedId)
+const findClickedProduct = async (clickedId: number) => {
 
     const products = await fetchProducts()
-    const foundProduct = products.data.find(prod => clickedId === prod.id)
+    const foundProduct: IProduct = products.data.find(prod => clickedId === prod.id) as IProduct
     console.log('foundProduct:', foundProduct)
 
     return foundProduct
@@ -79,17 +74,22 @@ const findClickedProduct = async (target: HTMLElement) => {
 document.querySelector('main')?.addEventListener('click', e => {
     const target = e.target as HTMLElement
 
+    let clickedId: number
+
+    clickedId = Number(target.dataset.productId)
+    console.log('clicked product id:', clickedId)
+
     if (target.className.includes('product-wrap' || 'product-wrap-child')) {
 
         if (target.tagName === 'BUTTON') {
             console.log('added to cart')
 
-            findClickedProduct(target)
+            findClickedProduct(clickedId)
         }
         else {
             console.log('viewing product')
 
-            findClickedProduct(target)
+            findClickedProduct(clickedId)
         }
     }
 })
