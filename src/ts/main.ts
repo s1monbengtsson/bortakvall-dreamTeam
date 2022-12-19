@@ -16,8 +16,6 @@ import { IData, IProduct } from "./interface"
  * VARIABLES
  */
 
-import { IData, IProduct } from "./interface"
-
 let products: IData
 // let products: IProduct[] = []
 
