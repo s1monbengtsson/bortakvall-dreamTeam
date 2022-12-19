@@ -50,7 +50,7 @@
 
 .hero > h2,
 p {
-    color: whitesmoke;
+    /* color: whitesmoke; */
     font-weight: bold;
 }
 
@@ -106,30 +106,52 @@ p {
 }
 
 /* start info-section */
+.info-background {
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.7);
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+
+}
 .info-wrap {
+    background-color: #fff;
+    z-index: 3;
+    border-radius: 15px;
+    padding: 1em;
     margin: 0 auto;
     width: 600px;
     display: flex;
+    color: #000;
+}
+.info.close {
+    text-align: right;
+    display: block
 }
 .info-section-l {
     width: 50%;
 }
+.info-name {
+    font-size: 1.2em;
+}
+.info-price {
+    display: block;
+    font-size: 1.9em;
+}
 .info-section-r {
     width: 50%;
-    font-size: 0.8em;
+    font-size: 0.8em;    
 }
 .info-img {
     width: 250px;
 }
-.info-wrap > p {
-    flex-wrap: wrap;
-    color: #000;
+.info-section-r > p {
     margin: 0 auto;
-    width: 200px;
+    width: 75%;
 }
-.info-section > button {
-    margin: 0 auto;
-    padding: 0.5em 1em;
-}
+
 
 /* end info-section */
