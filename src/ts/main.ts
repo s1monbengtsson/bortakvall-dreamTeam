@@ -21,7 +21,7 @@ const renderProducts = () => {
             <div class="product-cards row col-3 my-5 bg-white>
                 <div class="product-wrap"  data-product-id="${prod.id}">
                     <img src="https://www.bortakvall.se${prod.images.thumbnail}" alt="${prod.name}" class="card-img-top card-img product-wrap-child" data-product-id="${prod.id}">
-
+                    
                     <div class="card-body product-wrap-child" data-product-id="${prod.id}">
                         <p id="product-name" class="card-title text-dark product-wrap-child" data-product-id="${prod.id}">${prod.name}</p>
 
@@ -63,4 +63,3 @@ document.querySelector('main')?.addEventListener('click', e => {
         }
     }
 })
-
