@@ -1,11 +1,36 @@
 * {
-    /* box-sizing: border-box; */
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
 
 .hide {
     display: none;
+}
+
+/* styling for LOGO */
+.orange {
+    color: orange
+}
+
+.white {
+    color: white
+}
+
+.yellow {
+    color: rgb(231, 202, 9)
+}
+
+.pink {
+    color: #d6576c;
+}
+
+.blue {
+    color: rgb(52, 170, 255)
+}
+
+.green {
+    color: #09f609a9
 }
 
 
@@ -17,7 +42,7 @@
 } 
 
 .content-container {
-    width: 70%;
+    width: 85%;
     margin: 0 auto;
 }
 
@@ -34,12 +59,12 @@
 
 .nav-menu,
 .sub-nav {
-    background-color: rgb(214, 87, 108);
+    background-color: #d6576c;
 }
 
 .nav-item {
     text-decoration: none;
-    color: whitesmoke;
+    color: white;
     font-size: .85rem;
     font-weight: bold;
 }
@@ -47,23 +72,31 @@
 /* styling for hero section */
 
 .hero {
-    background-color: #34aaff;
 }
 
-.hero > h2,
-p {
+.hero-description {
+    position: absolute;
+    background-color: #34aaff;
+    width: 85%;
+    margin: 0 auto;
+    top: 10.4rem;
+    padding-bottom: 6rem;
+    background: linear-gradient(to top,  rgba(255,255,255,0) 0%,rgb(30, 130, 180) 35%);
+    backdrop-filter: blur(1px);
+    
+    
+}
+
+.hero-heading,
+.hero-para {
     color: whitesmoke;
     font-weight: bold;
 }
 
-.hero-images {
+/* .hero-images {
     width: 100%;
-}
+} */
 
-.hero-images > img {
-    height: 400px;
-    width: 33.33%;
-}
 
 /* styling for sub navigation */
 
@@ -73,7 +106,7 @@ p {
 
 .sub-nav-search {
     margin: 0 auto;
-    color: whitesmoke;
+    color: white;
     background-color: transparent;
     border: none;
 }
@@ -84,19 +117,16 @@ p {
     margin: 0 auto;
   }
 
-  .btn {
+  .product-btn {
     padding: 0 3rem;
     margin-bottom: 1rem;
+    font-size: .8rem;
+    font-weight: bold;
+    width: 100%;
   }
 
-  .product-wrap {
-    height: 375px;
-    
-  }
-
-  .product-cards {
-    border: 1px solid black;
-    background-color: white;
+  .card {
+    box-shadow: 1px 1px 10px #e5e5e5;
   }
 
   .card-img {
@@ -104,13 +134,11 @@ p {
   }
 
 
-<<<<<<< HEAD
   .customer-details {
     width: 75%;
     margin: 0 auto;
   }
 
-=======
   /* start info-section */
 .info-wrap {
     margin: 0 auto;
@@ -140,4 +168,3 @@ p {
 }
 
   /* end info-section */
->>>>>>> 3a8cda94bb7caa58cb2eb0836d2936a9b415f134
