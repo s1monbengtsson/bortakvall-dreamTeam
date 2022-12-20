@@ -103,9 +103,11 @@ document.querySelector('main')?.addEventListener('click', async e => {
             cart.push(clickedProduct)
             saveCart()
             renderCart()
+            document.querySelector('.cart-background')!.classList.add('cart-fade')
             document.querySelector('.cart-background')!.classList.remove('d-none')
             setTimeout( () => {
                 document.querySelector('.cart-background')!.classList.add('d-none')
+                document.querySelector('.cart-background')!.classList.remove('cart-fade')
                 
             },950)
         }
@@ -122,13 +124,17 @@ document.querySelector('main')?.addEventListener('click', async e => {
 // View cart
 document.querySelector('#title-cart')!.addEventListener('click', () => {
     document.querySelector('.cart-background')!.classList.remove('d-none')
+    
+})
+// close cart
+document.querySelector('#cart-close')!.addEventListener('click', () => {
+    document.querySelector('.cart-background')!.classList.add('d-none')
 
 })
 
 
 // Remove items from local storage(cart)
-document.querySelector('#clear-cart-btn')?.addEventListener('click', async () => {
-
+document.querySelector('#clear-cart-btn')?.addEventListener('click', async (e) => {
     localStorage.removeItem('Shopping cart')
     cart = JSON.parse(jsonCart)
     await renderCart()
