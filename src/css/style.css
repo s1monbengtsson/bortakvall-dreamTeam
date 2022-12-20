@@ -92,8 +92,6 @@
 }
 
 .hero-images {
-    z-index: -1;
-    top: 5rem;
     height: 350px;
 }
 
@@ -195,3 +193,9 @@
 
 
 /* end info-section */
+
+@media screen and (max-width:768px){
+    .hero-images {
+        height: 250px;
+    }
+}
