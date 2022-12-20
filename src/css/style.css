@@ -37,7 +37,9 @@
 
 .content-wrapper {
     background-image: url("https://images.unsplash.com/photo-1576712967455-c8d22580e9be?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80");
-    background-size: cover;
+    background-position: bottom;
+    background-size: contain;
+    background-attachment: fixed;
 }
 
 .content-container {
@@ -73,14 +75,12 @@
 
 
 .hero-description {
-    position: absolute;
     background-color: #34aaff;
     width: 85vw;
     margin: 0 auto;
-    top: 10.4rem;
     padding-bottom: 6rem;
-    background: linear-gradient(to top,  rgba(255,255,255,0) 0%,rgb(30, 130, 180) 35%);
-    backdrop-filter: blur(3px);
+    background: linear-gradient(to top,  rgba(255,255,255,0) 0%,rgb(30, 130, 180) 50%);
+    backdrop-filter: blur(10px);
     
     
 }
@@ -92,7 +92,7 @@
 }
 
 .hero-images {
-    height: 550px;
+    height: 350px;
 }
 
 
@@ -193,3 +193,9 @@
 
 
 /* end info-section */
+
+@media screen and (max-width:768px){
+    .hero-images {
+        height: 250px;
+    }
+}
