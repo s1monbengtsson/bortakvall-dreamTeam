@@ -26,17 +26,13 @@ let products: IData
  */
 
 
-
-const getProducts = async () => {
+const getProducts = async (): Promise<void> => {
     products = await fetchProducts()
     // console.log(products)
-    renderProducts()
-  products = await fetchProducts()
-  renderProducts()
-  
+    renderProducts()  
 }
 
-const renderProducts = () => {
+const renderProducts = (): void => {
     document.querySelector('.product-main')!.innerHTML = products.data
         .map( prod => `
             <div class="col-12 col-md-6 col-lg-3 product-cards">
@@ -53,12 +49,12 @@ const renderProducts = () => {
         .join('')
 }
 
-const findClickedProduct = async (clickedId: number) => {
+// Allt denna funktion ska göra är att hitta produkten man clickar på
+const findClickedProduct = async (clickedId: number): Promise<IProduct> => {
 
     const products = await fetchProducts()
     const foundProduct: IProduct = products.data.find(prod => clickedId === prod.id) as IProduct
     // console.log('foundProduct:', foundProduct)
-    renderInfo(foundProduct)
     return foundProduct
 }
 
@@ -68,26 +64,25 @@ const findClickedProduct = async (clickedId: number) => {
  * EVENT LISTENERS
  */
 
+
 // Click event on each product
-document.querySelector('main')?.addEventListener('click', e => {
+document.querySelector('main')?.addEventListener('click', async e => {
     const target = e.target as HTMLElement
-
-    let clickedId: number
-
-    clickedId = Number(target.dataset.productId)
-    console.log('clicked product id:', clickedId)
+    const clickedId = Number(target.dataset.productId)
+    // console.log('clicked product id:', clickedId)
+    const clickedProduct = await findClickedProduct(clickedId)
 
     if (target.className.includes('product-wrap' || 'product-wrap-child')) {
 
+        // Om man klickar på 'Lägg till i varukorgen' knappen på en produkt
         if (target.tagName === 'BUTTON') {
             console.log('added to cart')
-
-            findClickedProduct(clickedId)
         }
+        // Om man klickar någon annan stans på produkten. (info)
         else {
             console.log('viewing product')
 
-            findClickedProduct(clickedId)
+            renderInfo(clickedProduct)
         }
     }
 })
@@ -97,37 +92,38 @@ document.querySelector('main')?.addEventListener('click', e => {
  ********************************************************************************
  * START
  */
+
+
+getProducts()
+
+
 // start info-section
 const renderInfo = (productInfo: IProduct) => {
     document.querySelector('.info-background')!.classList.remove('d-none')
     document.querySelector('.info-background')!.classList.add('show-info')
     document.querySelector('#info-section')!.innerHTML = `    
-    <div class="info-section-l">
-        <img src="https://www.bortakvall.se/${productInfo.images.large}" alt="${productInfo.name}" class="my-4 info-img">
-        <p class="info-name" class="mt-3">${productInfo.name}<span class="info-price">${productInfo.price}<span>kr</span></span></p>
-        <button class="btn btn-warning m-2 p-2" data-prod-id="${productInfo.id}">Lägg till i varukorg</button>
-    </div>
-      <div class="mt-3 info-section-r"><h3 class="p-4">Beskrivning</h3>${productInfo.description}
-      <p class="info-close"><i class="bi bi-x-lg"></i></p>
-    </div>
+        <div class="info-section-l">
+            <img src="https://www.bortakvall.se/${productInfo.images.large}" alt="${productInfo.name}" class="my-4 info-img">
+            <p class="info-name" class="mt-3">${productInfo.name}<span class="info-price">${productInfo.price}<span>kr</span></span></p>
+            <button class="btn btn-warning m-2 p-2" data-prod-id="${productInfo.id}">Lägg till i varukorg</button>
+        </div>
+        <div class="mt-3 info-section-r"><h3 class="p-4">Beskrivning</h3>${productInfo.description}
+            <p class="info-close"><i class="bi bi-x-lg"></i></p>
+        </div>
     `
-  }
-document.querySelector('.info-background')!.addEventListener('click', e => {
+}
+
+document.querySelector('.info-background')!.addEventListener('click', async e => {
     const target = e.target as HTMLElement
     if (target.tagName === 'BUTTON') {
-        console.log(Number(target.dataset.prodId))
-        console.log('added to cart')
+        const clickedId = Number(target.dataset.prodId)
+        const clickedProduct = await findClickedProduct(clickedId)
+
         document.querySelector('.info-background')!.classList.add('d-none')
-        // findClickedProduct(clickedId)
     }
     else {
         document.querySelector('.info-background')!.classList.add('d-none')
     }
 })
+// end info-section
 
-  // end info-section
-
-
-
-
-getProducts()
