@@ -5,41 +5,34 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Bortakväll - Lösgodis online</title>
-    <!-- <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.css"> -->
-    <!-- <link rel="stylesheet" href="/src/css/style.css"> -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
   </head>
 
   <body>
     <div class="info-background d-none"> <div class="info-wrap text-center" id="info-section"></div></div>
-    <!-- start cart section -->
+    <!-- cart icon -->
     <div id="title-cart">
-        <h2><i class="bi bi-cart"></i></h2>
+        <h2><i class="bi bi-cart"></i><span id="cart-item-count" class="">1</span></h2>
+        
     </div>    
+    
+    <!-- start cart section -->
 <div class="cart-background d-none"> 
     <div id="cart">
         <h2>Varukorg:</h2><span id="cart-close"><i class="bi bi-x-lg"></i></span>
-        <ul id="cart-list">            
-        </ul>
-        <h3 id="cart-total"></h3>
-        <button id="checkout-btn" class="btn btn-success">Checkout</button>
-        <button id="clear-cart-btn" class="btn btn-warning">Clear Cart</button>
     </div>
         <ul id="cart-list">            
-        </ul>        
-    <div class="cart-btn-wrap">
-        <button id="clear-cart-btn" class="btn btn-danger">Töm varukorg</button>
-        <button id="checkout-btn" class="btn btn-success">Gå till kassan</button>
+        </ul>
+        <div class="cart-btn-wrap">
+            <button id="clear-cart-btn" class="btn btn-danger">Töm varukorg</button>
+            <button id="checkout-btn" class="btn btn-success">Gå till kassan</button>
+            <h3 id="cart-total"></h3>  
     </div>
 </div>
 <!-- end cart section -->
 
-
-
-
     <div class="content-wrapper">
         <div class="content-container text-center">
-
             <!-- header section -->
             <div class="header-wrapper">
                 <header class="banner p-4 bg-black">
@@ -58,11 +51,10 @@
                     </h1>
                 </header>
 
-
                 <!-- navigation menu -->
                 <nav class="nav-menu d-flex justify-content-evenly p-3">
                     <a href="#" class="nav-item">SORTIMENT</a>
-                    <a href="#" class="nav-item">WEBBSHOP</a>
+                    <a href="#" class="nav-item">WEBBSHOP</a>                    
 
                 </nav>
             </div>
@@ -146,12 +138,6 @@
             <button type="submit" class="send-order btn btn-primary mt-3 py-2">Skicka beställning</button>
         </div> 
     </form>
-
-    
-    <div class="info-wrap text-center" id="info-section"></div>
-        
-    
-
 
     <script type="module" src="/src/ts/main.ts"></script>
   </body>
