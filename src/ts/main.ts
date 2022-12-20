@@ -19,7 +19,7 @@ import { IData, IProduct, IOrder } from "./interface"
 let products: IData
 // let products: IProduct[] = []
 
-const jsonCart = localStorage.getItem('Shopping cart') ?? '[]'
+let jsonCart = localStorage.getItem('Shopping cart') ?? '[]'
 let cart: IProduct[] = JSON.parse(jsonCart)
 
 const response = await fetchOrder(
@@ -144,6 +144,7 @@ document.querySelector('main')?.addEventListener('click', async e => {
 document.querySelector('#clear-cart-btn')?.addEventListener('click', async () => {
 
     localStorage.removeItem('Shopping cart')
+    jsonCart = localStorage.getItem('Shopping cart') ?? '[]'
     cart = JSON.parse(jsonCart)
     await renderCart()
 })
