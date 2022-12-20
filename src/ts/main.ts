@@ -71,7 +71,7 @@ const countTotalPrice = () => {
     cartPrices = [0, ...cartItems.map(item => item.price)]
     cartTotal = cartPrices.reduce((price, sum) => sum += price)
 }
-
+saveCart() // called to view number of item in cart when page loads
 renderTotalPrice()
 // Cart total price ends
 
@@ -90,7 +90,7 @@ const renderCartItems = () => {
                 <p class="card-title text-dark" data-product-id="${item.id}">${item.name}</p>
                 <p class="card-text text-dark" data-product-id="${item.id}">${item.price} kr</p>
             </div>
-            <button class="btn btn-danger cart-remove-item" remove-cart-item><i class="bi bi-trash"></i></button>
+            <button class="btn btn-danger cart-remove-item"><i class="bi bi-trash"></i></button>
         </li>
     `)
     .join('')
@@ -158,22 +158,10 @@ document.querySelector('main')?.addEventListener('click', async e => {
             countTotalPrice()
             // Display the total price of all items
             renderTotalPrice()
-            document.querySelector('.cart-background')!.classList.add('cart-fade')
-            document.querySelector('.cart-background')!.classList.remove('d-none')
             document.querySelector('#cart-wrap')!.classList.add('shake')
             setTimeout( () => {
-                document.querySelector('.cart-background')!.classList.add('d-none')
-                document.querySelector('.cart-background')!.classList.remove('cart-fade')
-                document.querySelector('#cart-wrap')!.classList.remove('shake')
-                
+                document.querySelector('#cart-wrap')!.classList.remove('shake')                
             },950)
-
-            // Display items from cartItems
-            renderCartItems()
-            // Counts the total price of every item in the cart
-            countTotalPrice()
-            // Display the total price of all items
-            renderTotalPrice()
             console.log(cartTotal)
 
         }
@@ -211,6 +199,10 @@ document.querySelector('#clear-cart-btn')?.addEventListener('click', async () =>
     countTotalPrice()
     // Display the total price of all items
     renderTotalPrice()
+    saveCart()
+    setTimeout(() => {
+    document.querySelector('.cart-background')!.classList.add('d-none')
+    },950)
 })
 
 
@@ -257,11 +249,13 @@ document.querySelector('.info-background')!.addEventListener('click', async e =>
         // Display the total price of all items
         renderTotalPrice()
         console.log(cartTotal)
-
-        document.querySelector('.info-background')!.classList.add('d-none')
-        // findClickedProduct(clickedId)
-    
+        
         document.body.style.removeProperty('overflow');
+        document.querySelector('#cart-wrap')!.classList.add('shake')
+        setTimeout( () => { 
+            document.querySelector('.info-background')!.classList.add('d-none')
+            document.querySelector('#cart-wrap')!.classList.remove('shake')                
+        },950)
     }
     else {
         document.querySelector('.info-background')!.classList.add('d-none')
