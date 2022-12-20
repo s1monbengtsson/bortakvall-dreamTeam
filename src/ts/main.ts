@@ -31,9 +31,6 @@ const getProducts = async () => {
     products = await fetchProducts()
     // console.log(products)
     renderProducts()
-  products = await fetchProducts()
-  renderProducts()
-  
 }
 
 const renderProducts = () => {
@@ -86,7 +83,7 @@ document.querySelector('main')?.addEventListener('click', e => {
         }
         else {
             console.log('viewing product')
-
+            document.body.style.overflow = 'hidden';
             findClickedProduct(clickedId)
         }
     }
@@ -119,9 +116,11 @@ document.querySelector('.info-background')!.addEventListener('click', e => {
         console.log('added to cart')
         document.querySelector('.info-background')!.classList.add('d-none')
         // findClickedProduct(clickedId)
+    
     }
     else {
         document.querySelector('.info-background')!.classList.add('d-none')
+        document.body.style.removeProperty('overflow');
     }
 })
 
