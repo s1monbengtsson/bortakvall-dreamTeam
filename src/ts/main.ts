@@ -7,8 +7,8 @@
 import 'bootstrap/dist/css/bootstrap.css'
 import '../css/style.css'
 
-import { fetchProducts } from "./api"
-import { IData, IProduct } from "./interface"
+import { fetchProducts, fetchOrder } from "./api"
+import { IData, IProduct, IOrder } from "./interface"
 
 
 /**
@@ -22,6 +22,33 @@ let products: IData
 const jsonCart = localStorage.getItem('Shopping cart') ?? '[]'
 let cart: IProduct[] = JSON.parse(jsonCart)
 
+const response = await fetchOrder(
+    {
+        customer_first_name: 'Sean',
+        customer_last_name: 'Banan',
+        customer_address: 'Drottningatan 4b',
+        customer_postcode: '21211',
+        customer_city: 'Malmö',
+        customer_email: 'testhejsan@gmail.com',
+        customer_phone: '0723738495',
+        order_total: 48,
+        order_items: [
+            {
+                product_id: 6545,
+                qty: 3,
+                item_price: 8,
+                item_total: 24,
+            },
+            {
+                product_id: 6545,
+                qty: 3,
+                item_price: 8,
+                item_total: 24,
+            },
+        ],
+    }
+)
+console.log(response)
 
 /**
  ********************************************************************************
