@@ -89,12 +89,12 @@ const renderCartItems = () => {
                 <p class="card-title text-dark" data-product-id="${item.id}">${item.name}</p>
                 <p class="card-text text-dark" data-product-id="${item.id}">${item.price} kr</p>
             </div>
-            <button class="btn btn-danger cart-remove-item" remove-cart-item>X</button>
+            <button class="btn btn-danger cart-remove-item" remove-cart-item><i class="bi bi-trash"></i></button>
         </li>
     `)
     .join('')
-}
 
+}
 const getProducts = async (): Promise<void> => {
     products = await fetchProducts()
     // console.log(products)
@@ -151,6 +151,16 @@ document.querySelector('main')?.addEventListener('click', async e => {
             cartItems.push(clickedProduct)
             // Save cartItems in localStorage
             saveCart()
+
+            renderCart()
+            document.querySelector('.cart-background')!.classList.add('cart-fade')
+            document.querySelector('.cart-background')!.classList.remove('d-none')
+            setTimeout( () => {
+                document.querySelector('.cart-background')!.classList.add('d-none')
+                document.querySelector('.cart-background')!.classList.remove('cart-fade')
+                
+            },950)
+
             // Display items from cartItems
             renderCartItems()
             // Counts the total price of every item in the cart
@@ -158,19 +168,32 @@ document.querySelector('main')?.addEventListener('click', async e => {
             // Display the total price of all items
             renderTotalPrice()
             console.log(cartTotal)
+
         }
         // Om man klickar någon annan stans på produkten. (info)
         else {
             console.log('viewing product')
 
             renderInfo(clickedProduct)
+            document.body.style.overflow = 'hidden';
+            findClickedProduct(clickedId)
         }
     }
 })
+// View cart
+document.querySelector('#title-cart')!.addEventListener('click', () => {
+    document.querySelector('.cart-background')!.classList.remove('d-none')
+    
+})
+// close cart
+document.querySelector('#cart-close')!.addEventListener('click', () => {
+    document.querySelector('.cart-background')!.classList.add('d-none')
+
+})
+
 
 // Remove items from local storage(cart)
-document.querySelector('#clear-cart-btn')?.addEventListener('click', async () => {
-
+document.querySelector('#clear-cart-btn')?.addEventListener('click', async (e) => {
     localStorage.removeItem('Shopping cart')
     jsonCartItems = localStorage.getItem('Shopping cart') ?? '[]'
     cartItems = JSON.parse(jsonCartItems)
@@ -197,14 +220,14 @@ const renderInfo = (productInfo: IProduct) => {
     document.querySelector('.info-background')!.classList.remove('d-none')
     document.querySelector('.info-background')!.classList.add('show-info')
     document.querySelector('#info-section')!.innerHTML = `    
-        <div class="info-section-l">
-            <img src="https://www.bortakvall.se/${productInfo.images.large}" alt="${productInfo.name}" class="my-4 info-img">
-            <p class="info-name" class="mt-3">${productInfo.name}<span class="info-price">${productInfo.price}<span>kr</span></span></p>
-            <button class="btn btn-warning m-2 p-2" data-prod-id="${productInfo.id}">Lägg till i varukorg</button>
-        </div>
-        <div class="mt-3 info-section-r"><h3 class="p-4">Beskrivning</h3>${productInfo.description}
-            <p class="info-close"><i class="bi bi-x-lg"></i></p>
-        </div>
+    <div class="info-section-l">
+        <img src="https://www.bortakvall.se/${productInfo.images.large}" alt="${productInfo.name}" class="info-img">
+        <p class="info-name" class="mt-3">${productInfo.name}<span class="info-price">${productInfo.price}<span>kr</span></span></p>
+        <button class="btn btn-warning m-2 p-2" data-prod-id="${productInfo.id}">Lägg till i varukorg</button>
+    </div>
+      <div class="info-section-r"><h3>Beskrivning</h3>${productInfo.description}
+      <p class="info-close"><i class="bi bi-x-lg"></i></p>
+    </div>
     `
 }
 
@@ -227,9 +250,12 @@ document.querySelector('.info-background')!.addEventListener('click', async e =>
         console.log(cartTotal)
 
         document.querySelector('.info-background')!.classList.add('d-none')
+        // findClickedProduct(clickedId)
+    
     }
     else {
         document.querySelector('.info-background')!.classList.add('d-none')
+        document.body.style.removeProperty('overflow');
     }
 })
 // end info-section

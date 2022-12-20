@@ -141,7 +141,8 @@
 /* start info-section */
 .info-background {
     position: fixed;
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(3px);
     width: 100vw;
     height: 100vh;
     display: flex;
@@ -160,7 +161,7 @@
     z-index: 3;
     border-radius: 15px;
     padding: 1em;
-    margin: 0 auto;
+    margin: auto;
     width: 600px;
     display: flex;
     color: #000;
@@ -178,6 +179,8 @@
 .info-section-r {
     width: 50%;
     font-size: 0.8em;
+    padding-top: 2em;
+    font-size: 0.8em;    
 }
 .info-img {
     width: 250px;
@@ -186,34 +189,75 @@
     margin: 0 auto;
     width: 75%;
 }
-
+ 
 /* end info-section */
 
 #title-cart {
     position: fixed;
     z-index: 1;
-    top: 4rem;
-    right: 10rem;
-    color: yellow;
-    border: dashed 2px crimson;
+    top: 2em;
+    right: 2em;
+    color: black;
     border-radius: 30px;
-    padding: 1rem;
+    background-color: #fff;
+    padding: 1em;
+}
+#cart-close {
+    display: inline-block;
+    
+}
+#cart > h2 {
+    display: inline;
 }
 
-#cart {
+.cart-background {
     position: fixed;
-    z-index: 1;
-    top: 3rem;
-    right: 15rem;
-    background: rgb(198, 198, 198);
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(3px);
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 4;
+    flex-direction: column;
+}
+#cart {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 5;
+    background: #fff;
     padding: 1rem 2rem;
-    max-height: 700px;
+    width: 66%;
+    border-radius: 15px 15px 0 0;
+    overflow-y: scroll;
+    
+}
+.cart-fade {
+    animation: fadeIn 0.75s;
+}
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+.cart-btn-wrap {
+    background: #fff;
+    width: 66%;
+    padding: 1rem 2rem;
+    border-radius: 0 0 15px 15px;
+    display: flex;
+    justify-content: space-around;
 }
 
 #cart-list {
+    background: #fff;
     list-style-type: none;
-    padding: 0;
+    padding: 0 1em;
     margin: 0;
+    width: 66%;
+    max-height: 66%;
+    overflow-y: scroll;
 }
 
 .cart-item {
@@ -231,8 +275,3 @@
     margin-left: 1rem;
 }
 
-@media screen and (max-width: 768px) {
-    .hero-images {
-        height: 250px;
-    }
-}
