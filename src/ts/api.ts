@@ -1,4 +1,4 @@
-import { IData } from "./interface";
+import { IData, IOrders } from "./interface";
 
 /* Fetch products from api */
 
