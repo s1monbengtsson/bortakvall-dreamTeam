@@ -29,7 +29,8 @@ const cart: IProduct[] = JSON.parse(jsonCart)
  */
 
 
-document.querySelector('#cart-list')!.innerHTML += cart
+const renderCart = async () => {
+    document.querySelector('#cart-list')!.innerHTML = cart
     .map(item => `
         <li class="cart-item">
             <img class="cart-image" src="https://www.bortakvall.se${item.images.thumbnail}" alt="${item.name}">
@@ -37,10 +38,11 @@ document.querySelector('#cart-list')!.innerHTML += cart
                 <p class="card-title text-dark" data-product-id="${item.id}">${item.name}</p>
                 <p class="card-text text-dark" data-product-id="${item.id}">${item.price} kr</p>
             </div>
+            <button class="btn btn-danger" remove-cart-item>X</button>
         </li>
     `)
     .join('')
-
+}
 
 const getProducts = async (): Promise<void> => {
     products = await fetchProducts()
@@ -100,6 +102,7 @@ document.querySelector('main')?.addEventListener('click', async e => {
 
             cart.push(clickedProduct)
             saveCart()
+            renderCart()
         }
         // Om man klickar någon annan stans på produkten. (info)
         else {
@@ -118,6 +121,7 @@ document.querySelector('main')?.addEventListener('click', async e => {
 
 
 getProducts()
+renderCart()
 
 
 // start info-section
@@ -144,6 +148,7 @@ document.querySelector('.info-background')!.addEventListener('click', async e =>
         
         cart.push(clickedProduct)
         saveCart()
+        renderCart()
 
         document.querySelector('.info-background')!.classList.add('d-none')
     }

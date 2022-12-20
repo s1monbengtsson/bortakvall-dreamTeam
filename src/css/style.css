@@ -200,10 +200,11 @@
 #cart {
     position: fixed;
     z-index: 1;
-    top: 10rem;
+    top: 3rem;
     right: 15rem;
     background: rgb(198, 198, 198);
     padding: 1rem 2rem;
+    max-height: 700px;
 }
 
 #cart-list {
