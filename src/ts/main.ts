@@ -183,17 +183,19 @@ document.querySelector('main')?.addEventListener('click', async e => {
 // View cart
 document.querySelector('#title-cart')!.addEventListener('click', () => {
     document.querySelector('.cart-background')!.classList.remove('d-none')
+    document.body.style.overflow = 'hidden';
     
 })
 // close cart
 document.querySelector('#cart-close')!.addEventListener('click', () => {
     document.querySelector('.cart-background')!.classList.add('d-none')
+    document.body.style.removeProperty('overflow');
 
 })
 
 
 // Remove items from local storage(cart)
-document.querySelector('#clear-cart-btn')?.addEventListener('click', async (e) => {
+document.querySelector('#clear-cart-btn')?.addEventListener('click', async () => {
     localStorage.removeItem('Shopping cart')
     jsonCartItems = localStorage.getItem('Shopping cart') ?? '[]'
     cartItems = JSON.parse(jsonCartItems)
@@ -252,6 +254,7 @@ document.querySelector('.info-background')!.addEventListener('click', async e =>
         document.querySelector('.info-background')!.classList.add('d-none')
         // findClickedProduct(clickedId)
     
+        document.body.style.removeProperty('overflow');
     }
     else {
         document.querySelector('.info-background')!.classList.add('d-none')
