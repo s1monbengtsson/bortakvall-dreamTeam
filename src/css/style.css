@@ -11,15 +11,15 @@
 
 /* styling for LOGO */
 .orange {
-    color: orange
+    color: orange;
 }
 
 .white {
-    color: white
+    color: white;
 }
 
 .yellow {
-    color: rgb(231, 202, 9)
+    color: rgb(231, 202, 9);
 }
 
 .pink {
@@ -27,13 +27,12 @@
 }
 
 .blue {
-    color: rgb(52, 170, 255)
+    color: rgb(52, 170, 255);
 }
 
 .green {
-    color: #09f609a9
+    color: #09f609a9;
 }
-
 
 .content-wrapper {
     background-image: url("https://images.unsplash.com/photo-1576712967455-c8d22580e9be?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80");
@@ -65,12 +64,11 @@
 .nav-item {
     text-decoration: none;
     color: white;
-    font-size: .85rem;
+    font-size: 0.85rem;
     font-weight: bold;
 }
 
 /* styling for hero section */
-
 
 .hero-description {
     position: absolute;
@@ -79,10 +77,12 @@
     margin: 0 auto;
     top: 10.4rem;
     padding-bottom: 6rem;
-    background: linear-gradient(to top,  rgba(255,255,255,0) 0%,rgb(30, 130, 180) 35%);
+    background: linear-gradient(
+        to top,
+        rgba(255, 255, 255, 0) 0%,
+        rgb(30, 130, 180) 35%
+    );
     backdrop-filter: blur(1px);
-    
-    
 }
 
 .hero-heading,
@@ -90,8 +90,6 @@
     color: whitesmoke;
     font-weight: bold;
 }
-
-
 
 /* styling for sub navigation */
 
@@ -112,28 +110,27 @@
     margin: 0 auto;
 }
 
-  .product-btn {
+.product-btn {
     padding: 0 3rem;
     margin-bottom: 1rem;
-    font-size: .8rem;
+    font-size: 0.8rem;
     font-weight: bold;
     width: 100%;
-  }
+}
 
-  .card {
+.card {
     box-shadow: 1px 1px 10px #e5e5e5;
-  }
+}
 
-  .card-body {
+.card-body {
     font-weight: bold;
-  }
+}
 
 .card-img {
     cursor: pointer;
 }
 
-
-  .customer-details {
+.customer-details {
     width: 75%;
     margin: 0 auto;
 }
@@ -177,7 +174,7 @@
 }
 .info-section-r {
     width: 50%;
-    font-size: 0.8em;    
+    font-size: 0.8em;
 }
 .info-img {
     width: 250px;
@@ -187,5 +184,41 @@
     width: 75%;
 }
 
-
 /* end info-section */
+
+#title-cart {
+    position: fixed;
+    z-index: 1;
+    top: 4rem;
+    right: 10rem;
+    color: yellow;
+    border: dashed 2px crimson;
+    border-radius: 30px;
+    padding: 1rem;
+}
+
+#cart {
+    position: fixed;
+    z-index: 1;
+    top: 10rem;
+    right: 15rem;
+    background: rgb(198, 198, 198);
+    padding: 1rem 2rem;
+}
+
+#cart-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.cart-item {
+    display: flex;
+    margin: 1rem 0;
+}
+
+.cart-image {
+    width: 50px;
+    height: 50px;
+    margin-right: 1rem;
+}

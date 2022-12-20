@@ -20,18 +20,26 @@ let products: IData
 // let products: IProduct[] = []
 
 const jsonCart = localStorage.getItem('Shopping cart') ?? '[]'
-
-let cart: IProduct[] = JSON.parse(jsonCart)
-
-const saveCart = () => {
-    localStorage.setItem('Shopping cart', JSON.stringify(cart))
-}
+const cart: IProduct[] = JSON.parse(jsonCart)
 
 
 /**
  ********************************************************************************
  * FUNCTIONS
  */
+
+
+document.querySelector('#cart-list')!.innerHTML += cart
+    .map(item => `
+        <li class="cart-item">
+            <img class="cart-image" src="https://www.bortakvall.se${item.images.thumbnail}" alt="${item.name}">
+            <div class="card-body" data-product-id="${item.id}">
+                <p class="card-title text-dark" data-product-id="${item.id}">${item.name}</p>
+                <p class="card-text text-dark" data-product-id="${item.id}">${item.price} kr</p>
+            </div>
+        </li>
+    `)
+    .join('')
 
 
 const getProducts = async (): Promise<void> => {
@@ -64,6 +72,10 @@ const findClickedProduct = async (clickedId: number): Promise<IProduct> => {
     const foundProduct: IProduct = products.data.find(prod => clickedId === prod.id) as IProduct
     // console.log('foundProduct:', foundProduct)
     return foundProduct
+}
+
+const saveCart = () => {
+    localStorage.setItem('Shopping cart', JSON.stringify(cart))
 }
 
 
