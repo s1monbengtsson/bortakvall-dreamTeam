@@ -38,7 +38,7 @@ const renderCart = async () => {
                 <p class="card-title text-dark" data-product-id="${item.id}">${item.name}</p>
                 <p class="card-text text-dark" data-product-id="${item.id}">${item.price} kr</p>
             </div>
-            <button class="btn btn-danger cart-remove-item" remove-cart-item>X</button>
+            <button class="btn btn-danger cart-remove-item" remove-cart-item><i class="bi bi-trash"></i></button>
         </li>
     `)
     .join('')
