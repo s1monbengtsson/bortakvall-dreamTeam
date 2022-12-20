@@ -19,6 +19,14 @@ import { IData, IProduct } from "./interface"
 let products: IData
 // let products: IProduct[] = []
 
+const jsonCart = localStorage.getItem('Shopping cart') ?? '[]'
+
+let cart: IProduct[] = JSON.parse(jsonCart)
+
+const saveCart = () => {
+    localStorage.setItem('Shopping cart', JSON.stringify(cart))
+}
+
 
 /**
  ********************************************************************************
@@ -77,6 +85,9 @@ document.querySelector('main')?.addEventListener('click', async e => {
         // Om man klickar på 'Lägg till i varukorgen' knappen på en produkt
         if (target.tagName === 'BUTTON') {
             console.log('added to cart')
+
+            cart.push(clickedProduct)
+            saveCart()
         }
         // Om man klickar någon annan stans på produkten. (info)
         else {
@@ -118,6 +129,9 @@ document.querySelector('.info-background')!.addEventListener('click', async e =>
     if (target.tagName === 'BUTTON') {
         const clickedId = Number(target.dataset.prodId)
         const clickedProduct = await findClickedProduct(clickedId)
+        
+        cart.push(clickedProduct)
+        saveCart()
 
         document.querySelector('.info-background')!.classList.add('d-none')
     }
@@ -126,4 +140,3 @@ document.querySelector('.info-background')!.addEventListener('click', async e =>
     }
 })
 // end info-section
-
