@@ -202,6 +202,7 @@ document.querySelector('#clear-cart-btn')?.addEventListener('click', async () =>
     saveCart()
     setTimeout(() => {
     document.querySelector('.cart-background')!.classList.add('d-none')
+    document.body.style.removeProperty('overflow');
     },950)
 })
 
