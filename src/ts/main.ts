@@ -103,6 +103,11 @@ document.querySelector('main')?.addEventListener('click', async e => {
             cart.push(clickedProduct)
             saveCart()
             renderCart()
+            document.querySelector('.cart-background')!.classList.remove('d-none')
+            setTimeout( () => {
+                document.querySelector('.cart-background')!.classList.add('d-none')
+                
+            },950)
         }
         // Om man klickar någon annan stans på produkten. (info)
         else {
@@ -114,6 +119,12 @@ document.querySelector('main')?.addEventListener('click', async e => {
         }
     }
 })
+// View cart
+document.querySelector('#title-cart')!.addEventListener('click', () => {
+    document.querySelector('.cart-background')!.classList.remove('d-none')
+
+})
+
 
 // Remove items from local storage(cart)
 document.querySelector('#clear-cart-btn')?.addEventListener('click', async () => {
