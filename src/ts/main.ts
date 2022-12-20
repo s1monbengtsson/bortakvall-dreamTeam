@@ -25,6 +25,7 @@ let jsonCartItems = localStorage.getItem('Shopping cart') ?? '[]'
 let cartItems: IProduct[] = JSON.parse(jsonCartItems)
 
 const saveCart = () => {
+    document.querySelector('#cart-item-count')!.innerText = cartItems.length
     localStorage.setItem('Shopping cart', JSON.stringify(cartItems))
 }
 // localStorage ends
@@ -151,13 +152,19 @@ document.querySelector('main')?.addEventListener('click', async e => {
             cartItems.push(clickedProduct)
             // Save cartItems in localStorage
             saveCart()
-
-            renderCart()
+            // Display items from cartItems
+            renderCartItems()
+            // Counts the total price of every item in the cart
+            countTotalPrice()
+            // Display the total price of all items
+            renderTotalPrice()
             document.querySelector('.cart-background')!.classList.add('cart-fade')
             document.querySelector('.cart-background')!.classList.remove('d-none')
+            document.querySelector('#cart-wrap')!.classList.add('shake')
             setTimeout( () => {
                 document.querySelector('.cart-background')!.classList.add('d-none')
                 document.querySelector('.cart-background')!.classList.remove('cart-fade')
+                document.querySelector('#cart-wrap')!.classList.remove('shake')
                 
             },950)
 
