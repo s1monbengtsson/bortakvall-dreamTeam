@@ -31,9 +31,6 @@ const getProducts = async () => {
     products = await fetchProducts()
     // console.log(products)
     renderProducts()
-  products = await fetchProducts()
-  renderProducts()
-  
 }
 
 const renderProducts = () => {
