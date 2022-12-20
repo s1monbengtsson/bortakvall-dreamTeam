@@ -11,7 +11,7 @@
 
 /* styling for LOGO */
 .orange {
-    color: orange;
+    color: rgb(223, 158, 37);
 }
 
 .white {
@@ -36,12 +36,13 @@
 
 .content-wrapper {
     background-image: url("https://images.unsplash.com/photo-1576712967455-c8d22580e9be?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80");
-    background-size: cover;
-    /* background-attachment: fixed; */
+    background-position: bottom;
+    background-size: contain;
+    background-attachment: fixed;
 }
 
 .content-container {
-    width: 85%;
+    width: 85vw;
     margin: 0 auto;
 }
 
@@ -71,24 +72,26 @@
 /* styling for hero section */
 
 .hero-description {
-    position: absolute;
     background-color: #34aaff;
-    width: 85%;
+    width: 85vw;
     margin: 0 auto;
-    top: 10.4rem;
     padding-bottom: 6rem;
     background: linear-gradient(
         to top,
         rgba(255, 255, 255, 0) 0%,
-        rgb(30, 130, 180) 35%
+        rgb(30, 130, 180) 50%
     );
-    backdrop-filter: blur(1px);
+    backdrop-filter: blur(10px);
 }
 
 .hero-heading,
 .hero-para {
     color: whitesmoke;
     font-weight: bold;
+}
+
+.hero-images {
+    height: 350px;
 }
 
 /* styling for sub navigation */
@@ -272,52 +275,3 @@
     margin-left: 1rem;
 }
 
-@media screen and (max-width: 768px) {
-    .banner {
-        padding: 0;
-    }
-    .banner > h1 {
-        font-size: 2rem;
-        font-weight: bold;
-    }
-    .header-wrapper {
-        width: 100vw;
-    }
-    .content-container {
-        width: 100vw;
-        margin: 0 auto;
-    }
-    .content-wrapper {
-        background: none;
-
-    }
-    .info-background {
-        margin: 0;
-        overflow-x: hidden;
-    }
-    .info-wrap {
-        /* background-color: rgb(142, 33, 33); */
-        width: 90%;
-        height: auto;
-        display: block;
-        padding: 0.1em;
-    }
-    .info-img {
-        width: 200px;
-        margin: 0;
-    }
-    .info-name {
-        margin: 0;
-    }
-    .info-section-l, .info-section-r {
-        width: auto;
-    }
-    .info-section-r > p {
-        margin: 0 auto;
-        width: 100%;
-    }
-    .info-close {
-        padding-top: 0;
-    }
-
-}

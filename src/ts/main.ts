@@ -7,8 +7,8 @@
 import 'bootstrap/dist/css/bootstrap.css'
 import '../css/style.css'
 
-import { fetchProducts } from "./api"
-import { IData, IProduct } from "./interface"
+import { fetchProducts, fetchOrder } from "./api"
+import { IData, IProduct, IOrder } from "./interface"
 
 
 /**
@@ -19,9 +19,60 @@ import { IData, IProduct } from "./interface"
 let products: IData
 // let products: IProduct[] = []
 
-const jsonCart = localStorage.getItem('Shopping cart') ?? '[]'
-let cart: IProduct[] = JSON.parse(jsonCart)
 
+// localStorage starts
+let jsonCartItems = localStorage.getItem('Shopping cart') ?? '[]'
+let cartItems: IProduct[] = JSON.parse(jsonCartItems)
+
+const saveCart = () => {
+    localStorage.setItem('Shopping cart', JSON.stringify(cartItems))
+}
+// localStorage ends
+
+
+const testOrder = await fetchOrder(
+    {
+        customer_first_name: 'Sean',
+        customer_last_name: 'Banan',
+        customer_address: 'Drottningatan 4b',
+        customer_postcode: '21211',
+        customer_city: 'Malmö',
+        customer_email: 'testhejsan@gmail.com',
+        customer_phone: '0723738495',
+        order_total: 48,
+        order_items: [
+            {
+                product_id: 6545,
+                qty: 3,
+                item_price: 8,
+                item_total: 24,
+            },
+            {
+                product_id: 6545,
+                qty: 3,
+                item_price: 8,
+                item_total: 24,
+            },
+        ],
+    }
+)
+// console.log(testOrder)
+
+// Cart total price starts
+const renderTotalPrice = () => {
+    document.querySelector('#cart-total')!.textContent = `${cartTotal}kr`
+}
+
+let cartTotal = 0
+
+const countTotalPrice = () => {
+    let cartPrices = [0]
+    cartPrices = [0, ...cartItems.map(item => item.price)]
+    cartTotal = cartPrices.reduce((price, sum) => sum += price)
+}
+
+renderTotalPrice()
+// Cart total price ends
 
 /**
  ********************************************************************************
@@ -29,8 +80,8 @@ let cart: IProduct[] = JSON.parse(jsonCart)
  */
 
 
-const renderCart = async () => {
-    document.querySelector('#cart-list')!.innerHTML = cart
+const renderCartItems = () => {
+    document.querySelector('#cart-list')!.innerHTML = cartItems
     .map(item => `
         <li class="cart-item">
             <img class="cart-image" src="https://www.bortakvall.se${item.images.thumbnail}" alt="${item.name}">
@@ -76,10 +127,6 @@ const findClickedProduct = async (clickedId: number): Promise<IProduct> => {
     return foundProduct
 }
 
-const saveCart = () => {
-    localStorage.setItem('Shopping cart', JSON.stringify(cart))
-}
-
 
 /**
  ********************************************************************************
@@ -100,8 +147,11 @@ document.querySelector('main')?.addEventListener('click', async e => {
         if (target.tagName === 'BUTTON') {
             console.log('added to cart')
 
-            cart.push(clickedProduct)
+            // Push item into cartItems
+            cartItems.push(clickedProduct)
+            // Save cartItems in localStorage
             saveCart()
+
             renderCart()
             document.querySelector('.cart-background')!.classList.add('cart-fade')
             document.querySelector('.cart-background')!.classList.remove('d-none')
@@ -110,6 +160,15 @@ document.querySelector('main')?.addEventListener('click', async e => {
                 document.querySelector('.cart-background')!.classList.remove('cart-fade')
                 
             },950)
+
+            // Display items from cartItems
+            renderCartItems()
+            // Counts the total price of every item in the cart
+            countTotalPrice()
+            // Display the total price of all items
+            renderTotalPrice()
+            console.log(cartTotal)
+
         }
         // Om man klickar någon annan stans på produkten. (info)
         else {
@@ -136,8 +195,13 @@ document.querySelector('#cart-close')!.addEventListener('click', () => {
 // Remove items from local storage(cart)
 document.querySelector('#clear-cart-btn')?.addEventListener('click', async (e) => {
     localStorage.removeItem('Shopping cart')
-    cart = JSON.parse(jsonCart)
-    await renderCart()
+    jsonCartItems = localStorage.getItem('Shopping cart') ?? '[]'
+    cartItems = JSON.parse(jsonCartItems)
+    renderCartItems()
+    // Counts the total price of every item in the cart
+    countTotalPrice()
+    // Display the total price of all items
+    renderTotalPrice()
 })
 
 
@@ -148,7 +212,7 @@ document.querySelector('#clear-cart-btn')?.addEventListener('click', async (e) =
 
 
 getProducts()
-renderCart()
+renderCartItems()
 
 
 // start info-section
@@ -173,9 +237,17 @@ document.querySelector('.info-background')!.addEventListener('click', async e =>
         const clickedId = Number(target.dataset.prodId)
         const clickedProduct = await findClickedProduct(clickedId)
         
-        cart.push(clickedProduct)
+        // Push item into cartItems
+        cartItems.push(clickedProduct)
+        // Save cartItems in localStorage
         saveCart()
-        renderCart()
+        // Display items from cartItems
+        renderCartItems()
+        // Counts the total price of every item in the cart
+        countTotalPrice()
+        // Display the total price of all items
+        renderTotalPrice()
+        console.log(cartTotal)
 
         document.querySelector('.info-background')!.classList.add('d-none')
         // findClickedProduct(clickedId)
