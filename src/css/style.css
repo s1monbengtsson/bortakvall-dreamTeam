@@ -1,5 +1,5 @@
 * {
-    /* box-sizing: border-box; */
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
     /* border: 1px solid black; */
@@ -9,6 +9,32 @@
     display: none;
 }
 
+/* styling for LOGO */
+.orange {
+    color: orange
+}
+
+.white {
+    color: white
+}
+
+.yellow {
+    color: rgb(231, 202, 9)
+}
+
+.pink {
+    color: #d6576c;
+}
+
+.blue {
+    color: rgb(52, 170, 255)
+}
+
+.green {
+    color: #09f609a9
+}
+
+
 .content-wrapper {
     background-image: url("https://images.unsplash.com/photo-1576712967455-c8d22580e9be?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80");
     background-size: cover;
@@ -16,7 +42,7 @@
 }
 
 .content-container {
-    width: 70%;
+    width: 85%;
     margin: 0 auto;
 }
 
@@ -33,36 +59,39 @@
 
 .nav-menu,
 .sub-nav {
-    background-color: rgb(214, 87, 108);
+    background-color: #d6576c;
 }
 
 .nav-item {
     text-decoration: none;
-    color: whitesmoke;
-    font-size: 0.85rem;
+    color: white;
+    font-size: .85rem;
     font-weight: bold;
 }
 
 /* styling for hero section */
 
-.hero {
+
+.hero-description {
+    position: absolute;
     background-color: #34aaff;
+    width: 85%;
+    margin: 0 auto;
+    top: 10.4rem;
+    padding-bottom: 6rem;
+    background: linear-gradient(to top,  rgba(255,255,255,0) 0%,rgb(30, 130, 180) 35%);
+    backdrop-filter: blur(1px);
+    
+    
 }
 
-.hero > h2,
-p {
-    /* color: whitesmoke; */
+.hero-heading,
+.hero-para {
+    color: whitesmoke;
     font-weight: bold;
 }
 
-.hero-images {
-    width: 100%;
-}
 
-.hero-images > img {
-    height: 400px;
-    width: 33.33%;
-}
 
 /* styling for sub navigation */
 
@@ -72,7 +101,7 @@ p {
 
 .sub-nav-search {
     margin: 0 auto;
-    color: whitesmoke;
+    color: white;
     background-color: transparent;
     border: none;
 }
@@ -83,25 +112,28 @@ p {
     margin: 0 auto;
 }
 
-.btn {
+  .product-btn {
     padding: 0 3rem;
     margin-bottom: 1rem;
-}
+    font-size: .8rem;
+    font-weight: bold;
+    width: 100%;
+  }
 
-.product-wrap {
-    height: 375px;
-}
+  .card {
+    box-shadow: 1px 1px 10px #e5e5e5;
+  }
 
-.product-cards {
-    border: 1px solid black;
-    background-color: white;
-}
+  .card-body {
+    font-weight: bold;
+  }
 
 .card-img {
     cursor: pointer;
 }
 
-.customer-details {
+
+  .customer-details {
     width: 75%;
     margin: 0 auto;
 }
