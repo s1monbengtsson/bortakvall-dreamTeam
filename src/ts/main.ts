@@ -20,7 +20,7 @@ let products: IData
 // let products: IProduct[] = []
 
 const jsonCart = localStorage.getItem('Shopping cart') ?? '[]'
-const cart: IProduct[] = JSON.parse(jsonCart)
+let cart: IProduct[] = JSON.parse(jsonCart)
 
 
 /**
@@ -38,7 +38,7 @@ const renderCart = async () => {
                 <p class="card-title text-dark" data-product-id="${item.id}">${item.name}</p>
                 <p class="card-text text-dark" data-product-id="${item.id}">${item.price} kr</p>
             </div>
-            <button class="btn btn-danger" remove-cart-item>X</button>
+            <button class="btn btn-danger cart-remove-item" remove-cart-item>X</button>
         </li>
     `)
     .join('')
@@ -111,6 +111,14 @@ document.querySelector('main')?.addEventListener('click', async e => {
             renderInfo(clickedProduct)
         }
     }
+})
+
+// Remove items from local storage(cart)
+document.querySelector('#clear-cart-btn')?.addEventListener('click', async () => {
+
+    localStorage.removeItem('Shopping cart')
+    cart = JSON.parse(jsonCart)
+    await renderCart()
 })
 
 

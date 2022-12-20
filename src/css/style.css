@@ -223,3 +223,7 @@
     height: 50px;
     margin-right: 1rem;
 }
+
+.cart-remove-item {
+    margin-left: 1rem;
+}
