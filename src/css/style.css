@@ -178,8 +178,7 @@
 }
 .info-section-r {
     width: 50%;
-    padding-top: 2em
-    ;
+    padding-top: 2em;
     font-size: 0.8em;    
 }
 .info-img {
@@ -220,11 +219,12 @@
     .info-wrap {
         /* background-color: rgb(142, 33, 33); */
         width: 90%;
-        height: 90%;
+        height: auto;
         display: block;
+        padding: 0.1em;
     }
     .info-img {
-        width: 150px;
+        width: 200px;
         margin: 0;
     }
     .info-name {
