@@ -92,10 +92,11 @@ const renderCartItems = () => {
                 <p class="card-title text-dark">${item.name}</p>
 
                 <span data-product-id="${item.id}" class="decrease">-</span>
-                <input class="prod-qty" type="text" value="${prodQty}" style="width: 30px; text-align: center">
+                <input class="prod-qty" type="text" value="${item.qty}" style="width: 30px; text-align: center">
                 <span data-product-id="${item.id}" class="increase">+</span>
 
-                <p class="card-text text-dark">${item.price} kr</p>
+                <p class="card-text text-dark">${item.price} kr / st</p>
+                <p class="card-text text-dark">${item.price * item.qty} kr</p>
             </div>
             <button class="btn btn-danger cart-remove-item"><i class="bi bi-trash"></i></button>
         </li>
@@ -183,27 +184,21 @@ document.querySelector('main')?.addEventListener('click', async e => {
 
         // Om man klickar på 'Lägg till i varukorgen' knappen på en produkt
         if (target.tagName === 'BUTTON') {
-            console.log(clickedProduct)
+            // console.log(clickedProduct)
 
             const inCartIds = cartItems.map(item => item.id)        
             const inCartItem = cartItems.find(item => item.id === clickedId) as IProduct  // Hitta produkten i cart som har samma ID som produkten jag klickade på
             // console.log(clickedId)
 
             if (!inCartItem || !inCartIds.includes(clickedId)) {
-                console.log('first item added')
-
                 clickedProduct.qty = 1
                 cartItems.push(clickedProduct)
             }
             else if (inCartIds.includes(clickedId)) {
-                console.log('already here')
-
+                // console.log('already here')
                 inCartItem.qty++
-                console.log(inCartItem.qty)
             }
 
-            console.log(cartItems)
-            
             saveCart()
             renderCartItems()
             countTotalPrice()
