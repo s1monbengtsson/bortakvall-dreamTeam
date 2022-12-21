@@ -17,17 +17,19 @@
     </div>    
     
     <!-- start cart section -->
-    <div class="cart-background d-none"> 
-        <div id="cart">
-            <h2>Varukorg:</h2><span id="cart-close"><i class="bi bi-x-lg"></i></span>
-        </div>
-        <ul id="cart-list">  
+    <div class="cart-background d-none">
+        <div class="cart-wrapper w-75">
+            <div id="cart">
+                <h2>Varukorg:</h2><span id="cart-close"><i class="bi bi-x-lg"></i></span>
+            </div>
+            <ul id="cart-list">  
 
-        </ul>
-        <div class="cart-btn-wrap">
-            <button id="clear-cart-btn" class="btn btn-danger">Töm varukorg</button>
-            <button id="checkout-btn" class="btn btn-success">Gå till kassan</button>
-            <h3 id="cart-total"></h3>  
+            </ul>
+            <div class="cart-btn-wrap">
+                <button id="clear-cart-btn" class="btn btn-danger">Töm varukorg</button>
+                <button id="checkout-btn" class="btn btn-success">Gå till kassan</button>
+                <h3 id="cart-total"></h3>  
+            </div>
         </div>
     </div>
 <!-- end cart section -->
@@ -91,60 +93,19 @@
         </div>
     </div>
 
-    <!-- customer details form -->
-    <form action="" class="customer-details hide">
-        <h2 class="form-heading text-center mt-5">Dina Uppgifter</h2>
-        <div class="form-row">
-            <div class="form-group">
-                <label for="customer-first-name"></label>
-                <input type="text" placeholder="Förnamn" id="customer-first-name" required class="form-control">
-            </div>
-            <div class="form-group">
-                <label for="customer-last-name"></label>
-                <input type="text" placeholder="Efternamn" id="customer-last-name" required class="form-control">
-            </div>
-
-            <div class="form-group">
-                <label for="customer-address"></label>
-                <input type="text" placeholder="Adress" id="customer-address" required class="form-control">
-            </div>
-
-
-            <div class="form-group">
-                <label for="customer-postal-number"></label>
-                <input type="text" placeholder="Postnummer" id="customer-postal-number" required class="form-control">
-            </div>
-
-            <div class="form-group">
-                <label for="customer-city"></label>
-                <input type="text" placeholder="Ort" id="customer-city" required class="form-control">
-            </div>
-
-            <div class="form-group">
-                <label for="customer-phone"></label>
-                <input type="text" placeholder="Telefon" id="customer-phone" class="form-control">
-            </div>
-
-            <div class="form-group">
-                <label for="customer-email"></label>
-                <input type="email" placeholder="Email" id="customer-email" required class="form-control mb-3">
-            </div>
-
-
-            <div class="form-group">
-                <input type="checkbox" value="" id="customer-checkbox" class="form-check-input">
-                <label for="customer-checkbox" class="form-check-label">Jag har kontrollerat att informationen jag angett stämmer</label>
-            </div>  
-
-            <button type="submit" class="send-order btn btn-primary mt-3 py-2">Skicka beställning</button>
-        </div> 
-    </form>
+    
 
     
     <div class="info-wrap text-center" id="info-section"></div>
 
     <!-- Order page content -->
-    <div class="order-content"></div>
+    <ul class="list-group d-none my-5 w-75 mx-auto" id="order-content">
+        <h1 class="text-center mb-5">Orderöversikt</h1>
+    </ul>
+
+
+    <!-- customer details form -->
+    <form action="" class="customer-details w-75 mx-auto d-none"></form>
         
     
 
