@@ -81,7 +81,7 @@ renderTotalPrice()
  * FUNCTIONS
  */
 
-// let prodQty = 1
+let prodQty = 1
 
 const renderCartItems = () => {
     document.querySelector('#cart-list')!.innerHTML = cartItems
@@ -92,7 +92,7 @@ const renderCartItems = () => {
                 <p class="card-title text-dark">${item.name}</p>
 
                 <span data-product-id="${item.id}" class="decrease">-</span>
-                <input class="prod-qty" type="text" value="1" style="width: 30px; text-align: center">
+                <input class="prod-qty" type="text" value="${prodQty}" style="width: 30px; text-align: center">
                 <span data-product-id="${item.id}" class="increase">+</span>
 
                 <p class="card-text text-dark">${item.price} kr</p>
@@ -124,13 +124,12 @@ document.querySelector('#cart-list')?.addEventListener('click', e => {
         console.log(foundItem)
 
         if (target.className.includes('increase')) {
-
             cartItems.push(foundItem)
+            prodQty++
         }
         else if (target.className.includes('decrease')) {
-
             cartItems.splice(cartItems.indexOf(foundItem), 1)
-            
+            prodQty--
         }
         
         renderCartItems()
