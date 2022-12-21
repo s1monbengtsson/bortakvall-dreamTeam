@@ -28,8 +28,11 @@ let cartItems: IProduct[] = JSON.parse(jsonCartItems)
 const saveCart = () => {
     document.querySelector('#cart-item-count')!.textContent = String(cartItems.length)
     localStorage.setItem('Shopping cart', JSON.stringify(cartItems))
+    localStorage.setItem('Cart total', JSON.stringify(cartTotal))
 }
 // localStorage ends
+
+console.log("cart items:", cartItems)
 
 
 const testOrder = await fetchOrder(
@@ -295,7 +298,7 @@ const checkout = () => {
 
     document.querySelector('#order-content')!.innerHTML += `
 
-            <h3 class="text-center">Att betala: ${cartTotal} kr</h3>
+            <h3 class="text-center mt-3">Att betala: ${cartTotal} kr</h3>
         `
 
     document.querySelector('.customer-details')!.innerHTML = `
