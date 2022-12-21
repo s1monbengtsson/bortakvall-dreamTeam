@@ -56,6 +56,10 @@
     .hero-description {
         width: 100vw;
     }
+    button.product-btn {
+        height: 3em;
+    }
+
     /* start cart-section */
     #title-cart{
         background-color: #d6576c;

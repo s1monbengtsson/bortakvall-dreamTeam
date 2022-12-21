@@ -244,7 +244,7 @@ const renderInfo = (productInfo: IProduct) => {
     <div class="info-section-l">
         <img src="https://www.bortakvall.se/${productInfo.images.large}" alt="${productInfo.name}" class="info-img">
         <p class="info-name" class="mt-3">${productInfo.name}<span class="info-price">${productInfo.price}<span>kr</span></span></p>
-        <button class="btn btn-warning m-2 p-2" data-prod-id="${productInfo.id}">Lägg till i varukorg</button>
+        <button class="btn btn-warning m-2 p-2" data-prod-id="${productInfo.id}" style="font-weight: bold;">Lägg till i varukorg</button>
     </div>
       <div class="info-section-r"><h3>Beskrivning</h3>${productInfo.description}
       <p class="info-close"><i class="bi bi-x-lg"></i></p>
