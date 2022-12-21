@@ -185,10 +185,9 @@ document.querySelector('main')?.addEventListener('click', async e => {
         if (target.tagName === 'BUTTON') {
             console.log(clickedProduct)
 
-            const inCartIds = cartItems.map(item => item.id)
-            // const inCartId = inCartIds.find(id => id === clickedId) as number           // Hitta produktens ID i cart som har samma ID som produkten jag klickade på
-            const inCartItem = cartItems.find(item => item.id = clickedId) as IProduct  // Hitta 
-            // console.log('III', inCartId)
+            const inCartIds = cartItems.map(item => item.id)        
+            const inCartItem = cartItems.find(item => item.id === clickedId) as IProduct  // Hitta produkten i cart som har samma ID som produkten jag klickade på
+            // console.log(clickedId)
 
             if (!inCartItem || !inCartIds.includes(clickedId)) {
                 console.log('first item added')
