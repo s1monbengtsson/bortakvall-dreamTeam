@@ -179,7 +179,9 @@
 }
 .info-section-r {
     width: 50%;
+
     font-size: 0.8em;
+
     padding-top: 2em;
     font-size: 0.8em;    
 }
@@ -236,6 +238,7 @@
     background-color: #fff;
     padding: 1em;
     padding-top: 2em;
+
 
 }
 #title-cart:hover {

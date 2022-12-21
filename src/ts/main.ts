@@ -6,6 +6,7 @@
 
 import 'bootstrap/dist/css/bootstrap.css'
 import '../css/style.css'
+import '../css/media.css'
 
 import { fetchProducts, fetchOrder } from "./api"
 import { IData, IProduct, IOrder } from "./interface"
