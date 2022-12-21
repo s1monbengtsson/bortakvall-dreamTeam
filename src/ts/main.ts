@@ -106,46 +106,22 @@ const renderCartItems = () => {
 renderCartItems()
 
 document.querySelector('#cart-list')?.addEventListener('click', e => {
-        const target = e.target as HTMLElement
+    const target = e.target as HTMLElement
 
-        const clickedId = Number(target.dataset.productId)
+    const clickedId = Number(target.dataset.productId)
+    const foundItem = cartItems.find(item => item.id === clickedId) as IProduct
 
-        console.log(clickedId)
-
-        // const foundProduct = cartItems.find(item => {
-        //     return item.id === clickedId
-        // })
-
-        // console.log(target.dataset.productId?.includes(clickedId))
-
-        const foundItem = cartItems.find(item => {
-            return item.id === clickedId
-        }) as IProduct
-        console.log(foundItem)
-
-        if (target.className.includes('increase')) {
-            cartItems.push(foundItem)
-            prodQty++
-        }
-        else if (target.className.includes('decrease')) {
-            cartItems.splice(cartItems.indexOf(foundItem), 1)
-            prodQty--
-        }
-        
-        renderCartItems()
-    })
-
-// document.querySelector('#cart-list')?.addEventListener('click', e => {
-//     const target = e.target as HTMLElement
+    if (target.className.includes('increase')) {
+        cartItems.push(foundItem)
+        prodQty++
+    }
+    else if (target.className.includes('decrease')) {
+        cartItems.splice(cartItems.indexOf(foundItem), 1)
+        prodQty--
+    }
     
-//     if (target.id )
-//     prodQty++
-//     renderCartItems()
-//     console.log(prodQty)
-// })
-
-
-
+    renderCartItems()
+})
 
 
 const getProducts = async (): Promise<void> => {
