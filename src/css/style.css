@@ -253,6 +253,9 @@
     display: inline-block;
     
 }
+#cart-wrap {
+    margin: 0;
+}
 #cart > h2 {
     display: inline;
 }
@@ -281,13 +284,6 @@
     overflow-y: scroll;
     
 }
-.cart-fade {
-    animation: fadeIn 0.75s;
-}
-@keyframes fadeIn {
-    0% { opacity: 0; }
-    100% { opacity: 1; }
-  }
 .cart-btn-wrap {
     background: #fff;
     width: 66%;
