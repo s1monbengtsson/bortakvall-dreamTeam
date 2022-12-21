@@ -9,7 +9,7 @@ import '../css/style.css'
 import '../css/media.css'
 
 import { fetchProducts, fetchOrder } from "./api"
-import { IData, IProduct, IOrder } from "./interface"
+import { IData, IProduct, IOrder, ICustomerInfo } from "./interface"
 
 
 /**
@@ -109,7 +109,7 @@ const getProducts = async (): Promise<void> => {
 const renderProducts = (): void => {
     document.querySelector('.product-main')!.innerHTML = products.data
         .map( prod => `
-            <div class="col-12 col-md-6 col-lg-3 product-cards">
+            <div class="col- 12 col-sm-6 col-md-6 col-lg-3 product-cards">
                 <div class="card product-wrap border-0"  data-product-id="${prod.id}">
                     <img src="https://www.bortakvall.se${prod.images.thumbnail}" alt="${prod.name}" class="card-img-top card-img product-wrap-child" data-product-id="${prod.id}">
                     <div class="card-body product-wrap-child" data-product-id="${prod.id}">
@@ -285,13 +285,11 @@ const checkout = () => {
 
         document.body.style.removeProperty('overflow');
 
-
-
         document.querySelector('#order-content')!.innerHTML += `
 
-            <li class="list-group-item d-flex justify-content-evenly align-items-center">
+            <li class="list-group-item d-flex justify-content-between align-items-center text-center">
                 <img src="https://www.bortakvall.se/${product.images.thumbnail}" alt="${product.name}" class="checkout-img">
-                ${product.name}<span>${product.price} kr
+                ${product.name}<br>x 1<span>Styckpris: <br>${product.price} kr</span><span>Total:<br>10 kr</span>
             </li>
         `
     })
@@ -313,41 +311,48 @@ const checkout = () => {
                     <input type="text" placeholder="Efternamn" id="customer-last-name" required class="form-control">
                 </div>
 
-                <div class="form-group">
-                    <label for="customer-address"></label>
-                    <input type="text" placeholder="Adress" id="customer-address" required class="form-control">
-                </div>
+                
 
-
-                <div class="form-group">
-                    <label for="customer-postal-number"></label>
-                    <input type="text" placeholder="Postnummer" id="customer-postal-number" required class="form-control">
-                </div>
-
-                <div class="form-group">
-                    <label for="customer-city"></label>
-                    <input type="text" placeholder="Ort" id="customer-city" required class="form-control">
-                </div>
-
-                <div class="form-group">
-                    <label for="customer-phone"></label>
-                    <input type="text" placeholder="Telefon" id="customer-phone" class="form-control">
-                </div>
-
-                <div class="form-group">
-                    <label for="customer-email"></label>
-                    <input type="email" placeholder="Email" id="customer-email" required class="form-control mb-3">
-                </div>
-
-
-                <div class="form-group">
-                    <input type="checkbox" value="" id="customer-checkbox" class="form-check-input">
-                    <label for="customer-checkbox" class="form-check-label">Jag har kontrollerat att informationen jag angett stämmer</label>
-                </div>  
-
-                <button type="submit" class="send-order btn btn-primary my-3 py-2">Skicka beställning</button>
+                <button type="submit" class="send-order btn btn-primary my-3 py-2" id="send-order">Skicka beställning</button>
             </div> 
     `
+    // will be added after testing of form is done
+    // <div class="form-group">
+    //                 <label for="customer-address"></label>
+    //                 <input type="text" placeholder="Adress" id="customer-address" required class="form-control">
+    //             </div>
+
+
+    //             <div class="form-group">
+    //                 <label for="customer-postal-number"></label>
+    //                 <input type="text" placeholder="Postnummer" id="customer-postal-number" required class="form-control">
+    //             </div>
+
+    //             <div class="form-group">
+    //                 <label for="customer-city"></label>
+    //                 <input type="text" placeholder="Ort" id="customer-city" required class="form-control">
+    //             </div>
+
+    //             <div class="form-group">
+    //                 <label for="customer-phone"></label>
+    //                 <input type="text" placeholder="Telefon" id="customer-phone" class="form-control">
+    //             </div>
+
+    //             <div class="form-group">
+    //                 <label for="customer-email"></label>
+    //                 <input type="email" placeholder="Email" id="customer-email" required class="form-control mb-3">
+    //             </div>
+
+
+    //             <div class="form-group">
+    //                 <input type="checkbox" value="" id="customer-checkbox" class="form-check-input">
+    //                 <label for="customer-checkbox" class="form-check-label">Jag har kontrollerat att informationen jag angett stämmer</label>
+    //             </div>  
+
+    // add eventListener to submit form and send order
+document.querySelector('#send-order')!.addEventListener('submit', e => {
+    console.log('now work')
+})
 
 
 }
@@ -363,4 +368,18 @@ const checkout = () => {
         }
     })
 
-// Add function that displays cart array 
+// stores form inputs in local storage
+let jsonCustomerInfo = localStorage.getItem('Customer data') ?? '[]'
+let customerInfo: ICustomerInfo = JSON.parse(jsonCustomerInfo)
+
+const saveCustomerData = () => {
+
+    // converts array of customer data to json
+    const json = JSON.stringify(customerInfo)
+
+    // save json to localStorage
+    localStorage.setItem('Customer info', json)
+
+}
+
+
