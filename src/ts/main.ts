@@ -81,7 +81,7 @@ renderTotalPrice()
  * FUNCTIONS
  */
 
-let prodQty = 1
+// let prodQty = 1
 
 const renderCartItems = () => {
     document.querySelector('#cart-list')!.innerHTML = cartItems
@@ -92,7 +92,7 @@ const renderCartItems = () => {
                 <p class="card-title text-dark">${item.name}</p>
 
                 <span data-product-id="${item.id}" class="decrease">-</span>
-                <input class="prod-qty" type="text" value="${prodQty}" style="width: 30px; text-align: center">
+                <input class="prod-qty" type="text" value="1" style="width: 30px; text-align: center">
                 <span data-product-id="${item.id}" class="increase">+</span>
 
                 <p class="card-text text-dark">${item.price} kr</p>
@@ -105,18 +105,32 @@ const renderCartItems = () => {
 
 renderCartItems()
 
-document.querySelector('#cart-list')?.addEventListener('click', async e => {
+document.querySelector('#cart-list')?.addEventListener('click', e => {
         const target = e.target as HTMLElement
 
-        // await findClickedProduct()
+        const clickedId = Number(target.dataset.productId)
 
-        // console.log(target.className.includes('increase'))
+        console.log(clickedId)
+
+        // const foundProduct = cartItems.find(item => {
+        //     return item.id === clickedId
+        // })
+
+        // console.log(target.dataset.productId?.includes(clickedId))
+
+        const foundItem = cartItems.find(item => {
+            return item.id === clickedId
+        }) as IProduct
+        console.log(foundItem)
 
         if (target.className.includes('increase')) {
-            prodQty++
+
+            cartItems.push(foundItem)
         }
         else if (target.className.includes('decrease')) {
-            prodQty--
+
+            cartItems.splice(cartItems.indexOf(foundItem), 1)
+            
         }
         
         renderCartItems()
