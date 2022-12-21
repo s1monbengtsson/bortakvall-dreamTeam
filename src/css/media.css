@@ -1,0 +1,62 @@
+@media screen and (max-width: 768px) {
+    .banner {
+        padding: 0;
+    }
+    .banner > h1 {
+        font-size: 2rem;
+        font-weight: bold;
+    }
+    .header-wrapper {
+        width: 100vw;
+    }
+    .content-container {
+        width: 100vw;
+        margin: 0 auto;
+    }
+    .content-wrapper {
+        background: none;
+
+    }
+    .info-background {
+        margin: 0;
+        overflow-x:hidden;
+    }
+    .info-wrap {
+        /* background-color: rgb(142, 33, 33); */
+        width: 90%;
+        height: auto;
+        display: block;
+        padding: 0.1em;
+    }
+    .info-img {
+        width: 200px;
+        margin: 0;
+    }
+    .info-name {
+        margin: 0;
+    }
+    .info-section-l, .info-section-r {
+        width: auto;
+    }
+    .info-section-r > p {
+        margin: 0 auto;
+        width: 100%;
+    }
+    .info-close {
+        padding-top: 0;
+    }
+    .hero-images {
+        height: 250px;
+    }
+
+    .content-container {
+        width: 100vw;
+    }
+
+    .hero-description {
+        width: 100vw;
+    }
+
+}
+
+
