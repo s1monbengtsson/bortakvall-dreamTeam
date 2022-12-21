@@ -25,9 +25,13 @@ let products: IData
 let jsonCartItems = localStorage.getItem('Shopping cart') ?? '[]'
 let cartItems: IProduct[] = JSON.parse(jsonCartItems)
 
+let jsonCartTotal = localStorage.getItem('Total price') ?? '0'
+let cartTotal: number = JSON.parse(jsonCartTotal)
+
 const saveCart = () => {
     document.querySelector('#cart-item-count')!.textContent = String(cartItems.length)
     localStorage.setItem('Shopping cart', JSON.stringify(cartItems))
+    localStorage.setItem('Total price', JSON.stringify(cartTotal))
 }
 // localStorage ends
 
@@ -65,15 +69,15 @@ const renderTotalPrice = () => {
     document.querySelector('#cart-total')!.textContent = `${cartTotal}kr`
 }
 
-let cartTotal = 0
-
 const countTotalPrice = () => {
     let cartPrices = [0]
-    cartPrices = [0, ...cartItems.map(item => item.price)]
+    cartPrices = [0, ...cartItems.map(item => item.price * item.qty)]
     cartTotal = cartPrices.reduce((price, sum) => sum += price)
+
+
+
 }
-saveCart() // called to view number of item in cart when page loads
-renderTotalPrice()
+
 // Cart total price ends
 
 /**
@@ -238,12 +242,12 @@ document.querySelector('#clear-cart-btn')?.addEventListener('click', async () =>
     localStorage.removeItem('Shopping cart')
     jsonCartItems = localStorage.getItem('Shopping cart') ?? '[]'
     cartItems = JSON.parse(jsonCartItems)
+    saveCart()
     renderCartItems()
     // Counts the total price of every item in the cart
     countTotalPrice()
     // Display the total price of all items
     renderTotalPrice()
-    saveCart()
     setTimeout(() => {
     document.querySelector('.cart-background')!.classList.add('d-none')
     document.body.style.removeProperty('overflow');
@@ -258,6 +262,14 @@ document.querySelector('#clear-cart-btn')?.addEventListener('click', async () =>
 
 
 getProducts()
+// called to view number of item in cart when page loads
+saveCart()
+// Display items from cartItems
+renderCartItems()
+// Counts the total price of every item in the cart
+countTotalPrice()
+// Display the total price of all items
+renderTotalPrice()
 
 
 
