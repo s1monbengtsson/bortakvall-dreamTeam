@@ -81,22 +81,60 @@ renderTotalPrice()
  * FUNCTIONS
  */
 
+let prodQty = 1
 
 const renderCartItems = () => {
     document.querySelector('#cart-list')!.innerHTML = cartItems
     .map(item => `
         <li class="cart-item">
             <img class="cart-image" src="https://www.bortakvall.se${item.images.thumbnail}" alt="${item.name}">
-            <div class="card-body" data-product-id="${item.id}">
-                <p class="card-title text-dark" data-product-id="${item.id}">${item.name}</p>
-                <p class="card-text text-dark" data-product-id="${item.id}">${item.price} kr</p>
+            <div class="card-body">
+                <p class="card-title text-dark">${item.name}</p>
+
+                <span data-product-id="${item.id}" class="decrease">-</span>
+                <input class="prod-qty" type="text" value="${prodQty}" style="width: 30px; text-align: center">
+                <span data-product-id="${item.id}" class="increase">+</span>
+
+                <p class="card-text text-dark">${item.price} kr</p>
             </div>
             <button class="btn btn-danger cart-remove-item"><i class="bi bi-trash"></i></button>
         </li>
     `)
     .join('')
-
 }
+
+renderCartItems()
+
+document.querySelector('#cart-list')?.addEventListener('click', async e => {
+        const target = e.target as HTMLElement
+
+        // await findClickedProduct()
+
+        // console.log(target.className.includes('increase'))
+
+        if (target.className.includes('increase')) {
+            prodQty++
+        }
+        else if (target.className.includes('decrease')) {
+            prodQty--
+        }
+        
+        renderCartItems()
+    })
+
+// document.querySelector('#cart-list')?.addEventListener('click', e => {
+//     const target = e.target as HTMLElement
+    
+//     if (target.id )
+//     prodQty++
+//     renderCartItems()
+//     console.log(prodQty)
+// })
+
+
+
+
+
 const getProducts = async (): Promise<void> => {
     products = await fetchProducts()
     // console.log(products)
@@ -215,7 +253,7 @@ document.querySelector('#clear-cart-btn')?.addEventListener('click', async () =>
 
 
 getProducts()
-renderCartItems()
+
 
 
 // start info-section
