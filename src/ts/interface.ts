@@ -15,6 +15,7 @@ export interface IProduct {
       },
       stock_status: string,
       stock_quantity?: number,  
+      qty: number,
 }
 
 export interface IOrder {
