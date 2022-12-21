@@ -127,6 +127,7 @@
 
 .card-body {
     font-weight: bold;
+
 }
 
 .card-img {
@@ -141,7 +142,8 @@
 /* start info-section */
 .info-background {
     position: fixed;
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(3px);
     width: 100vw;
     height: 100vh;
     display: flex;
@@ -160,7 +162,7 @@
     z-index: 3;
     border-radius: 15px;
     padding: 1em;
-    margin: 0 auto;
+    margin: auto;
     width: 600px;
     display: flex;
     color: #000;
@@ -177,7 +179,11 @@
 }
 .info-section-r {
     width: 50%;
+
     font-size: 0.8em;
+
+    padding-top: 2em;
+    font-size: 0.8em;    
 }
 .info-img {
     width: 250px;
@@ -186,41 +192,148 @@
     margin: 0 auto;
     width: 75%;
 }
-
+ 
 /* end info-section */
 
+/* start cart-section */
+#cart-item-count {
+    position: relative;
+    left: -10px;
+    top: -22px;
+    z-index: 2;
+    font-size: 0.8em;
+    border-radius: 20px;
+    padding: 0.25em;
+    background-color: rgba(255, 193, 7, 0.8);
+
+}
+.shake {
+    animation: shake 0.5s; 
+    animation-iteration-count: 1;
+}
+.shake {
+    animation: shake 0.5s; 
+    animation-iteration-count: 1;
+}
+@keyframes shake { 
+    0%  {transform: translate(1px, 1px) rotate(0deg)}
+    10%  {transform: translate(-1px, -2px) rotate(-1deg)}
+    20%  {transform: translate(-3px, 0px) rotate(1deg)}
+    30%  {transform: translate(3px, 2px) rotate(0deg)}
+    40%  {transform: translate(1px, -1px) rotate(1deg)}
+    50%  {transform: translate(-1px, 2px) rotate(-1deg)}
+    60%  {transform: translate(-3px, 1px) rotate(0deg)}
+    70%  {transform: translate(3px, 1px) rotate(-1deg)}
+    80%  {transform: translate(-1px, -1px) rotate(1deg)}
+    90%  {transform: translate(1px, 2px) rotate(0deg)}
+    100% {transform: translate(1px, -2px) rotate(-1deg)}
+  }
 #title-cart {
     position: fixed;
     z-index: 1;
-    top: 4rem;
-    right: 10rem;
-    color: yellow;
-    border: dashed 2px crimson;
-    border-radius: 30px;
-    padding: 1rem;
+    top: 0;
+    right: 1em;
+    color: black;
+    border-radius: 0 0 20px 20px;
+    background-color: #fff;
+    padding: 1em;
+    padding-top: 2em;
+
+
+}
+#title-cart:hover {
+    transform: scale(1.2);
+    transition: all 0.3s ease 0s;
+}
+#title-cart:not(:hover) {
+    transition: all 0.3s ease 0s;
+
+}
+#cart-close {
+    display: inline-block;
+    
+}
+#cart > h2 {
+    display: inline;
 }
 
-#cart {
+.cart-background {
     position: fixed;
-    z-index: 1;
-    top: 3rem;
-    right: 15rem;
-    background: rgb(198, 198, 198);
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(3px);
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 4;
+    flex-direction: column;
+}
+#cart {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 5;
+    background: #fff;
     padding: 1rem 2rem;
-    max-height: 700px;
+    width: 66%;
+    border-radius: 15px 15px 0 0;
+    overflow-y: scroll;
+    
+}
+.cart-fade {
+    animation: fadeIn 0.75s;
+}
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+.cart-btn-wrap {
+    background: #fff;
+    width: 66%;
+    padding: 1rem 2rem;
+    border-radius: 0 0 15px 15px;
+    display: flex;
+    justify-content: space-around;
+}
+.cart-btn-wrap > h3 {
+    display: block;
+}
+#clear-cart-btn:hover {
+    transform: scale(0.8);
+    transition: all 0.3s ease 0s;
+}
+#clear-cart-btn:not(:hover) {
+    transition: all 0.3s ease 0s;
+
+}
+
+#checkout-btn:hover {
+    transform: scale(1.2);
+    transition: all 0.3s ease 0s;
+}
+#checkout-btn:not(:hover) {
+    transition: all 0.3s ease 0s;
 }
 
 #cart-list {
+    background: #fff;
     list-style-type: none;
-    padding: 0;
+    padding: 0 1em;
     margin: 0;
+    width: 66%;
+    max-height: 66%;
+    overflow-y: scroll;
 }
 
 .cart-item {
     display: flex;
     margin: 1rem 0;
 }
-
+.card-text:last-child {
+    text-align: right;
+    padding-right: 1.5em;;
+}
 .cart-image {
     width: 50px;
     height: 50px;
@@ -230,9 +343,12 @@
 .cart-remove-item {
     margin-left: 1rem;
 }
-
-@media screen and (max-width: 768px) {
-    .hero-images {
-        height: 250px;
-    }
+.cart-remove-item:hover {
+    transform: scale(0.8);
+    transition: all 0.3s ease 0s;
 }
+.cart-remove-item:not(:hover) {
+    transition: all 0.3s ease 0s;
+}
+/* end cart section */
+

@@ -5,43 +5,38 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Bortakväll - Lösgodis online</title>
-    <!-- <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.css"> -->
-    <!-- <link rel="stylesheet" href="/src/css/style.css"> -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
   </head>
 
   <body>
     <div class="info-background d-none"> <div class="info-wrap text-center" id="info-section"></div></div>
-
-
-
-
-
+    <!-- cart icon -->
     <div id="title-cart">
-        <h2>CART</h2>
-    </div>
+        <h2 id="cart-wrap"><i class="bi bi-cart"></i><span id="cart-item-count">0</span></h2>
+        
+    </div>    
+    
+    <!-- start cart section -->
+    <div class="cart-background d-none"> 
+        <div id="cart">
+            <h2>Varukorg:</h2><span id="cart-close"><i class="bi bi-x-lg"></i></span>
+        </div>
+        <ul id="cart-list">  
 
-    <div id="cart">
-        <h2>Shopping Cart:</h2>
-
-        <ul id="cart-list">
-            
         </ul>
-
-        <button id="checkout-btn" class="btn btn-success">Checkout</button>
-        <button id="clear-cart-btn" class="btn btn-warning">Clear Cart</button>
+        <div class="cart-btn-wrap">
+            <button id="clear-cart-btn" class="btn btn-danger">Töm varukorg</button>
+            <button id="checkout-btn" class="btn btn-success">Gå till kassan</button>
+            <h3 id="cart-total"></h3>  
+        </div>
     </div>
-
-
-
-
+<!-- end cart section -->
 
     <div class="content-wrapper">
         <div class="content-container text-center">
-
             <!-- header section -->
             <div class="header-wrapper">
-                <header class="banner p-4 bg-black">
+                <header class="banner py-4 bg-black">
                     <h1>
                         <span class="orange">B</span>
                         <span class="white">O</span>
@@ -57,7 +52,6 @@
                     </h1>
                 </header>
 
-
                 <!-- navigation menu -->
                 <nav class="nav-menu d-flex justify-content-evenly p-3">
                     <a href="#products" class="nav-item">SORTIMENT</a>
@@ -67,11 +61,12 @@
             </div>
 
             <!-- hero section -->
+
             <div class="hero">
                 <div class="hero-description pt-4">
                     <h2 class="hero-heading pb-2">Lösvikt</h2>
                     <p class="hero-para px-5">Skapa din egen favoritmix - du beställer och vi plockar ihop! <br> Alla priser nedan är per skopa. Då godisbitarna väger olika mycket så varierar priset per skopa beroende på godissort. Hur mycket en skopa väger ser du på respektive godissort. Vår definition av en skopa är som på följande bilder.</p>
-                </div>   
+                </div>
                 <div class="hero-images d-flex col-12">
                     <img src="https://images.unsplash.com/photo-1635342219731-4ae2bf39e1e9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80" alt="picture of candy" class="img-fluid col-4">
                     <img src="https://images.unsplash.com/photo-1560793292-24a14149433f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1172&q=80" alt="picture of candy" class="img-fluid col-4">

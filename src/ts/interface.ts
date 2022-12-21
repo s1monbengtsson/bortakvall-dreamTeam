@@ -24,7 +24,7 @@ export interface IOrder {
     customer_postcode: string,
     customer_city: string,
     customer_email: string,
-    customer_phone: string,
+    customer_phone?: string,
     order_total: number,
     order_items: {
         product_id: number,

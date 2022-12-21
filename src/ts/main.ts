@@ -20,10 +20,19 @@ import { IData, IProduct, IOrder } from "./interface"
 let products: IData
 // let products: IProduct[] = []
 
-let jsonCart = localStorage.getItem('Shopping cart') ?? '[]'
-let cart: IProduct[] = JSON.parse(jsonCart)
 
-const response = await fetchOrder(
+// localStorage starts
+let jsonCartItems = localStorage.getItem('Shopping cart') ?? '[]'
+let cartItems: IProduct[] = JSON.parse(jsonCartItems)
+
+const saveCart = () => {
+    document.querySelector('#cart-item-count')!.textContent = String(cartItems.length)
+    localStorage.setItem('Shopping cart', JSON.stringify(cartItems))
+}
+// localStorage ends
+
+
+const testOrder = await fetchOrder(
     {
         customer_first_name: 'Sean',
         customer_last_name: 'Banan',
@@ -49,7 +58,23 @@ const response = await fetchOrder(
         ],
     }
 )
-console.log(response)
+// console.log(testOrder)
+
+// Cart total price starts
+const renderTotalPrice = () => {
+    document.querySelector('#cart-total')!.textContent = `${cartTotal}kr`
+}
+
+let cartTotal = 0
+
+const countTotalPrice = () => {
+    let cartPrices = [0]
+    cartPrices = [0, ...cartItems.map(item => item.price)]
+    cartTotal = cartPrices.reduce((price, sum) => sum += price)
+}
+saveCart() // called to view number of item in cart when page loads
+renderTotalPrice()
+// Cart total price ends
 
 /**
  ********************************************************************************
@@ -57,8 +82,8 @@ console.log(response)
  */
 
 
-const renderCart = async () => {
-    document.querySelector('#cart-list')!.innerHTML = cart
+const renderCartItems = () => {
+    document.querySelector('#cart-list')!.innerHTML = cartItems
     .map(item => `
         <li class="cart-item">
             <img class="cart-image" src="https://www.bortakvall.se${item.images.thumbnail}" alt="${item.name}">
@@ -66,12 +91,12 @@ const renderCart = async () => {
                 <p class="card-title text-dark" data-product-id="${item.id}">${item.name}</p>
                 <p class="card-text text-dark" data-product-id="${item.id}">${item.price} kr</p>
             </div>
-            <button class="btn btn-danger cart-remove-item" remove-cart-item>X</button>
+            <button class="btn btn-danger cart-remove-item"><i class="bi bi-trash"></i></button>
         </li>
     `)
     .join('')
-}
 
+}
 const getProducts = async (): Promise<void> => {
     products = await fetchProducts()
     // console.log(products)
@@ -104,10 +129,6 @@ const findClickedProduct = async (clickedId: number): Promise<IProduct> => {
     return foundProduct
 }
 
-const saveCart = () => {
-    localStorage.setItem('Shopping cart', JSON.stringify(cart))
-}
-
 
 /**
  ********************************************************************************
@@ -128,26 +149,62 @@ document.querySelector('main')?.addEventListener('click', async e => {
         if (target.tagName === 'BUTTON') {
             console.log('added to cart')
 
-            cart.push(clickedProduct)
+            // Push item into cartItems
+            cartItems.push(clickedProduct)
+            // Save cartItems in localStorage
             saveCart()
-            renderCart()
+            // Display items from cartItems
+            renderCartItems()
+            // Counts the total price of every item in the cart
+            countTotalPrice()
+            // Display the total price of all items
+            renderTotalPrice()
+            document.querySelector('#cart-wrap')!.classList.add('shake')
+            setTimeout( () => {
+                document.querySelector('#cart-wrap')!.classList.remove('shake')                
+            },950)
+            console.log(cartTotal)
+
         }
         // Om man klickar någon annan stans på produkten. (info)
         else {
             console.log('viewing product')
 
             renderInfo(clickedProduct)
+            document.body.style.overflow = 'hidden';
+            findClickedProduct(clickedId)
         }
     }
 })
+// View cart
+document.querySelector('#title-cart')!.addEventListener('click', () => {
+    document.querySelector('.cart-background')!.classList.remove('d-none')
+    document.body.style.overflow = 'hidden';
+    
+})
+// close cart
+document.querySelector('#cart-close')!.addEventListener('click', () => {
+    document.querySelector('.cart-background')!.classList.add('d-none')
+    document.body.style.removeProperty('overflow');
+
+})
+
 
 // Remove items from local storage(cart)
 document.querySelector('#clear-cart-btn')?.addEventListener('click', async () => {
-
     localStorage.removeItem('Shopping cart')
-    jsonCart = localStorage.getItem('Shopping cart') ?? '[]'
-    cart = JSON.parse(jsonCart)
-    await renderCart()
+    jsonCartItems = localStorage.getItem('Shopping cart') ?? '[]'
+    cartItems = JSON.parse(jsonCartItems)
+    renderCartItems()
+    // Counts the total price of every item in the cart
+    countTotalPrice()
+    // Display the total price of all items
+    renderTotalPrice()
+    saveCart()
+    setTimeout(() => {
+    document.querySelector('.cart-background')!.classList.add('d-none')
+    document.body.style.removeProperty('overflow');
+    },950)
 })
 
 
@@ -158,7 +215,7 @@ document.querySelector('#clear-cart-btn')?.addEventListener('click', async () =>
 
 
 getProducts()
-renderCart()
+renderCartItems()
 
 
 // start info-section
@@ -166,14 +223,14 @@ const renderInfo = (productInfo: IProduct) => {
     document.querySelector('.info-background')!.classList.remove('d-none')
     document.querySelector('.info-background')!.classList.add('show-info')
     document.querySelector('#info-section')!.innerHTML = `    
-        <div class="info-section-l">
-            <img src="https://www.bortakvall.se/${productInfo.images.large}" alt="${productInfo.name}" class="my-4 info-img">
-            <p class="info-name" class="mt-3">${productInfo.name}<span class="info-price">${productInfo.price}<span>kr</span></span></p>
-            <button class="btn btn-warning m-2 p-2" data-prod-id="${productInfo.id}">Lägg till i varukorg</button>
-        </div>
-        <div class="mt-3 info-section-r"><h3 class="p-4">Beskrivning</h3>${productInfo.description}
-            <p class="info-close"><i class="bi bi-x-lg"></i></p>
-        </div>
+    <div class="info-section-l">
+        <img src="https://www.bortakvall.se/${productInfo.images.large}" alt="${productInfo.name}" class="info-img">
+        <p class="info-name" class="mt-3">${productInfo.name}<span class="info-price">${productInfo.price}<span>kr</span></span></p>
+        <button class="btn btn-warning m-2 p-2" data-prod-id="${productInfo.id}">Lägg till i varukorg</button>
+    </div>
+      <div class="info-section-r"><h3>Beskrivning</h3>${productInfo.description}
+      <p class="info-close"><i class="bi bi-x-lg"></i></p>
+    </div>
     `
 }
 
@@ -183,14 +240,28 @@ document.querySelector('.info-background')!.addEventListener('click', async e =>
         const clickedId = Number(target.dataset.prodId)
         const clickedProduct = await findClickedProduct(clickedId)
         
-        cart.push(clickedProduct)
+        // Push item into cartItems
+        cartItems.push(clickedProduct)
+        // Save cartItems in localStorage
         saveCart()
-        renderCart()
-
-        document.querySelector('.info-background')!.classList.add('d-none')
+        // Display items from cartItems
+        renderCartItems()
+        // Counts the total price of every item in the cart
+        countTotalPrice()
+        // Display the total price of all items
+        renderTotalPrice()
+        console.log(cartTotal)
+        
+        document.body.style.removeProperty('overflow');
+        document.querySelector('#cart-wrap')!.classList.add('shake')
+        setTimeout( () => { 
+            document.querySelector('.info-background')!.classList.add('d-none')
+            document.querySelector('#cart-wrap')!.classList.remove('shake')                
+        },950)
     }
     else {
         document.querySelector('.info-background')!.classList.add('d-none')
+        document.body.style.removeProperty('overflow');
     }
 })
 // end info-section
