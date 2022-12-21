@@ -120,7 +120,13 @@ document.querySelector('#cart-list')?.addEventListener('click', e => {
         prodQty--
     }
     
+    saveCart()
+    // Display items from cartItems
     renderCartItems()
+    // Counts the total price of every item in the cart
+    countTotalPrice()
+    // Display the total price of all items
+    renderTotalPrice()
 })
 
 
