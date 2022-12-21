@@ -105,6 +105,7 @@ const renderCartItems = () => {
 
 renderCartItems()
 
+// + and -
 document.querySelector('#cart-list')?.addEventListener('click', e => {
     const target = e.target as HTMLElement
 
@@ -169,6 +170,8 @@ const findClickedProduct = async (clickedId: number): Promise<IProduct> => {
  */
 
 
+
+
 // Click event on each product
 document.querySelector('main')?.addEventListener('click', async e => {
     const target = e.target as HTMLElement
@@ -180,24 +183,37 @@ document.querySelector('main')?.addEventListener('click', async e => {
 
         // Om man klickar på 'Lägg till i varukorgen' knappen på en produkt
         if (target.tagName === 'BUTTON') {
-            console.log('added to cart')
+            console.log(clickedProduct)
 
-            // Push item into cartItems
-            cartItems.push(clickedProduct)
-            // Save cartItems in localStorage
+            const inCartIds = cartItems.map(item => item.id)
+            // const inCartId = inCartIds.find(id => id === clickedId) as number           // Hitta produktens ID i cart som har samma ID som produkten jag klickade på
+            const inCartItem = cartItems.find(item => item.id = clickedId) as IProduct  // Hitta 
+            // console.log('III', inCartId)
+
+            if (!inCartItem || !inCartIds.includes(clickedId)) {
+                console.log('first item added')
+
+                clickedProduct.qty = 1
+                cartItems.push(clickedProduct)
+            }
+            else if (inCartIds.includes(clickedId)) {
+                console.log('already here')
+
+                inCartItem.qty++
+                console.log(inCartItem.qty)
+            }
+
+            console.log(cartItems)
+            
             saveCart()
-            // Display items from cartItems
             renderCartItems()
-            // Counts the total price of every item in the cart
             countTotalPrice()
-            // Display the total price of all items
             renderTotalPrice()
+
             document.querySelector('#cart-wrap')!.classList.add('shake')
             setTimeout( () => {
                 document.querySelector('#cart-wrap')!.classList.remove('shake')                
             },950)
-            console.log(cartTotal)
-
         }
         // Om man klickar någon annan stans på produkten. (info)
         else {
