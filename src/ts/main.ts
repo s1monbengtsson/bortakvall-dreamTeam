@@ -194,3 +194,27 @@ document.querySelector('.info-background')!.addEventListener('click', async e =>
     }
 })
 // end info-section
+
+
+// Add clickEvent to proceed to check out with all products from cart
+
+    document.querySelector('#checkout-btn')!.addEventListener('click', async e => {
+        const target = e.target as HTMLButtonElement
+        if (target.innerText === 'Checkout') {
+            console.log('clicked on checkout')
+            console.log('cart:', cart)
+
+        // printing list for each item
+        cart.forEach(product => {
+            alert(product.name)
+            // document.querySelector('.order-content')!.innerHTML = `
+            // <div>
+            //     <li>${product.name}</li>
+            // </div>
+            // `
+        })
+        
+        }
+    })
+
+// Add function that displays cart array 
