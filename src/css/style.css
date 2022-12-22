@@ -293,6 +293,7 @@
     border-radius: 0 0 15px 15px;
     display: flex;
     justify-content: space-around;
+    align-items: center;
 }
 .cart-btn-wrap > h3 {
     display: block;
@@ -313,7 +314,13 @@
 #checkout-btn:not(:hover) {
     transition: all 0.3s ease 0s;
 }
-
+.cart-total {
+    display: flex;
+    flex-direction: column;
+}
+.cart-total > span {
+    font-weight: bold;
+}
 #cart-list {
     background: #fff;
     list-style-type: none;
