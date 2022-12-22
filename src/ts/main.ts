@@ -73,12 +73,12 @@ const countTotalPrice = () => {
     let cartPrices = [0]
     cartPrices = [0, ...cartItems.map(item => item.price * item.qty)]
     cartTotal = cartPrices.reduce((price, sum) => sum += price)
-
-
-
+    localStorage.setItem('Total amount', JSON.stringify(cartTotal))
 }
 
 // Cart total price ends
+
+
 
 /**
  ********************************************************************************
@@ -92,23 +92,23 @@ const renderCartItems = () => {
     .map(item => `
         <li class="cart-item">
             <img class="cart-image" src="https://www.bortakvall.se${item.images.thumbnail}" alt="${item.name}">
-            <div class="card-body">
+            <div class="card-body cart-descript">
                 <p class="card-title text-dark">${item.name}</p>
-
+                <p class="cart-adjust">
                 <span data-product-id="${item.id}" class="decrease">-</span>
                 <input class="prod-qty" type="text" value="${item.qty}" style="width: 30px; text-align: center">
                 <span data-product-id="${item.id}" class="increase">+</span>
-
-                <p class="card-text text-dark">${item.price} kr / st</p>
+                </p>
+                <p class="card-text text-dark" id="cart-item-price">${item.price} kr/st  </p>
                 <p class="card-text text-dark">${item.price * item.qty} kr</p>
             </div>
-            <button class="btn btn-danger cart-remove-item"><i class="bi bi-trash"></i></button>
+            <button class="btn btn-danger cart-remove-item" data-set-id="${item.id}"><i class="bi bi-trash" data-set-id="${item.id}"></i></button>
         </li>
     `)
     .join('')
 }
 
-renderCartItems()
+
 
 // + and -
 document.querySelector('#cart-list')?.addEventListener('click', async e => {
@@ -202,8 +202,10 @@ document.querySelector('main')?.addEventListener('click', async e => {
             renderTotalPrice()
 
             document.querySelector('#cart-wrap')!.classList.add('shake')
+            document.querySelector('#cart-wrap')!.classList.add('move')
             setTimeout( () => {
                 document.querySelector('#cart-wrap')!.classList.remove('shake')                
+                document.querySelector('#cart-wrap')!.classList.remove('move')
             },950)
         }
         // Om man klickar någon annan stans på produkten. (info)
@@ -247,6 +249,22 @@ document.querySelector('#clear-cart-btn')?.addEventListener('click', async () =>
     },950)
 })
 
+// remove single item in cart
+document.querySelector('#cart-list')?.addEventListener('click', async (e) => {
+    const target = e.target as HTMLElement
+    const clickedId = Number(target.dataset.setId) // get datasetid of item
+    const founditem : IProduct = cartItems.find(item => clickedId === item.id) as IProduct // finds it in cart-array
+    console.log(` tog bort ${founditem.name} ur varukorgen`)
+    cartItems.splice(cartItems.indexOf(founditem), 1) // removes it from cart-array
+    // Save cartItems in localStorage
+    saveCart()
+    // Display items from cartItems
+    renderCartItems()
+    // Counts the total price of every item in the cart
+    countTotalPrice()
+    // Display the total price of all items
+    renderTotalPrice()
+})
 
 /**
  ********************************************************************************
@@ -254,15 +272,7 @@ document.querySelector('#clear-cart-btn')?.addEventListener('click', async () =>
  */
 
 
-getProducts()
-// called to view number of item in cart when page loads
-saveCart()
-// Display items from cartItems
-renderCartItems()
-// Counts the total price of every item in the cart
-countTotalPrice()
-// Display the total price of all items
-renderTotalPrice()
+
 
 
 
@@ -274,7 +284,7 @@ const renderInfo = (productInfo: IProduct) => {
     <div class="info-section-l">
         <img src="https://www.bortakvall.se/${productInfo.images.large}" alt="${productInfo.name}" class="info-img">
         <p class="info-name" class="mt-3">${productInfo.name}<span class="info-price">${productInfo.price}<span>kr</span></span></p>
-        <button class="btn btn-warning m-2 p-2" data-prod-id="${productInfo.id}">Lägg till i varukorg</button>
+        <button class="btn btn-warning m-2 p-2" data-prod-id="${productInfo.id}" style="font-weight: bold;">Lägg till i varukorg</button>
     </div>
       <div class="info-section-r"><h3>Beskrivning</h3>${productInfo.description}
       <p class="info-close"><i class="bi bi-x-lg"></i></p>
@@ -313,3 +323,10 @@ document.querySelector('.info-background')!.addEventListener('click', async e =>
     }
 })
 // end info-section
+
+/* functions that are called when the page loads */
+getProducts()
+saveCart() // called to view number of item in cart when page loads
+countTotalPrice()
+renderTotalPrice()
+renderCartItems()
