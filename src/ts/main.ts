@@ -144,6 +144,10 @@ document.querySelector('#cart-list')?.addEventListener('click', async e => {
     else if (target.className.includes('cart-remove-item' || 'cart-remove-item-i')) {
         inCartItem.qty = 0
     }
+
+    if (!(inCartItem.qty > 0)) {
+        cartItems.splice(cartItems.indexOf(inCartItem), 1) // removes it from cart-array
+    }
     renderCart()
 })
 
