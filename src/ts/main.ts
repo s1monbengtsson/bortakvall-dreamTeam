@@ -26,7 +26,9 @@ let jsonCartItems = localStorage.getItem('Shopping cart') ?? '[]'
 let cartItems: IProduct[] = JSON.parse(jsonCartItems)
 
 const saveCart = () => {
-    document.querySelector('#cart-item-count')!.textContent = String(cartItems.length)
+    document.querySelector('#cart-item-count')!.textContent = String(cartItems
+        .map( item => item.qty )
+        .reduce( (num, sum) => num + sum, 0))
     localStorage.setItem('Shopping cart', JSON.stringify(cartItems))
 }
 // localStorage ends

@@ -1,4 +1,4 @@
-@media screen and (max-width: 780px) {
+@media screen and (max-width:880px) {
     .banner {
         padding: 0;
     }
@@ -74,6 +74,16 @@
         font-size: 0.6em;
         padding: 0.25em;   
     }
+    .cart-heading {
+        width: 95%;
+    }
+    .cart-heading-wrap {
+        width: 70%;
+    }
+    .cart-heading-details {
+        width: 70%;
+        justify-content: space-between;
+    }
     .cart-image {
         width: 50px;
         margin-right: 1em;
@@ -89,7 +99,6 @@
     }
     .cart-adjust {
         text-align: left;
-        margin: 0 auto;
         display: inline;
     }
     #cart-item-price {
