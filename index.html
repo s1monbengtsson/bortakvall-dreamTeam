@@ -54,8 +54,8 @@
 
                 <!-- navigation menu -->
                 <nav class="nav-menu d-flex justify-content-evenly p-3">
-                    <a href="#" class="nav-item">SORTIMENT</a>
-                    <a href="#" class="nav-item">WEBBSHOP</a>                    
+                    <a href="#main" class="nav-item">SORTIMENT</a>
+                    <a href="#main" class="nav-item">WEBBSHOP</a>                    
 
                 </nav>
             </div>
@@ -76,16 +76,17 @@
 
             <!-- sub navigation -->
             <div class="sub-nav-wrapper d-flex justify-content-center" >
-                <nav class="sub-nav py-5">
-                    <a href="#" class="nav-item px-2">ALLA PRODUKTER</a>
-                    <a href="#" class="nav-item px-2" >LÖSGODIS</a>
-                    <input type="text" placeholder="Search for products" class="sub-nav-search d-block mt-2">
+                <nav class="sub-nav py-5" id="nav-output">
+                    <!-- <input type="text" placeholder="Search for products" class="sub-nav-search d-block mt-2">                    
+                    <a href="#" class="nav-item px-2">ALLA PRODUKTER</a> -->
+
                 </nav>
+                
             </div>
 
             <!-- product section -->
         
-            <main class="container-fluid bg-light">
+            <main class="container-fluid bg-light" id="main">
                 <div class="row g-3 mx-3 product-main"></div>
             </main>
         </div>

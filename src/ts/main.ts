@@ -155,6 +155,8 @@ const renderProducts = (): void => {
             </div>
         `)
         .join('')
+    document.querySelector('#nav-output')!.innerHTML +=
+    `<h2 class="nav-item px-2">VISAR ALLA ${products.data.length} PRODUKTER</h2> `
 }
 
 // Allt denna funktion ska göra är att hitta produkten man clickar på
