@@ -115,7 +115,7 @@ const renderCartItems = () => {
                 <p class="card-title text-dark">${item.name}</p>
                 <p class="cart-adjust">
                 <span data-product-id="${item.id}" class="decrease">-</span>
-                <input class="prod-qty" type="text" value="${item.qty}" style="width: 30px; text-align: center">
+                <input class="prod-qty" data-input-id="${item.id}" id="input-${item.id}" value="${item.qty}" style="width: 30px; text-align: center">
                 <span data-product-id="${item.id}" class="increase">+</span>
                 </p>
                 <p class="card-text text-dark" id="cart-item-price">${item.price} kr/st  </p>
@@ -127,7 +127,22 @@ const renderCartItems = () => {
     .join('')
 }
 
+document.querySelector('#cart-list')?.addEventListener('keyup', e => {
+    const target = e.target as HTMLElement
+    const clickedId = Number(target.dataset.inputId)
+    if (!clickedId) return
+    const inCartItem = cartItems.find(item => item.id === clickedId) as IProduct
+    
+    const inputField = document.querySelector(`#input-${clickedId}`) as HTMLInputElement
+    console.log(Number(inputField.value))
 
+    inCartItem.qty = Number(inputField.value)
+    renderCart()
+
+    if(target.className.includes('prod-qty')) {
+        // console.log(inCartItem.qty)
+    }
+})
 
 // Remove, + and - 
 document.querySelector('#cart-list')?.addEventListener('click', async e => {
@@ -135,6 +150,7 @@ document.querySelector('#cart-list')?.addEventListener('click', async e => {
     const clickedId = Number(target.dataset.productId)
     if (!clickedId) return
     const inCartItem = cartItems.find(item => item.id === clickedId) as IProduct  // Hitta produkten i cart som har samma ID som produkten jag klickade på
+
     if (target.className.includes('increase')) {
         inCartItem.qty++
     }
