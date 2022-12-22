@@ -25,7 +25,7 @@ let products: IData
 let jsonCartItems = localStorage.getItem('Shopping cart') ?? '[]'
 let cartItems: IProduct[] = JSON.parse(jsonCartItems)
 
-let jsonCartTotal = localStorage.getItem('Total amount') ?? '0'
+let jsonCartTotal = localStorage.getItem('Total price') ?? '0'
 let cartTotal: number = JSON.parse(jsonCartTotal)
 
 const saveCart = () => {
@@ -79,7 +79,7 @@ const countTotalPrice = () => {
     let cartPrices = [0]
     cartPrices = [0, ...cartItems.map(item => item.price * item.qty)]
     cartTotal = cartPrices.reduce((price, sum) => sum += price)
-    localStorage.setItem('Total amount', JSON.stringify(cartTotal))
+    localStorage.setItem('Total price', JSON.stringify(cartTotal))
 }
 
 // Cart total price ends
