@@ -327,7 +327,8 @@ document.querySelector('.info-background')!.addEventListener('click', async e =>
 // end info-section
 
 
-// Add function that renders checkout-page and form to DOM
+
+// function that renders checkout-page and form to DOM
 
 const checkout = () => {
     cartItems.map(product => {
@@ -344,7 +345,6 @@ const checkout = () => {
         let productTotal = (product.price * product.qty)
 
         document.querySelector('#order-content')!.innerHTML += `
-
             <li class="list-group-item d-flex justify-content-between align-items-center text-center">
                 <img src="https://www.bortakvall.se/${product.images.thumbnail}" alt="${product.name}" class="checkout-img">
                 ${product.name}<br>x ${product.qty}<span>Styckpris: <br>${product.price} kr</span><span>Total:<br> ${productTotal} kr</span>
@@ -358,49 +358,26 @@ const checkout = () => {
         `
 }
 
-// Add clickEvent to proceed to check out with all products from cart
+    // prefill form with customer data on page load
+    const formPreFill = () => {
 
-document.querySelector('#checkout-btn')!.addEventListener('click', async e => {
-    const target = e.target as HTMLButtonElement
-    if (target.id === 'checkout-btn') {
-        console.log('clicked on checkout')
-        checkout()
-        renderForm()
+        const customerFirstName = document.querySelector('#customer-first-name')! as HTMLInputElement
+        const customerLastName = document.querySelector('#customer-last-name')! as HTMLInputElement
+        const customerAddress = document.querySelector('#customer-address')! as HTMLInputElement
+        const customerPostal = document.querySelector('#customer-postal-number')! as HTMLInputElement
+        const customerCity = document.querySelector('#customer-city')! as HTMLInputElement
+        const customerPhone = document.querySelector('#customer-phone')! as HTMLInputElement
+        const customerEmail = document.querySelector('#customer-email')! as HTMLInputElement
+    
+        customerFirstName.value = customerData.customer_first_name ?? ''
+        customerLastName.value = customerData.customer_last_name ?? ''
+        customerAddress.value = customerData.customer_address ?? ''
+        customerPostal.value = customerData.customer_postcode ?? ''
+        customerCity.value = customerData.customer_city ?? ''
+        customerPhone.value = customerData.customer_phone ?? ''
+        customerEmail.value = customerData.customer_email ?? ''
+
     }
-})
-
-const saveCustomerData = () => {
-
-    const customerFirstName = document.querySelector('#customer-first-name')! as HTMLInputElement
-    const customerLastName = document.querySelector('#customer-last-name')! as HTMLInputElement
-    const customerAddress = document.querySelector('#customer-address')! as HTMLInputElement
-    const customerPostal = document.querySelector('#customer-postal-number')! as HTMLInputElement
-    const customerCity = document.querySelector('#customer-city')! as HTMLInputElement
-    const customerPhone = document.querySelector('#customer-phone')! as HTMLInputElement
-    const customerEmail = document.querySelector('#customer-email')! as HTMLInputElement
-
-
-    // stores form inputs in local storage
-    let jsonCustomerData = localStorage.getItem('Customer data') ?? '[]'
-    let customerData: ICustomerInfo = JSON.parse(jsonCustomerData)
-
-    customerData = {
-        customer_first_name: customerFirstName.value,
-        customer_last_name:  customerLastName.value,
-        customer_address: customerAddress.value,
-        customer_postcode: customerPostal.value,
-        customer_city: customerCity.value,
-        customer_phone: customerPhone.value,
-        customer_email: customerEmail.value
-    }
-
-    const json = JSON.stringify(customerData)
-    localStorage.setItem('Customer data', json)
-
-    console.log("customer data:", customerData)
-
-
-}
 
 // function that renders form to DOM
 const renderForm = () => {
@@ -452,22 +429,71 @@ const renderForm = () => {
 
             </div> 
     `
-    // listen for submits, and save customer data to localStorage
-    document.querySelector('.customer-details')!.addEventListener('submit', e => {
-        e.preventDefault()
-        saveCustomerData()
-    })
-
-    // remove saved customer data when reset button is clicked
-    document.querySelector('.customer-details')!.addEventListener('reset', () => {
-        localStorage.removeItem('Customer data')
-    })
+    formPreFill()
+    
 }
 
+    // get json data from localStorage
+    let jsonCustomerData = localStorage.getItem('Customer data') ?? '[]'
+
+    // parse json data into object
+    let customerData: ICustomerInfo = JSON.parse(jsonCustomerData)
 
 
+const saveCustomerData = () => {
+
+    const customerFirstName = document.querySelector('#customer-first-name')! as HTMLInputElement
+    const customerLastName = document.querySelector('#customer-last-name')! as HTMLInputElement
+    const customerAddress = document.querySelector('#customer-address')! as HTMLInputElement
+    const customerPostal = document.querySelector('#customer-postal-number')! as HTMLInputElement
+    const customerCity = document.querySelector('#customer-city')! as HTMLInputElement
+    const customerPhone = document.querySelector('#customer-phone')! as HTMLInputElement
+    const customerEmail = document.querySelector('#customer-email')! as HTMLInputElement
 
 
+    customerData = {
+        customer_first_name: customerFirstName.value,
+        customer_last_name:  customerLastName.value,
+        customer_address: customerAddress.value,
+        customer_postcode: customerPostal.value,
+        customer_city: customerCity.value,
+        customer_phone: customerPhone.value,
+        customer_email: customerEmail.value
+    }
+
+    // converts customerData to JSON
+    const json = JSON.stringify(customerData)
+
+    // saves JSON to localStorage
+    localStorage.setItem('Customer data', json)
+
+    console.log("customer data:", customerData)
+
+
+}
+
+// Add clickEvent to proceed to check out with all products from cart
+
+document.querySelector('#checkout-btn')!.addEventListener('click', async e => {
+    const target = e.target as HTMLButtonElement
+    if (target.id === 'checkout-btn') {
+        console.log('clicked on checkout')
+        checkout()
+        renderForm()
+    }
+})
+
+// listen for submits, and save customer data to localStorage
+document.querySelector('.customer-details')!.addEventListener('submit', e => {
+    e.preventDefault()
+    saveCustomerData()
+})
+
+// remove saved customer data when reset button is clicked
+document.querySelector('.customer-details')!.addEventListener('reset', () => {
+    localStorage.removeItem('Customer data')
+    document.querySelector('#customer-first-name')?.setAttribute
+})
 
 
 /* functions that are called when the page loads */
