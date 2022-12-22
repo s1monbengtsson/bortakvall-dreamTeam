@@ -95,7 +95,7 @@ const renderCartItems = () => {
                 <input class="prod-qty" type="text" value="${item.qty}" style="width: 30px; text-align: center">
                 <span data-product-id="${item.id}" class="increase">+</span>
                 </p>
-                <p class="card-text text-dark" id="cart-item-price">${item.price} kr / st</p>
+                <p class="card-text text-dark" id="cart-item-price">${item.price} kr/st  </p>
                 <p class="card-text text-dark">${item.price * item.qty} kr</p>
             </div>
             <button class="btn btn-danger cart-remove-item" data-set-id="${item.id}"><i class="bi bi-trash" data-set-id="${item.id}"></i></button>

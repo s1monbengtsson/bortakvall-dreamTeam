@@ -75,6 +75,30 @@
         font-size: 0.6em;
         padding: 0.25em;   
     }
+    .cart-item {
+        border-bottom: 1px solid #dfdfdf;
+    }
+    .cart-image {
+        width: 50px;
+    }
+    .cart-descript {
+        display: block;
+    }
+    .cart-descript > p {
+        margin: 0.5em 0;
+    }
+    .cart-descript > p:first-child {
+        width: 100%;
+    }
+    .cart-adjust {
+        text-align: left;
+        margin: 0 auto;
+        display: inline;
+    }
+    #cart-item-price {
+        display: inline;  
+        padding-left: 2em;  
+    }
     .cart-btn-wrap {
         width: 95%;
         padding: 1rem;
