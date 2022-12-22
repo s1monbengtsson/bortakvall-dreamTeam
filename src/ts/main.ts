@@ -35,13 +35,9 @@ const saveCart = () => {
 }
 
 const renderCart = () => {
-    // Save cartItems in localStorage
     saveCart()
-    // Display items from cartItems
     renderCartItems()
-    // Counts the total price of every item in the cart
     countTotalPrice()
-    // Display the total price of all items
     renderTotalPrice()
 }
 // localStorage ends
@@ -114,17 +110,22 @@ const renderCartItems = () => {
             <div class="card-body cart-descript">
                 <p class="card-title text-dark">${item.name}</p>
                 <p class="cart-adjust">
-                <span data-product-id="${item.id}" class="decrease">-</span>
-                <input class="prod-qty" data-input-id="${item.id}" id="input-${item.id}" value="${item.qty}" style="width: 30px; text-align: center">
-                <span data-product-id="${item.id}" class="increase">+</span>
+                    <span data-product-id="${item.id}" class="decrease">-</span>
+                    <input class="prod-qty" data-input-id="${item.id}" id="input-${item.id}" value="${item.qty}" style="width: 30px; text-align: center">
+                    <span data-product-id="${item.id}" class="increase">+</span>
                 </p>
                 <p class="card-text text-dark" id="cart-item-price">${item.price} kr/st  </p>
-                <p class="card-text text-dark">${item.price * item.qty} kr</p>
+                <p class="card-text text-dark item-total">${item.price * item.qty} kr</p>
             </div>
             <button class="btn btn-danger cart-remove-item" data-product-id="${item.id}"><i class="bi bi-trash cart-remove-item-i" data-product-id="${item.id}"></i></button>
         </li>
     `)
     .join('')
+}
+
+const renderItemTotal = (item: IProduct) => {
+    const itemTotal = document.querySelector('.item-total') as HTMLParagraphElement
+    itemTotal.textContent = `${item.price * item.qty} kr`
 }
 
 document.querySelector('#cart-list')?.addEventListener('keyup', e => {
@@ -137,7 +138,11 @@ document.querySelector('#cart-list')?.addEventListener('keyup', e => {
     console.log(Number(inputField.value))
 
     inCartItem.qty = Number(inputField.value)
-    renderCart()
+    
+    saveCart()
+    renderItemTotal(inCartItem)
+    countTotalPrice()
+    renderTotalPrice()
 
     if(target.className.includes('prod-qty')) {
         // console.log(inCartItem.qty)
