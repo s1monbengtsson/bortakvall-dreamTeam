@@ -170,7 +170,19 @@ const findClickedProduct = async (clickedId: number): Promise<IProduct> => {
  ********************************************************************************
  * EVENT LISTENERS
  */
+// mouseover/hover event on products
+// document.querySelector('main')!.addEventListener('mouseover', (e) => {
+//     const target = e.target as HTMLElement
+//     console.log(target.x, target.y, Number(target.dataset.productId))
 
+//     // setTimeout( async ()=> {
+//     // const clickedId = Number(target.dataset.productId)
+//     // const clickedProduct = await findClickedProduct(clickedId)
+//     //     renderInfo(clickedProduct)
+//     // },1000)
+
+   
+// })
 
 
 
@@ -274,7 +286,9 @@ document.querySelector('#cart-list')?.addEventListener('click', async (e) => {
  ********************************************************************************
  * START
  */
-
+const renderHoverInfo = (productInfo: IProduct) => { `
+    <div class="hoverInfo"><h3>Beskrivning</h3>${productInfo.description}</div>
+`}
 
 
 
