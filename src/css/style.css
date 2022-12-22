@@ -154,8 +154,13 @@
 .bi-x-lg {
     font-size: 2.5em;
 }
+.bi-x-lg:hover {
+    cursor: pointer;
+}
 .info-close {
     padding-top: 3em;
+}.info-close:hover {
+    cursor: pointer;
 }
 .info-wrap {
     background-color: #fff;
@@ -250,8 +255,10 @@
 
 }
 #cart-close {
-    display: inline-block;
-    
+    display: inline-block;    
+}
+#cart-close:hover {
+    cursor: pointer;
 }
 #cart-wrap {
     margin: 0;
@@ -281,8 +288,10 @@
     padding: 1rem 2rem;
     width: 66%;
     border-radius: 15px 15px 0 0;
-    overflow-y: scroll;
-    
+    overflow-y: scroll;    
+}
+.cart-item {
+    border-bottom: 1px solid #dfdfdf;
 }
 .cart-btn-wrap {
     background: #fff;
@@ -291,6 +300,7 @@
     border-radius: 0 0 15px 15px;
     display: flex;
     justify-content: space-around;
+    align-items: center;
 }
 .cart-btn-wrap > h3 {
     display: block;
@@ -311,7 +321,13 @@
 #checkout-btn:not(:hover) {
     transition: all 0.3s ease 0s;
 }
-
+.cart-total {
+    display: flex;
+    flex-direction: column;
+}
+.cart-total > span {
+    font-weight: bold;
+}
 #cart-list {
     background: #fff;
     list-style-type: none;
@@ -321,11 +337,27 @@
     max-height: 66%;
     overflow-y: scroll;
 }
-
+.cart-heading {
+    display: block;
+    width: 66%;
+    background: #fff;
+    margin: 0 auto;
+    border-bottom: 1px solid #dfdfdf;
+}
+.cart-heading-wrap {
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    width: 75%;
+}
+.cart-heading-details {
+    width: 40%;
+    display: flex;
+    justify-content: space-between;
+}
 .cart-item {
     display: flex;
     align-items: center;
-
     margin: 1rem 0;
 }
 .cart-descript > p:first-child {
@@ -344,7 +376,10 @@
     margin: 0 auto;
 }
 #cart-item-price {
+    display: flex;
+    align-items: center;
     text-align: center;
+    width: 65px;
 }
 .card-text:last-child {
     text-align: right;
@@ -352,9 +387,13 @@
 }
 .cart-image {
     width: 75px;
-    margin-right: 1rem;
 }
-
+.decrease, .increase {
+    padding: 0.5em;
+}
+.decrease, .increase:hover {
+    cursor: pointer;
+}
 .cart-remove-item {
     margin-left: 1rem;
     height: 3em;
