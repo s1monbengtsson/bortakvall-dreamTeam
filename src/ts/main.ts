@@ -330,7 +330,7 @@ document.querySelector('.info-background')!.addEventListener('click', async e =>
 // Add function that renders checkout-page and form to DOM
 
 const checkout = () => {
-    cartItems.forEach(product => {
+    cartItems.map(product => {
         console.log('cart-item:', product)
 
         document.querySelector('.content-container')!.classList.add('d-none')
@@ -357,89 +357,118 @@ const checkout = () => {
 
             <h3 class="text-center mt-3">Att betala: ${cartTotal} kr</h3>
         `
+}
 
+// Add clickEvent to proceed to check out with all products from cart
+
+document.querySelector('#checkout-btn')!.addEventListener('click', async e => {
+    const target = e.target as HTMLButtonElement
+    if (target.id === 'checkout-btn') {
+        console.log('clicked on checkout')
+        checkout()
+        renderForm()
+    }
+})
+
+const saveCustomerData = () => {
+
+    const customerFirstName = document.querySelector('#customer-first-name')! as HTMLInputElement
+    const customerLastName = document.querySelector('#customer-last-name')! as HTMLInputElement
+    const customerAddress = document.querySelector('#customer-address')! as HTMLInputElement
+    const customerPostal = document.querySelector('#customer-postal-number')! as HTMLInputElement
+    const customerCity = document.querySelector('#customer-city')! as HTMLInputElement
+    const customerPhone = document.querySelector('#customer-phone')! as HTMLInputElement
+    const customerEmail = document.querySelector('#customer-email')! as HTMLInputElement
+
+
+    // stores form inputs in local storage
+    let jsonCustomerData = localStorage.getItem('Customer data') ?? '[]'
+    let customerData: ICustomerInfo = JSON.parse(jsonCustomerData)
+
+    customerData = {
+        customer_first_name: customerFirstName.value,
+        customer_last_name:  customerLastName.value,
+        customer_address: customerAddress.value,
+        customer_postcode: customerPostal.value,
+        customer_city: customerCity.value,
+        customer_phone: customerPhone.value,
+        customer_email: customerEmail.value
+    }
+
+    const json = JSON.stringify(customerData)
+    localStorage.setItem('Customer data', json)
+
+    console.log("customer data:", customerData)
+
+
+}
+
+// function that renders form to DOM
+const renderForm = () => {
     document.querySelector('.customer-details')!.innerHTML = `
         <h2 class="form-heading text-center mt-5">Beställare</h2>
             <div class="form-row">
                 <div class="form-group">
                     <label for="customer-first-name"></label>
-                    <input type="text" placeholder="Förnamn" id="customer-first-name" required class="form-control">
+                    <input type="text" placeholder="Förnamn" id="customer-first-name" required class="form-control form-input">
                 </div>
                 <div class="form-group">
                     <label for="customer-last-name"></label>
-                    <input type="text" placeholder="Efternamn" id="customer-last-name" required class="form-control">
+                    <input type="text" placeholder="Efternamn" id="customer-last-name" required class="form-control form-input">
+                </div>
+                <div class="form-group">
+                    <label for="customer-address"></label>
+                    <input type="text" placeholder="Adress" id="customer-address" required class="form-control form-input">
                 </div>
 
-                
 
-                <button type="submit" class="send-order btn btn-primary my-3 py-2" id="send-order">Skicka beställning</button>
+                <div class="form-group">
+                    <label for="customer-postal-number"></label>
+                    <input type="text" placeholder="Postnummer" id="customer-postal-number" required class="form-control form-input">
+                </div>
+
+                <div class="form-group">
+                    <label for="customer-city"></label>
+                    <input type="text" placeholder="Ort" id="customer-city" required class="form-control form-input">
+                </div>
+
+                <div class="form-group">
+                    <label for="customer-phone"></label>
+                    <input type="text" placeholder="Telefon" id="customer-phone" class="form-control form-input">
+                </div>
+
+                <div class="form-group">
+                    <label for="customer-email"></label>
+                    <input type="email" placeholder="Email" id="customer-email" required class="form-control form-input mb-3">
+                </div>
+
+
+                <div class="form-group">
+                    <input type="checkbox" value="" id="customer-checkbox" class="form-check-input">
+                    <label for="customer-checkbox" class="form-check-label">Jag har kontrollerat att informationen jag angett stämmer</label>
+                </div>  
+
+                <button type="submit" class="send-order btn btn-primary my-3 py-2">Skicka beställning</button>
+                <button type="reset" class="empty-form btn btn-warning my-3 py-2">Töm formulär</button>
+
             </div> 
     `
-    // will be added after testing of form is done
-    // <div class="form-group">
-    //                 <label for="customer-address"></label>
-    //                 <input type="text" placeholder="Adress" id="customer-address" required class="form-control">
-    //             </div>
-
-
-    //             <div class="form-group">
-    //                 <label for="customer-postal-number"></label>
-    //                 <input type="text" placeholder="Postnummer" id="customer-postal-number" required class="form-control">
-    //             </div>
-
-    //             <div class="form-group">
-    //                 <label for="customer-city"></label>
-    //                 <input type="text" placeholder="Ort" id="customer-city" required class="form-control">
-    //             </div>
-
-    //             <div class="form-group">
-    //                 <label for="customer-phone"></label>
-    //                 <input type="text" placeholder="Telefon" id="customer-phone" class="form-control">
-    //             </div>
-
-    //             <div class="form-group">
-    //                 <label for="customer-email"></label>
-    //                 <input type="email" placeholder="Email" id="customer-email" required class="form-control mb-3">
-    //             </div>
-
-
-    //             <div class="form-group">
-    //                 <input type="checkbox" value="" id="customer-checkbox" class="form-check-input">
-    //                 <label for="customer-checkbox" class="form-check-label">Jag har kontrollerat att informationen jag angett stämmer</label>
-    //             </div>  
-
-    // add eventListener to submit form and send order
-document.querySelector('#send-order')!.addEventListener('submit', e => {
-    console.log('now work')
-})
-
-
-}
-
-
-// Add clickEvent to proceed to check out with all products from cart
-
-    document.querySelector('#checkout-btn')!.addEventListener('click', async e => {
-        const target = e.target as HTMLButtonElement
-        if (target.id === 'checkout-btn') {
-            console.log('clicked on checkout')
-            checkout()
-        }
+    // listen for submits, and save customer data to localStorage
+    document.querySelector('.customer-details')!.addEventListener('submit', e => {
+        e.preventDefault()
+        saveCustomerData()
     })
 
-// stores form inputs in local storage
-let jsonCustomerInfo = localStorage.getItem('Customer data') ?? '[]'
-let customerInfo: ICustomerInfo = JSON.parse(jsonCustomerInfo)
-
-const saveCustomerData = () => {
-
-    // converts array of customer data to json
-    const json = JSON.stringify(customerInfo)
-
-    // save json to localStorage
-    localStorage.setItem('Customer info', json)
-
+    // remove saved customer data when reset button is clicked
+    document.querySelector('.customer-details')!.addEventListener('reset', () => {
+        localStorage.removeItem('Customer data')
+    })
 }
+
+
+
+
+
 
 
 /* functions that are called when the page loads */
@@ -448,3 +477,7 @@ saveCart() // called to view number of item in cart when page loads
 countTotalPrice()
 renderTotalPrice()
 renderCartItems()
+
+
+
+    
