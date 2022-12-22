@@ -71,10 +71,12 @@ const countTotalPrice = () => {
     let cartPrices = [0]
     cartPrices = [0, ...cartItems.map(item => item.price)]
     cartTotal = cartPrices.reduce((price, sum) => sum += price)
+    localStorage.setItem('Total amount', JSON.stringify(cartTotal))
 }
-saveCart() // called to view number of item in cart when page loads
-renderTotalPrice()
+
 // Cart total price ends
+
+
 
 /**
  ********************************************************************************
@@ -88,14 +90,14 @@ const renderCartItems = () => {
     .map(item => `
         <li class="cart-item">
             <img class="cart-image" src="https://www.bortakvall.se${item.images.thumbnail}" alt="${item.name}">
-            <div class="card-body">
+            <div class="card-body cart-descript">
                 <p class="card-title text-dark">${item.name}</p>
-
+                <p class="cart-adjust">
                 <span data-product-id="${item.id}" class="decrease">-</span>
                 <input class="prod-qty" type="text" value="${item.qty}" style="width: 30px; text-align: center">
                 <span data-product-id="${item.id}" class="increase">+</span>
-
-                <p class="card-text text-dark">${item.price} kr / st</p>
+                </p>
+                <p class="card-text text-dark" id="cart-item-price">${item.price} kr/st  </p>
                 <p class="card-text text-dark">${item.price * item.qty} kr</p>
             </div>
             <button class="btn btn-danger cart-remove-item" data-set-id="${item.id}"><i class="bi bi-trash" data-set-id="${item.id}"></i></button>
@@ -104,7 +106,7 @@ const renderCartItems = () => {
     .join('')
 }
 
-renderCartItems()
+
 
 // + and -
 document.querySelector('#cart-list')?.addEventListener('click', e => {
@@ -275,7 +277,7 @@ document.querySelector('#cart-list')?.addEventListener('click', async (e) => {
  */
 
 
-getProducts()
+
 
 
 
@@ -326,3 +328,10 @@ document.querySelector('.info-background')!.addEventListener('click', async e =>
     }
 })
 // end info-section
+
+/* functions that are called when the page loads */
+getProducts()
+saveCart() // called to view number of item in cart when page loads
+countTotalPrice()
+renderTotalPrice()
+renderCartItems()
