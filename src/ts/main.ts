@@ -29,7 +29,9 @@ let jsonCartTotal = localStorage.getItem('Total price') ?? '0'
 let cartTotal: number = JSON.parse(jsonCartTotal)
 
 const saveCart = () => {
-    document.querySelector('#cart-item-count')!.textContent = String(cartItems.length)
+    document.querySelector('#cart-item-count')!.textContent = String(cartItems
+        .map( item => item.qty )
+        .reduce( (num, sum) => num + sum, 0))
     localStorage.setItem('Shopping cart', JSON.stringify(cartItems))
     localStorage.setItem('Total price', JSON.stringify(cartTotal))
 }
@@ -73,7 +75,6 @@ const countTotalPrice = () => {
     let cartPrices = [0]
     cartPrices = [0, ...cartItems.map(item => item.price * item.qty)]
     cartTotal = cartPrices.reduce((price, sum) => sum += price)
-    localStorage.setItem('Total amount', JSON.stringify(cartTotal))
 }
 
 // Cart total price ends
@@ -122,10 +123,10 @@ document.querySelector('#cart-list')?.addEventListener('click', async e => {
     else if (target.className.includes('decrease')) {
         inCartItem.qty--
     }
-    saveCart()
     renderCartItems()
     countTotalPrice()
     renderTotalPrice()
+    saveCart()
 })
 
 
@@ -150,6 +151,8 @@ const renderProducts = (): void => {
             </div>
         `)
         .join('')
+    document.querySelector('#nav-output')!.innerHTML +=
+    `<h2 class="nav-item px-2">VISAR ALLA ${products.data.length} PRODUKTER</h2> `
 }
 
 // Allt denna funktion ska göra är att hitta produkten man clickar på
@@ -196,10 +199,10 @@ document.querySelector('main')?.addEventListener('click', async e => {
                 inCartItem.qty++
             }
 
-            saveCart()
             renderCartItems()
             countTotalPrice()
             renderTotalPrice()
+            saveCart()
 
             document.querySelector('#cart-wrap')!.classList.add('shake')
             document.querySelector('#cart-wrap')!.classList.add('move')
@@ -237,12 +240,13 @@ document.querySelector('#clear-cart-btn')?.addEventListener('click', async () =>
     localStorage.removeItem('Shopping cart')
     jsonCartItems = localStorage.getItem('Shopping cart') ?? '[]'
     cartItems = JSON.parse(jsonCartItems)
-    saveCart()
     renderCartItems()
     // Counts the total price of every item in the cart
     countTotalPrice()
     // Display the total price of all items
     renderTotalPrice()
+    // Save cartItems in localStorage
+    saveCart()
     setTimeout(() => {
     document.querySelector('.cart-background')!.classList.add('d-none')
     document.body.style.removeProperty('overflow');
@@ -256,14 +260,14 @@ document.querySelector('#cart-list')?.addEventListener('click', async (e) => {
     const founditem : IProduct = cartItems.find(item => clickedId === item.id) as IProduct // finds it in cart-array
     console.log(` tog bort ${founditem.name} ur varukorgen`)
     cartItems.splice(cartItems.indexOf(founditem), 1) // removes it from cart-array
-    // Save cartItems in localStorage
-    saveCart()
     // Display items from cartItems
     renderCartItems()
     // Counts the total price of every item in the cart
     countTotalPrice()
     // Display the total price of all items
     renderTotalPrice()
+    // Save cartItems in localStorage
+    saveCart()
 })
 
 /**
@@ -300,14 +304,14 @@ document.querySelector('.info-background')!.addEventListener('click', async e =>
         
         // Push item into cartItems
         cartItems.push(clickedProduct)
-        // Save cartItems in localStorage
-        saveCart()
         // Display items from cartItems
         renderCartItems()
         // Counts the total price of every item in the cart
         countTotalPrice()
         // Display the total price of all items
         renderTotalPrice()
+        // Save cartItems in localStorage
+        saveCart()
         console.log(cartTotal)
         
         document.body.style.removeProperty('overflow');
@@ -326,7 +330,7 @@ document.querySelector('.info-background')!.addEventListener('click', async e =>
 
 /* functions that are called when the page loads */
 getProducts()
-saveCart() // called to view number of item in cart when page loads
 countTotalPrice()
 renderTotalPrice()
 renderCartItems()
+saveCart() // called to view number of item in cart when page loads
