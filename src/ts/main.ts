@@ -29,9 +29,11 @@ let jsonCartTotal = localStorage.getItem('Total price') ?? '0'
 let cartTotal: number = JSON.parse(jsonCartTotal)
 
 const saveCart = () => {
-        document.querySelector('#cart-item-count')!.textContent = String(cartItems.length)
-        localStorage.setItem('Shopping cart', JSON.stringify(cartItems))
-        countTotalPrice()
+    document.querySelector('#cart-item-count')!.textContent = String(cartItems
+        .map( item => item.qty )
+        .reduce( (num, sum) => num + sum, 0))
+    localStorage.setItem('Shopping cart', JSON.stringify(cartItems))
+    countTotalPrice()
 }
 
 const renderCart = () => {
