@@ -15,6 +15,7 @@ export interface IProduct {
       },
       stock_status: string,
       stock_quantity?: number,  
+      qty: number,
 }
 
 export interface IOrder {
@@ -32,6 +33,16 @@ export interface IOrder {
         item_price: number,
         item_total: number,
     }[],
+}
+
+export interface ICustomerInfo {
+    customer_first_name: string,
+    customer_last_name: string,
+    customer_address: string,
+    customer_postcode: number,
+    customer_city: string,
+    customer_phone?: string,
+    customer_email: string
 }
 
 
