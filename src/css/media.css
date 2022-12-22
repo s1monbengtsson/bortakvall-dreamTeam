@@ -1,4 +1,4 @@
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 780px) {
     .banner {
         padding: 0;
     }
@@ -22,7 +22,6 @@
         overflow-x:hidden;
     }
     .info-wrap {
-        /* background-color: rgb(142, 33, 33); */
         width: 90%;
         height: auto;
         display: block;
@@ -75,11 +74,9 @@
         font-size: 0.6em;
         padding: 0.25em;   
     }
-    .cart-item {
-        border-bottom: 1px solid #dfdfdf;
-    }
     .cart-image {
         width: 50px;
+        margin-right: 1em;
     }
     .cart-descript {
         display: block;

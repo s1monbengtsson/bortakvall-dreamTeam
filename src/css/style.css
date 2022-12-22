@@ -2,7 +2,7 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    /* border: 1px solid black; */
+    border: 1px solid black;
 }
 
 .hide {
@@ -281,8 +281,10 @@
     padding: 1rem 2rem;
     width: 66%;
     border-radius: 15px 15px 0 0;
-    overflow-y: scroll;
-    
+    overflow-y: scroll;    
+}
+.cart-item {
+    border-bottom: 1px solid #dfdfdf;
 }
 .cart-btn-wrap {
     background: #fff;
@@ -352,7 +354,6 @@
 }
 .cart-image {
     width: 75px;
-    margin-right: 1rem;
 }
 
 .cart-remove-item {
