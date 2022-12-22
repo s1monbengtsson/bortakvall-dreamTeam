@@ -111,27 +111,20 @@ const renderCartItems = () => {
 renderCartItems()
 
 // + and -
-document.querySelector('#cart-list')?.addEventListener('click', e => {
+document.querySelector('#cart-list')?.addEventListener('click', async e => {
     const target = e.target as HTMLElement
-
     const clickedId = Number(target.dataset.productId)
-    const foundItem = cartItems.find(item => item.id === clickedId) as IProduct
-
+    if (!clickedId) return
+    const inCartItem = cartItems.find(item => item.id === clickedId) as IProduct  // Hitta produkten i cart som har samma ID som produkten jag klickade på
     if (target.className.includes('increase')) {
-        cartItems.push(foundItem)
-        prodQty++
+        inCartItem.qty++
     }
     else if (target.className.includes('decrease')) {
-        cartItems.splice(cartItems.indexOf(foundItem), 1)
-        prodQty--
+        inCartItem.qty--
     }
-    
     saveCart()
-    // Display items from cartItems
     renderCartItems()
-    // Counts the total price of every item in the cart
     countTotalPrice()
-    // Display the total price of all items
     renderTotalPrice()
 })
 
@@ -190,7 +183,7 @@ document.querySelector('main')?.addEventListener('click', async e => {
         if (target.tagName === 'BUTTON') {
             // console.log(clickedProduct)
 
-            const inCartIds = cartItems.map(item => item.id)        
+            const inCartIds = cartItems.map(item => item.id)       
             const inCartItem = cartItems.find(item => item.id === clickedId) as IProduct  // Hitta produkten i cart som har samma ID som produkten jag klickade på
             // console.log(clickedId)
 
