@@ -132,11 +132,20 @@ document.querySelector('#cart-list')?.addEventListener('click', async e => {
 
 
 const getProducts = async (): Promise<void> => {
-    products = await fetchProducts()
+    try {
+        products = await fetchProducts()
+        renderProducts()  
+    }
+    catch {
+        console.log(Error)
+        renderError()
+    }
     // console.log(products)
-    renderProducts()  
 }
 
+const renderError = () => {
+    document.querySelector('.product-main')!.innerHTML = `<p>Kunde inte hämta data från server</p>`
+}
 const renderProducts = (): void => {
     document.querySelector('.product-main')!.innerHTML = products.data
         .map( prod => `
