@@ -29,9 +29,20 @@ let jsonCartTotal = localStorage.getItem('Total price') ?? '0'
 let cartTotal: number = JSON.parse(jsonCartTotal)
 
 const saveCart = () => {
-    document.querySelector('#cart-item-count')!.textContent = String(cartItems.length)
-    localStorage.setItem('Shopping cart', JSON.stringify(cartItems))
-    localStorage.setItem('Total price', JSON.stringify(cartTotal))
+        document.querySelector('#cart-item-count')!.textContent = String(cartItems.length)
+        localStorage.setItem('Shopping cart', JSON.stringify(cartItems))
+        localStorage.setItem('Total price', JSON.stringify(cartTotal))
+}
+
+const renderCart = () => {
+    // Save cartItems in localStorage
+    saveCart()
+    // Display items from cartItems
+    renderCartItems()
+    // Counts the total price of every item in the cart
+    countTotalPrice()
+    // Display the total price of all items
+    renderTotalPrice()
 }
 // localStorage ends
 
@@ -85,7 +96,15 @@ const countTotalPrice = () => {
  * FUNCTIONS
  */
 
-let prodQty = 1
+
+// Allt denna funktion ska göra är att hitta produkten man clickar på
+const findClickedProduct = async (clickedId: number): Promise<IProduct> => {
+
+    const products = await fetchProducts()
+    const foundProduct: IProduct = products.data.find(prod => clickedId === prod.id) as IProduct
+    // console.log('foundProduct:', foundProduct)
+    return foundProduct
+}
 
 const renderCartItems = () => {
     document.querySelector('#cart-list')!.innerHTML = cartItems
@@ -102,7 +121,7 @@ const renderCartItems = () => {
                 <p class="card-text text-dark" id="cart-item-price">${item.price} kr/st  </p>
                 <p class="card-text text-dark">${item.price * item.qty} kr</p>
             </div>
-            <button class="btn btn-danger cart-remove-item" data-set-id="${item.id}"><i class="bi bi-trash" data-set-id="${item.id}"></i></button>
+            <button class="btn btn-danger cart-remove-item" data-product-id="${item.id}"><i class="bi bi-trash cart-remove-item-i" data-product-id="${item.id}"></i></button>
         </li>
     `)
     .join('')
@@ -110,7 +129,7 @@ const renderCartItems = () => {
 
 
 
-// + and -
+// Remove, + and - 
 document.querySelector('#cart-list')?.addEventListener('click', async e => {
     const target = e.target as HTMLElement
     const clickedId = Number(target.dataset.productId)
@@ -122,10 +141,10 @@ document.querySelector('#cart-list')?.addEventListener('click', async e => {
     else if (target.className.includes('decrease')) {
         inCartItem.qty--
     }
-    saveCart()
-    renderCartItems()
-    countTotalPrice()
-    renderTotalPrice()
+    else if (target.className.includes('cart-remove-item' || 'cart-remove-item-i')) {
+        inCartItem.qty = 0
+    }
+    renderCart()
 })
 
 
@@ -152,14 +171,7 @@ const renderProducts = (): void => {
         .join('')
 }
 
-// Allt denna funktion ska göra är att hitta produkten man clickar på
-const findClickedProduct = async (clickedId: number): Promise<IProduct> => {
 
-    const products = await fetchProducts()
-    const foundProduct: IProduct = products.data.find(prod => clickedId === prod.id) as IProduct
-    // console.log('foundProduct:', foundProduct)
-    return foundProduct
-}
 
 
 /**
@@ -196,10 +208,7 @@ document.querySelector('main')?.addEventListener('click', async e => {
                 inCartItem.qty++
             }
 
-            saveCart()
-            renderCartItems()
-            countTotalPrice()
-            renderTotalPrice()
+            renderCart()
 
             document.querySelector('#cart-wrap')!.classList.add('shake')
             document.querySelector('#cart-wrap')!.classList.add('move')
@@ -218,6 +227,7 @@ document.querySelector('main')?.addEventListener('click', async e => {
         }
     }
 })
+
 // View cart
 document.querySelector('#title-cart')!.addEventListener('click', () => {
     document.querySelector('.cart-background')!.classList.remove('d-none')
@@ -237,33 +247,11 @@ document.querySelector('#clear-cart-btn')?.addEventListener('click', async () =>
     localStorage.removeItem('Shopping cart')
     jsonCartItems = localStorage.getItem('Shopping cart') ?? '[]'
     cartItems = JSON.parse(jsonCartItems)
-    saveCart()
-    renderCartItems()
-    // Counts the total price of every item in the cart
-    countTotalPrice()
-    // Display the total price of all items
-    renderTotalPrice()
+    renderCart()
     setTimeout(() => {
     document.querySelector('.cart-background')!.classList.add('d-none')
     document.body.style.removeProperty('overflow');
     },950)
-})
-
-// remove single item in cart
-document.querySelector('#cart-list')?.addEventListener('click', async (e) => {
-    const target = e.target as HTMLElement
-    const clickedId = Number(target.dataset.setId) // get datasetid of item
-    const founditem : IProduct = cartItems.find(item => clickedId === item.id) as IProduct // finds it in cart-array
-    console.log(` tog bort ${founditem.name} ur varukorgen`)
-    cartItems.splice(cartItems.indexOf(founditem), 1) // removes it from cart-array
-    // Save cartItems in localStorage
-    saveCart()
-    // Display items from cartItems
-    renderCartItems()
-    // Counts the total price of every item in the cart
-    countTotalPrice()
-    // Display the total price of all items
-    renderTotalPrice()
 })
 
 /**
@@ -300,14 +288,7 @@ document.querySelector('.info-background')!.addEventListener('click', async e =>
         
         // Push item into cartItems
         cartItems.push(clickedProduct)
-        // Save cartItems in localStorage
-        saveCart()
-        // Display items from cartItems
-        renderCartItems()
-        // Counts the total price of every item in the cart
-        countTotalPrice()
-        // Display the total price of all items
-        renderTotalPrice()
+        renderCart()
         console.log(cartTotal)
         
         document.body.style.removeProperty('overflow');
@@ -326,7 +307,4 @@ document.querySelector('.info-background')!.addEventListener('click', async e =>
 
 /* functions that are called when the page loads */
 getProducts()
-saveCart() // called to view number of item in cart when page loads
-countTotalPrice()
-renderTotalPrice()
-renderCartItems()
+renderCart()
