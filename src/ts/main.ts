@@ -88,14 +88,14 @@ const renderCartItems = () => {
     .map(item => `
         <li class="cart-item">
             <img class="cart-image" src="https://www.bortakvall.se${item.images.thumbnail}" alt="${item.name}">
-            <div class="card-body">
+            <div class="card-body cart-descript">
                 <p class="card-title text-dark">${item.name}</p>
-
+                <p class="cart-adjust">
                 <span data-product-id="${item.id}" class="decrease">-</span>
                 <input class="prod-qty" type="text" value="${item.qty}" style="width: 30px; text-align: center">
                 <span data-product-id="${item.id}" class="increase">+</span>
-
-                <p class="card-text text-dark">${item.price} kr / st</p>
+                </p>
+                <p class="card-text text-dark" id="cart-item-price">${item.price} kr / st</p>
                 <p class="card-text text-dark">${item.price * item.qty} kr</p>
             </div>
             <button class="btn btn-danger cart-remove-item" data-set-id="${item.id}"><i class="bi bi-trash" data-set-id="${item.id}"></i></button>
