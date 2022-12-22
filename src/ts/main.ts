@@ -332,7 +332,6 @@ document.querySelector('.info-background')!.addEventListener('click', async e =>
 })
 // end info-section
 
-<<<<<<< HEAD
 
 // Add function that renders checkout-page and form to DOM
 
@@ -447,11 +446,9 @@ const saveCustomerData = () => {
 }
 
 
-=======
 /* functions that are called when the page loads */
 getProducts()
 saveCart() // called to view number of item in cart when page loads
 countTotalPrice()
 renderTotalPrice()
 renderCartItems()
->>>>>>> cart
