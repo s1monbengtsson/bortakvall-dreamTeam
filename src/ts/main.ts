@@ -335,7 +335,7 @@ const checkout = () => {
 
         document.querySelector('.content-container')!.classList.add('d-none')
         document.querySelector('#title-cart')!.classList.add('d-none')
-        document.querySelector('.cart-wrapper')!.classList.add('d-none')
+        // document.querySelector('.cart-wrapper')!.classList.add('d-none')
         document.querySelector('.cart-background')!.classList.add('d-none')
         document.querySelector('#order-content')!.classList.remove('d-none')
         document.querySelector('.customer-details')!.classList.remove('d-none')
