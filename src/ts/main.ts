@@ -25,11 +25,15 @@ let products: IData
 let jsonCartItems = localStorage.getItem('Shopping cart') ?? '[]'
 let cartItems: IProduct[] = JSON.parse(jsonCartItems)
 
+let jsonCartTotal = localStorage.getItem('Total price') ?? '0'
+let cartTotal: number = JSON.parse(jsonCartTotal)
+
 const saveCart = () => {
     document.querySelector('#cart-item-count')!.textContent = String(cartItems
         .map( item => item.qty )
         .reduce( (num, sum) => num + sum, 0))
     localStorage.setItem('Shopping cart', JSON.stringify(cartItems))
+    localStorage.setItem('Total price', JSON.stringify(cartTotal))
 }
 // localStorage ends
 
@@ -67,11 +71,9 @@ const renderTotalPrice = () => {
     document.querySelector('#cart-total')!.textContent = `${cartTotal}kr`
 }
 
-let cartTotal = 0
-
 const countTotalPrice = () => {
     let cartPrices = [0]
-    cartPrices = [0, ...cartItems.map(item => item.price)]
+    cartPrices = [0, ...cartItems.map(item => item.price * item.qty)]
     cartTotal = cartPrices.reduce((price, sum) => sum += price)
     localStorage.setItem('Total amount', JSON.stringify(cartTotal))
 }
@@ -111,27 +113,20 @@ const renderCartItems = () => {
 
 
 // + and -
-document.querySelector('#cart-list')?.addEventListener('click', e => {
+document.querySelector('#cart-list')?.addEventListener('click', async e => {
     const target = e.target as HTMLElement
-
     const clickedId = Number(target.dataset.productId)
-    const foundItem = cartItems.find(item => item.id === clickedId) as IProduct
-
+    if (!clickedId) return
+    const inCartItem = cartItems.find(item => item.id === clickedId) as IProduct  // Hitta produkten i cart som har samma ID som produkten jag klickade på
     if (target.className.includes('increase')) {
-        cartItems.push(foundItem)
-        prodQty++
+        inCartItem.qty++
     }
     else if (target.className.includes('decrease')) {
-        cartItems.splice(cartItems.indexOf(foundItem), 1)
-        prodQty--
+        inCartItem.qty--
     }
-    
     saveCart()
-    // Display items from cartItems
     renderCartItems()
-    // Counts the total price of every item in the cart
     countTotalPrice()
-    // Display the total price of all items
     renderTotalPrice()
 })
 
@@ -192,7 +187,7 @@ document.querySelector('main')?.addEventListener('click', async e => {
         if (target.tagName === 'BUTTON') {
             // console.log(clickedProduct)
 
-            const inCartIds = cartItems.map(item => item.id)        
+            const inCartIds = cartItems.map(item => item.id)       
             const inCartItem = cartItems.find(item => item.id === clickedId) as IProduct  // Hitta produkten i cart som har samma ID som produkten jag klickade på
             // console.log(clickedId)
 
@@ -246,12 +241,12 @@ document.querySelector('#clear-cart-btn')?.addEventListener('click', async () =>
     localStorage.removeItem('Shopping cart')
     jsonCartItems = localStorage.getItem('Shopping cart') ?? '[]'
     cartItems = JSON.parse(jsonCartItems)
+    saveCart()
     renderCartItems()
     // Counts the total price of every item in the cart
     countTotalPrice()
     // Display the total price of all items
     renderTotalPrice()
-    saveCart()
     setTimeout(() => {
     document.querySelector('.cart-background')!.classList.add('d-none')
     document.body.style.removeProperty('overflow');
