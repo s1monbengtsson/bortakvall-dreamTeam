@@ -63,8 +63,10 @@
     #title-cart {
         background-color: #d6576c;
         padding: 0.75em 0.1em 0.6em 0.75em;
-        top: 94px;
+        bottom: initial;
+        top: 93px;
         right: 0;
+        /* border: 0; */
         border-radius: 20px 0 0 20px;
     }
     #cart-item-count {

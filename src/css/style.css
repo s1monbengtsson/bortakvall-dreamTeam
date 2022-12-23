@@ -209,7 +209,7 @@
     font-size: 0.8em;
     border-radius: 20px;
     padding: 0.25em;
-    background-color: rgba(255, 193, 7, 0.8);
+    background-color: #ffc107cc;
 }
 .shake {
     animation: shake 0.5s;
@@ -253,13 +253,14 @@
 #title-cart {
     position: fixed;
     z-index: 1;
-    top: 0;
-    right: 1em;
+    bottom: 0.5em;
+    right: 0.5em;
     color: black;
-    border-radius: 0 0 20px 20px;
-    background-color: #fff;
+    border-radius: 20px;
+    background-color: #d6576c;
     padding: 1em;
     padding-top: 2em;
+    border: 1px solid #ffc107;
 }
 #title-cart:hover {
     cursor: pointer;
