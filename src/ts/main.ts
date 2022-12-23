@@ -265,8 +265,8 @@ document.querySelector('#clear-cart-btn')?.addEventListener('click', async () =>
     cartItems = JSON.parse(jsonCartItems)
     renderCart()
     setTimeout(() => {
-    document.querySelector('.cart-background')!.classList.add('d-none')
-    document.body.style.removeProperty('overflow');
+        document.querySelector('.cart-background')!.classList.add('d-none')
+        document.body.style.removeProperty('overflow');
     },950)
 })
 
@@ -281,14 +281,24 @@ const renderInfo = (productInfo: IProduct) => {
     document.querySelector('.info-background')!.classList.remove('d-none')
     document.querySelector('.info-background')!.classList.add('show-info')
     document.querySelector('#info-section')!.innerHTML = `    
-    <div class="info-section-l">
-        <img src="https://www.bortakvall.se/${productInfo.images.large}" alt="${productInfo.name}" class="info-img">
-        <p class="info-name" class="mt-3">${productInfo.name}<span class="info-price">${productInfo.price}<span>kr</span></span></p>
-        <button class="btn btn-warning m-2 p-2" data-prod-id="${productInfo.id}" style="font-weight: bold;">Lägg till i varukorg</button>
-    </div>
-    <div class="info-section-r"><h3>Beskrivning</h3>${productInfo.description}
-    <p class="info-close"><i class="bi bi-x-lg"></i></p>
-    </div>
+        <div class="info-section-l">
+            <img src="https://www.bortakvall.se/${productInfo.images.large}" alt="${productInfo.name}" class="info-img">
+            <p class="info-name" class="mt-3">
+                ${productInfo.name}
+                <span class="info-price">
+                    ${productInfo.price}
+                    <span>kr</span>
+                </span>
+            </p>
+            <button class="btn btn-warning m-2 p-2" data-prod-id="${productInfo.id}" style="font-weight: bold;">Lägg till i varukorg</button>
+        </div>
+        <div class="info-section-r">
+            <h3>Beskrivning</h3>
+            ${productInfo.description}
+            <p class="info-close">
+                <i class="bi bi-x-lg close-info"></i>
+            </p>
+        </div>
     `
 }
 
@@ -318,7 +328,7 @@ document.querySelector('.info-background')!.addEventListener('click', async e =>
             document.querySelector('#cart-wrap')!.classList.remove('shake')                
         },950)
     }
-    else {
+    else if (target.className.includes('close-info')) {
         document.querySelector('.info-background')!.classList.add('d-none')
         document.body.style.removeProperty('overflow');
     }
