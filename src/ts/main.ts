@@ -1,7 +1,7 @@
 /**
  ********************************************************************************
- * IMPORTS
- */
+* IMPORTS
+*/
 
 
 import 'bootstrap/dist/css/bootstrap.css'
@@ -14,8 +14,8 @@ import { IData, IProduct, IOrder, ICustomerInfo } from "./interface"
 
 /**
  ********************************************************************************
- * VARIABLES
- */
+* VARIABLES
+*/
 
 let products: IData
 // let products: IProduct[] = []
@@ -29,9 +29,11 @@ let jsonCartTotal = localStorage.getItem('Total price') ?? '0'
 let cartTotal: number = JSON.parse(jsonCartTotal)
 
 const saveCart = () => {
-        document.querySelector('#cart-item-count')!.textContent = String(cartItems.length)
-        localStorage.setItem('Shopping cart', JSON.stringify(cartItems))
-        countTotalPrice()
+    document.querySelector('#cart-item-count')!.textContent = String(cartItems
+        .map( item => item.qty )
+        .reduce( (num, sum) => num + sum, 0))
+    localStorage.setItem('Shopping cart', JSON.stringify(cartItems))
+    countTotalPrice()
 }
 
 const renderCart = () => {
@@ -90,8 +92,8 @@ const countTotalPrice = () => {
 
 /**
  ********************************************************************************
- * FUNCTIONS
- */
+* FUNCTIONS
+*/
 
 
 // Allt denna funktion ska göra är att hitta produkten man clickar på
@@ -210,8 +212,8 @@ const renderProducts = (): void => {
 
 /**
  ********************************************************************************
- * EVENT LISTENERS
- */
+* EVENT LISTENERS
+*/
 
 // Click event on each product
 document.querySelector('main')?.addEventListener('click', async e => {
@@ -287,8 +289,9 @@ document.querySelector('#clear-cart-btn')?.addEventListener('click', async () =>
 
 /**
  ********************************************************************************
- * START
- */
+* START
+*/
+
 
 // start info-section
 const renderInfo = (productInfo: IProduct) => {
@@ -300,8 +303,8 @@ const renderInfo = (productInfo: IProduct) => {
         <p class="info-name" class="mt-3">${productInfo.name}<span class="info-price">${productInfo.price}<span>kr</span></span></p>
         <button class="btn btn-warning m-2 p-2" data-prod-id="${productInfo.id}" style="font-weight: bold;">Lägg till i varukorg</button>
     </div>
-      <div class="info-section-r"><h3>Beskrivning</h3>${productInfo.description}
-      <p class="info-close"><i class="bi bi-x-lg"></i></p>
+    <div class="info-section-r"><h3>Beskrivning</h3>${productInfo.description}
+    <p class="info-close"><i class="bi bi-x-lg"></i></p>
     </div>
     `
 }
