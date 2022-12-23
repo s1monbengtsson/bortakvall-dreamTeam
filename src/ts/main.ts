@@ -132,21 +132,21 @@ document.querySelector('#cart-list')?.addEventListener('click', async e => {
 
 
 const getProducts = async (): Promise<void> => {
+    document.querySelector('#spinner')!.classList.remove('hide')
     try {
         products = await fetchProducts()
         renderProducts()  
     }
     catch {
-        console.log(Error)
-        renderError()
+        document.querySelector('#nav-output')!.innerHTML += `<h2 class="nav-item px-2">🚨 KUNDE INTE HÄMTA DATA FRÅN SERVER 🚨 <br> försök igen senare...</h2>`
+        document.querySelector('#main')!.innerHTML += `<h2 class="p-5">❌</h2>`
     }
+    document.querySelector('#spinner')!.classList.add('hide')
     // console.log(products)
 }
 
-const renderError = () => {
-    document.querySelector('.product-main')!.innerHTML = `<p>Kunde inte hämta data från server</p>`
-}
 const renderProducts = (): void => {
+    console.log(products.status)
     document.querySelector('.product-main')!.innerHTML = products.data
         .map( prod => `
             <div class="col-12 col-md-6 col-lg-3 product-cards">
@@ -179,21 +179,6 @@ const findClickedProduct = async (clickedId: number): Promise<IProduct> => {
  ********************************************************************************
  * EVENT LISTENERS
  */
-// mouseover/hover event on products
-// document.querySelector('main')!.addEventListener('mouseover', (e) => {
-//     const target = e.target as HTMLElement
-//     console.log(target.x, target.y, Number(target.dataset.productId))
-
-//     // setTimeout( async ()=> {
-//     // const clickedId = Number(target.dataset.productId)
-//     // const clickedProduct = await findClickedProduct(clickedId)
-//     //     renderInfo(clickedProduct)
-//     // },1000)
-
-   
-// })
-
-
 
 // Click event on each product
 document.querySelector('main')?.addEventListener('click', async e => {
@@ -295,13 +280,6 @@ document.querySelector('#cart-list')?.addEventListener('click', async (e) => {
  ********************************************************************************
  * START
  */
-const renderHoverInfo = (productInfo: IProduct) => { `
-    <div class="hoverInfo"><h3>Beskrivning</h3>${productInfo.description}</div>
-`}
-
-
-
-
 
 // start info-section
 const renderInfo = (productInfo: IProduct) => {

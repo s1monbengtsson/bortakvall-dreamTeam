@@ -12,7 +12,9 @@ const ORDERS = '/orders'
 export const fetchProducts = async () => {
   const res = await fetch(`${BASE_URL}${PRODUCTS}`)
   if (!res.ok) {
-		throw new Error(`${res.status} ${res.statusText}`)
+        document.querySelector('#nav-output')!.innerHTML = `<h2 class="nav-item px-2">${res.status} ${res.statusText}</h2>`
+		
+		throw new Error(`Could not get data, reason: ${res.status} ${res.statusText}`)
 	}
   
 	return await res.json() as IData
@@ -26,7 +28,7 @@ export const fetchOrder = async (order: IOrder) => {
     })
 
   if (!res.ok) {
-		throw new Error(`${res.status} ${res.statusText}`)
+    throw new Error(`${res.status} ${res.statusText}`)
 	}
 
     return await res.json() as IOrder
