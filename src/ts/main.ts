@@ -334,12 +334,13 @@ const checkout = () => {
     cartItems.map(product => {
         console.log('cart-item:', product)
 
-        document.querySelector('.content-container')!.classList.add('d-none')
+        document.querySelector('.content-display')!.classList.add('d-none')
         document.querySelector('#title-cart')!.classList.add('d-none')
         document.querySelector('.cart-background')!.classList.add('d-none')
         document.querySelector('#order-content')!.classList.remove('d-none')
         document.querySelector('.customer-details')!.classList.remove('d-none')
-        document.querySelector('.banner')!.classList.remove('d-none')
+        document.querySelector('.banner')!.classList.add('banner-checkout')
+        
 
         document.body.style.removeProperty('overflow');
 
@@ -425,7 +426,7 @@ const renderForm = () => {
                     <label for="customer-checkbox" class="form-check-label">Jag har kontrollerat att informationen jag angett stämmer</label>
                 </div>  
 
-                <button type="submit" class="send-order btn btn-primary my-3 py-2">Skicka beställning</button>
+                <button type="submit" disabled class="send-order btn btn-primary my-3 py-2">Skicka beställning</button>
                 <button type="reset" class="empty-form btn btn-warning my-3 py-2">Töm formulär</button>
 
             </div> 
@@ -493,6 +494,16 @@ document.querySelector('.customer-details')!.addEventListener('submit', e => {
 // remove saved customer data when reset button is clicked
 document.querySelector('.customer-details')!.addEventListener('reset', () => {
     localStorage.removeItem('Customer data')
+})
+
+// go back to product page once back button is clicked
+document.querySelector('.back-button')!.addEventListener('click', () => {
+    document.querySelector('.content-display')!.classList.remove('d-none')
+    document.querySelector('#title-cart')!.classList.remove('d-none')
+    document.querySelector('.cart-background')!.classList.add('d-none')
+    document.querySelector('#order-content')!.classList.add('d-none')
+    document.querySelector('.customer-details')!.classList.add('d-none')
+    document.querySelector('.banner')!.classList.remove('banner-checkout')
 })
 
 
