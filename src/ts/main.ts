@@ -116,17 +116,12 @@ const renderCartItems = () => {
                     <span data-product-id="${item.id}" class="increase">+</span>
                 </p>
                 <p class="card-text text-dark" id="cart-item-price">${item.price} kr/st  </p>
-                <p class="card-text text-dark item-total">${item.price * item.qty} kr</p>
+                <p class="card-text text-dark" id="item-price-${item.id}">${item.price * item.qty} kr</p>
             </div>
             <button class="btn btn-danger cart-remove-item" data-product-id="${item.id}"><i class="bi bi-trash cart-remove-item-i" data-product-id="${item.id}"></i></button>
         </li>
     `)
     .join('')
-}
-
-const renderItemTotal = (item: IProduct) => {
-    const itemTotal = document.querySelector('.item-total') as HTMLParagraphElement
-    itemTotal.textContent = `${item.price * item.qty} kr`
 }
 
 document.querySelector('#cart-list')?.addEventListener('keyup', e => {
@@ -141,7 +136,10 @@ document.querySelector('#cart-list')?.addEventListener('keyup', e => {
     inCartItem.qty = Number(inputField.value)
     
     saveCart()
-    renderItemTotal(inCartItem)
+
+    const itemTotal = document.querySelector(`#item-price-${clickedId}`) as HTMLParagraphElement
+    itemTotal.textContent = `${inCartItem.price * inCartItem.qty} kr`
+
     renderTotalPrice()
 
     if(target.className.includes('prod-qty')) {
