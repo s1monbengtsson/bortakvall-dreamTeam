@@ -261,7 +261,6 @@ document.querySelector('main')?.addEventListener('click', async e => {
 
 // View cart
 document.querySelector('#title-cart')!.addEventListener('click', () => {
-    // document.querySelector('.cart-background')!.classList.remove('d-none')
     document.querySelector('.cart-background')!.classList.add('show')
     document.body.style.overflow = 'hidden';
     
@@ -269,7 +268,6 @@ document.querySelector('#title-cart')!.addEventListener('click', () => {
 // close cart
 document.querySelector('#cart-close')!.addEventListener('click', () => {
     document.querySelector('.cart-background')!.classList.remove('show')
-    // document.querySelector('.cart-background')!.classList.add('d-none')
     document.body.style.removeProperty('overflow');
 
 })
@@ -282,9 +280,9 @@ document.querySelector('#clear-cart-btn')?.addEventListener('click', async () =>
     cartItems = JSON.parse(jsonCartItems)
     renderCart()
     setTimeout(() => {
-    document.querySelector('.cart-background')!.classList.add('d-none')
+    document.querySelector('.cart-background')!.classList.remove('show')
     document.body.style.removeProperty('overflow');
-    },950)
+    },500)
 })
 
 /**
@@ -344,7 +342,7 @@ const checkout = () => {
 
         document.querySelector('.content-container')!.classList.add('d-none')
         document.querySelector('#title-cart')!.classList.add('d-none')
-        document.querySelector('.cart-background')!.classList.add('d-none')
+        document.querySelector('.cart-background')!.classList.remove('show')
         document.querySelector('#order-content')!.classList.remove('d-none')
         document.querySelector('.customer-details')!.classList.remove('d-none')
 
