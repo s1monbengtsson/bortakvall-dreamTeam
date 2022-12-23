@@ -266,6 +266,7 @@
     padding-top: 2em;
 }
 #title-cart:hover {
+    cursor: pointer;
     transform: scale(1.2);
     transition: all 0.3s ease 0s;
 }
