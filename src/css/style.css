@@ -154,8 +154,13 @@
 .bi-x-lg {
     font-size: 2.5em;
 }
+.bi-x-lg:hover {
+    cursor: pointer;
+}
 .info-close {
     padding-top: 3em;
+}.info-close:hover {
+    cursor: pointer;
 }
 .info-wrap {
     background-color: #fff;
@@ -250,8 +255,10 @@
 
 }
 #cart-close {
-    display: inline-block;
-    
+    display: inline-block;    
+}
+#cart-close:hover {
+    cursor: pointer;
 }
 #cart-wrap {
     margin: 0;
@@ -383,6 +390,9 @@
 }
 .decrease, .increase {
     padding: 0.5em;
+}
+.decrease, .increase:hover {
+    cursor: pointer;
 }
 .cart-remove-item {
     margin-left: 1rem;

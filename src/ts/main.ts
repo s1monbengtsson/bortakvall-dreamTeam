@@ -29,11 +29,15 @@ let jsonCartTotal = localStorage.getItem('Total price') ?? '0'
 let cartTotal: number = JSON.parse(jsonCartTotal)
 
 const saveCart = () => {
-    document.querySelector('#cart-item-count')!.textContent = String(cartItems
-        .map( item => item.qty )
-        .reduce( (num, sum) => num + sum, 0))
-    localStorage.setItem('Shopping cart', JSON.stringify(cartItems))
-    localStorage.setItem('Total price', JSON.stringify(cartTotal))
+        document.querySelector('#cart-item-count')!.textContent = String(cartItems.length)
+        localStorage.setItem('Shopping cart', JSON.stringify(cartItems))
+        countTotalPrice()
+}
+
+const renderCart = () => {
+    saveCart()
+    renderCartItems()
+    renderTotalPrice()
 }
 // localStorage ends
 
@@ -77,7 +81,7 @@ const countTotalPrice = () => {
     let cartPrices = [0]
     cartPrices = [0, ...cartItems.map(item => item.price * item.qty)]
     cartTotal = cartPrices.reduce((price, sum) => sum += price)
-    localStorage.setItem('Total amount', JSON.stringify(cartTotal))
+    localStorage.setItem('Total price', JSON.stringify(cartTotal))
 }
 
 // Cart total price ends
@@ -89,7 +93,15 @@ const countTotalPrice = () => {
  * FUNCTIONS
  */
 
-let prodQty = 1
+
+// Allt denna funktion ska göra är att hitta produkten man clickar på
+const findClickedProduct = async (clickedId: number): Promise<IProduct> => {
+
+    const products = await fetchProducts()
+    const foundProduct: IProduct = products.data.find(prod => clickedId === prod.id) as IProduct
+    // console.log('foundProduct:', foundProduct)
+    return foundProduct
+}
 
 const renderCartItems = () => {
     document.querySelector('#cart-list')!.innerHTML = cartItems
@@ -99,37 +111,65 @@ const renderCartItems = () => {
             <div class="card-body cart-descript">
                 <p class="card-title text-dark">${item.name}</p>
                 <p class="cart-adjust">
-                <span data-product-id="${item.id}" class="decrease">-</span>
-                <input class="prod-qty" type="text" value="${item.qty}" style="width: 30px; text-align: center">
-                <span data-product-id="${item.id}" class="increase">+</span>
+                    <span data-product-id="${item.id}" class="decrease">-</span>
+                    <input class="prod-qty" data-input-id="${item.id}" id="input-${item.id}" value="${item.qty}" style="width: 30px; text-align: center">
+                    <span data-product-id="${item.id}" class="increase">+</span>
                 </p>
                 <p class="card-text text-dark" id="cart-item-price">${item.price} kr/st  </p>
-                <p class="card-text text-dark">${item.price * item.qty} kr</p>
+                <p class="card-text text-dark item-total">${item.price * item.qty} kr</p>
             </div>
-            <button class="btn btn-danger cart-remove-item" data-set-id="${item.id}"><i class="bi bi-trash" data-set-id="${item.id}"></i></button>
+            <button class="btn btn-danger cart-remove-item" data-product-id="${item.id}"><i class="bi bi-trash cart-remove-item-i" data-product-id="${item.id}"></i></button>
         </li>
     `)
     .join('')
 }
 
+const renderItemTotal = (item: IProduct) => {
+    const itemTotal = document.querySelector('.item-total') as HTMLParagraphElement
+    itemTotal.textContent = `${item.price * item.qty} kr`
+}
 
+document.querySelector('#cart-list')?.addEventListener('keyup', e => {
+    const target = e.target as HTMLElement
+    const clickedId = Number(target.dataset.inputId)
+    if (!clickedId) return
+    const inCartItem = cartItems.find(item => item.id === clickedId) as IProduct
+    
+    const inputField = document.querySelector(`#input-${clickedId}`) as HTMLInputElement
+    console.log(Number(inputField.value))
 
-// + and -
+    inCartItem.qty = Number(inputField.value)
+    
+    saveCart()
+    renderItemTotal(inCartItem)
+    renderTotalPrice()
+
+    if(target.className.includes('prod-qty')) {
+        // console.log(inCartItem.qty)
+    }
+})
+
+// Remove, + and - 
 document.querySelector('#cart-list')?.addEventListener('click', async e => {
     const target = e.target as HTMLElement
     const clickedId = Number(target.dataset.productId)
     if (!clickedId) return
     const inCartItem = cartItems.find(item => item.id === clickedId) as IProduct  // Hitta produkten i cart som har samma ID som produkten jag klickade på
+
     if (target.className.includes('increase')) {
         inCartItem.qty++
     }
     else if (target.className.includes('decrease')) {
         inCartItem.qty--
     }
-    saveCart()
-    renderCartItems()
-    countTotalPrice()
-    renderTotalPrice()
+    else if (target.className.includes('cart-remove-item' || 'cart-remove-item-i')) {
+        inCartItem.qty = 0
+    }
+
+    if (!(inCartItem.qty > 0)) {
+        cartItems.splice(cartItems.indexOf(inCartItem), 1) // removes it from cart-array
+    }
+    renderCart()
 })
 
 
@@ -163,18 +203,9 @@ const renderProducts = (): void => {
             </div>
         `)
         .join('')
-    document.querySelector('#nav-output')!.innerHTML +=
-    `<h2 class="nav-item px-2">VISAR ALLA ${products.data.length} PRODUKTER</h2> `
 }
 
-// Allt denna funktion ska göra är att hitta produkten man clickar på
-const findClickedProduct = async (clickedId: number): Promise<IProduct> => {
 
-    const products = await fetchProducts()
-    const foundProduct: IProduct = products.data.find(prod => clickedId === prod.id) as IProduct
-    // console.log('foundProduct:', foundProduct)
-    return foundProduct
-}
 
 
 /**
@@ -208,10 +239,7 @@ document.querySelector('main')?.addEventListener('click', async e => {
                 inCartItem.qty++
             }
 
-            saveCart()
-            renderCartItems()
-            countTotalPrice()
-            renderTotalPrice()
+            renderCart()
 
             document.querySelector('#cart-wrap')!.classList.add('shake')
             document.querySelector('#cart-wrap')!.classList.add('move')
@@ -230,6 +258,7 @@ document.querySelector('main')?.addEventListener('click', async e => {
         }
     }
 })
+
 // View cart
 document.querySelector('#title-cart')!.addEventListener('click', () => {
     document.querySelector('.cart-background')!.classList.remove('d-none')
@@ -249,33 +278,11 @@ document.querySelector('#clear-cart-btn')?.addEventListener('click', async () =>
     localStorage.removeItem('Shopping cart')
     jsonCartItems = localStorage.getItem('Shopping cart') ?? '[]'
     cartItems = JSON.parse(jsonCartItems)
-    saveCart()
-    renderCartItems()
-    // Counts the total price of every item in the cart
-    countTotalPrice()
-    // Display the total price of all items
-    renderTotalPrice()
+    renderCart()
     setTimeout(() => {
     document.querySelector('.cart-background')!.classList.add('d-none')
     document.body.style.removeProperty('overflow');
     },950)
-})
-
-// remove single item in cart
-document.querySelector('#cart-list')?.addEventListener('click', async (e) => {
-    const target = e.target as HTMLElement
-    const clickedId = Number(target.dataset.setId) // get datasetid of item
-    const founditem : IProduct = cartItems.find(item => clickedId === item.id) as IProduct // finds it in cart-array
-    console.log(` tog bort ${founditem.name} ur varukorgen`)
-    cartItems.splice(cartItems.indexOf(founditem), 1) // removes it from cart-array
-    // Save cartItems in localStorage
-    saveCart()
-    // Display items from cartItems
-    renderCartItems()
-    // Counts the total price of every item in the cart
-    countTotalPrice()
-    // Display the total price of all items
-    renderTotalPrice()
 })
 
 /**
@@ -307,14 +314,7 @@ document.querySelector('.info-background')!.addEventListener('click', async e =>
         
         // Push item into cartItems
         cartItems.push(clickedProduct)
-        // Save cartItems in localStorage
-        saveCart()
-        // Display items from cartItems
-        renderCartItems()
-        // Counts the total price of every item in the cart
-        countTotalPrice()
-        // Display the total price of all items
-        renderTotalPrice()
+        renderCart()
         console.log(cartTotal)
         
         document.body.style.removeProperty('overflow');
@@ -503,11 +503,6 @@ document.querySelector('.customer-details')!.addEventListener('reset', () => {
 
 /* functions that are called when the page loads */
 getProducts()
-saveCart() // called to view number of item in cart when page loads
-countTotalPrice()
-renderTotalPrice()
-renderCartItems()
-
-
 
     
+renderCart()
