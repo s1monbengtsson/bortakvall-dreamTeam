@@ -263,13 +263,15 @@ document.querySelector('main')?.addEventListener('click', async e => {
 
 // View cart
 document.querySelector('#title-cart')!.addEventListener('click', () => {
-    document.querySelector('.cart-background')!.classList.remove('d-none')
+    // document.querySelector('.cart-background')!.classList.remove('d-none')
+    document.querySelector('.cart-background')!.classList.add('show')
     document.body.style.overflow = 'hidden';
     
 })
 // close cart
 document.querySelector('#cart-close')!.addEventListener('click', () => {
-    document.querySelector('.cart-background')!.classList.add('d-none')
+    document.querySelector('.cart-background')!.classList.remove('show')
+    // document.querySelector('.cart-background')!.classList.add('d-none')
     document.body.style.removeProperty('overflow');
 
 })
