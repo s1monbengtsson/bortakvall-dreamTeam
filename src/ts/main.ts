@@ -129,21 +129,23 @@ document.querySelector('#cart-list')?.addEventListener('keyup', e => {
     const clickedId = Number(target.dataset.inputId)
     if (!clickedId) return
     const inCartItem = cartItems.find(item => item.id === clickedId) as IProduct
-    
     const inputField = document.querySelector(`#input-${clickedId}`) as HTMLInputElement
-    console.log(Number(inputField.value))
-
     inCartItem.qty = Number(inputField.value)
-    
     saveCart()
-
     const itemTotal = document.querySelector(`#item-price-${clickedId}`) as HTMLParagraphElement
     itemTotal.textContent = `${inCartItem.price * inCartItem.qty} kr`
-
     renderTotalPrice()
+})
 
-    if(target.className.includes('prod-qty')) {
-        // console.log(inCartItem.qty)
+document.querySelector('#cart-list')?.addEventListener('focusout', e => {
+    const target = e.target as HTMLElement
+    const clickedId = Number(target.dataset.inputId)
+    if (!clickedId) return
+    const inCartItem = cartItems.find(item => item.id === clickedId) as IProduct
+    if (!(inCartItem.qty > 0)) {
+        console.log('yes now')
+        cartItems.splice(cartItems.indexOf(inCartItem), 1)
+        renderCart()
     }
 })
 
