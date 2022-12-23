@@ -9,7 +9,7 @@ import '../css/style.css'
 import '../css/media.css'
 
 import { fetchProducts, fetchOrder } from "./api"
-import { IData, IProduct, IOrder } from "./interface"
+import { IData, IProduct, IOrder, ICustomerInfo } from "./interface"
 
 
 /**
@@ -42,6 +42,8 @@ const renderCart = () => {
     renderTotalPrice()
 }
 // localStorage ends
+
+console.log("cart items:", cartItems)
 
 
 const testOrder = await fetchOrder(
@@ -171,15 +173,24 @@ document.querySelector('#cart-list')?.addEventListener('click', async e => {
 
 
 const getProducts = async (): Promise<void> => {
-    products = await fetchProducts()
+    document.querySelector('#spinner')!.classList.remove('hide')
+    try {
+        products = await fetchProducts()
+        renderProducts()  
+    }
+    catch {
+        document.querySelector('#nav-output')!.innerHTML += `<h2 class="nav-item px-2">🚨 KUNDE INTE HÄMTA DATA FRÅN SERVER 🚨 <br> försök igen senare...</h2>`
+        document.querySelector('#main')!.innerHTML += `<h2 class="p-5">❌</h2>`
+    }
+    document.querySelector('#spinner')!.classList.add('hide')
     // console.log(products)
-    renderProducts()  
 }
 
 const renderProducts = (): void => {
+    console.log(products.status)
     document.querySelector('.product-main')!.innerHTML = products.data
         .map( prod => `
-            <div class="col-12 col-md-6 col-lg-3 product-cards">
+            <div class="col- 12 col-sm-6 col-md-6 col-lg-3 product-cards">
                 <div class="card product-wrap border-0"  data-product-id="${prod.id}">
                     <img src="https://www.bortakvall.se${prod.images.thumbnail}" alt="${prod.name}" class="card-img-top card-img product-wrap-child" data-product-id="${prod.id}">
                     <div class="card-body product-wrap-child" data-product-id="${prod.id}">
@@ -191,8 +202,6 @@ const renderProducts = (): void => {
             </div>
         `)
         .join('')
-    document.querySelector('#nav-output')!.innerHTML +=
-    `<h2 class="nav-item px-2">VISAR ALLA ${products.data.length} PRODUKTER</h2> `
 }
 
 
@@ -202,9 +211,6 @@ const renderProducts = (): void => {
  ********************************************************************************
 * EVENT LISTENERS
 */
-
-
-
 
 // Click event on each product
 document.querySelector('main')?.addEventListener('click', async e => {
@@ -246,13 +252,13 @@ document.querySelector('main')?.addEventListener('click', async e => {
 
 // View cart
 document.querySelector('#title-cart')!.addEventListener('click', () => {
-    document.querySelector('.cart-background')!.classList.remove('d-none')
+    document.querySelector('.cart-background')!.classList.add('show')
     document.body.style.overflow = 'hidden';
     
 })
 // close cart
 document.querySelector('#cart-close')!.addEventListener('click', () => {
-    document.querySelector('.cart-background')!.classList.add('d-none')
+    document.querySelector('.cart-background')!.classList.remove('show')
     document.body.style.removeProperty('overflow');
 
 })
@@ -265,9 +271,9 @@ document.querySelector('#clear-cart-btn')?.addEventListener('click', async () =>
     cartItems = JSON.parse(jsonCartItems)
     renderCart()
     setTimeout(() => {
-        document.querySelector('.cart-background')!.classList.add('d-none')
-        document.body.style.removeProperty('overflow');
-    },950)
+    document.querySelector('.cart-background')!.classList.remove('show')
+    document.body.style.removeProperty('overflow');
+    },500)
 })
 
 /**
@@ -335,6 +341,178 @@ document.querySelector('.info-background')!.addEventListener('click', async e =>
 })
 // end info-section
 
+
+
+// function that renders checkout-page and form to DOM
+
+const checkout = () => {
+    cartItems.map(product => {
+        console.log('cart-item:', product)
+
+        document.querySelector('.content-container')!.classList.add('d-none')
+        document.querySelector('#title-cart')!.classList.add('d-none')
+        document.querySelector('.cart-background')!.classList.remove('show')
+        document.querySelector('#order-content')!.classList.remove('d-none')
+        document.querySelector('.customer-details')!.classList.remove('d-none')
+
+        document.body.style.removeProperty('overflow');
+
+        let productTotal = (product.price * product.qty)
+
+        document.querySelector('#order-content')!.innerHTML += `
+            <li class="list-group-item d-flex justify-content-between align-items-center text-center">
+                <img src="https://www.bortakvall.se/${product.images.thumbnail}" alt="${product.name}" class="checkout-img">
+                ${product.name}<br>x ${product.qty}<span>Styckpris: <br>${product.price} kr</span><span>Total:<br> ${productTotal} kr</span>
+            </li>
+        `
+    })
+
+    document.querySelector('#order-content')!.innerHTML += `
+
+            <h3 class="text-center mt-3">Att betala: ${cartTotal} kr</h3>
+        `
+}
+
+    // prefill form with customer data on page load
+    const formAutoFill = () => {
+
+        const customerFirstName = document.querySelector('#customer-first-name')! as HTMLInputElement
+        const customerLastName = document.querySelector('#customer-last-name')! as HTMLInputElement
+        const customerAddress = document.querySelector('#customer-address')! as HTMLInputElement
+        const customerPostal = document.querySelector('#customer-postal-number')! as HTMLInputElement
+        const customerCity = document.querySelector('#customer-city')! as HTMLInputElement
+        const customerPhone = document.querySelector('#customer-phone')! as HTMLInputElement
+        const customerEmail = document.querySelector('#customer-email')! as HTMLInputElement
+    
+        customerFirstName.value = customerData.customer_first_name ?? ''
+        customerLastName.value = customerData.customer_last_name ?? ''
+        customerAddress.value = customerData.customer_address ?? ''
+        customerPostal.value = customerData.customer_postcode ?? ''
+        customerCity.value = customerData.customer_city ?? ''
+        customerPhone.value = customerData.customer_phone ?? ''
+        customerEmail.value = customerData.customer_email ?? ''
+
+    }
+
+// function that renders form to DOM
+const renderForm = () => {
+    document.querySelector('.customer-details')!.innerHTML = `
+        <h2 class="form-heading text-center mt-5">Beställare</h2>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="customer-first-name"></label>
+                    <input type="text" placeholder="Förnamn" id="customer-first-name" required class="form-control form-input">
+                </div>
+                <div class="form-group">
+                    <label for="customer-last-name"></label>
+                    <input type="text" placeholder="Efternamn" id="customer-last-name" required class="form-control form-input">
+                </div>
+                <div class="form-group">
+                    <label for="customer-address"></label>
+                    <input type="text" placeholder="Adress" id="customer-address" required class="form-control form-input">
+                </div>
+
+
+                <div class="form-group">
+                    <label for="customer-postal-number"></label>
+                    <input type="text" placeholder="Postnummer" id="customer-postal-number" required class="form-control form-input">
+                </div>
+
+                <div class="form-group">
+                    <label for="customer-city"></label>
+                    <input type="text" placeholder="Ort" id="customer-city" required class="form-control form-input">
+                </div>
+
+                <div class="form-group">
+                    <label for="customer-phone"></label>
+                    <input type="text" placeholder="Telefon" id="customer-phone" class="form-control form-input">
+                </div>
+
+                <div class="form-group">
+                    <label for="customer-email"></label>
+                    <input type="email" placeholder="Email" id="customer-email" required class="form-control form-input mb-3">
+                </div>
+
+
+                <div class="form-group">
+                    <input type="checkbox" value="" id="customer-checkbox" class="form-check-input">
+                    <label for="customer-checkbox" class="form-check-label">Jag har kontrollerat att informationen jag angett stämmer</label>
+                </div>  
+
+                <button type="submit" class="send-order btn btn-primary my-3 py-2">Skicka beställning</button>
+                <button type="reset" class="empty-form btn btn-warning my-3 py-2">Töm formulär</button>
+
+            </div> 
+    `
+    formAutoFill()
+    
+}
+
+    // get json data from localStorage
+    let jsonCustomerData = localStorage.getItem('Customer data') ?? '[]'
+
+    // parse json data into object
+    let customerData: ICustomerInfo = JSON.parse(jsonCustomerData)
+
+
+const saveCustomerData = () => {
+
+    const customerFirstName = document.querySelector('#customer-first-name')! as HTMLInputElement
+    const customerLastName = document.querySelector('#customer-last-name')! as HTMLInputElement
+    const customerAddress = document.querySelector('#customer-address')! as HTMLInputElement
+    const customerPostal = document.querySelector('#customer-postal-number')! as HTMLInputElement
+    const customerCity = document.querySelector('#customer-city')! as HTMLInputElement
+    const customerPhone = document.querySelector('#customer-phone')! as HTMLInputElement
+    const customerEmail = document.querySelector('#customer-email')! as HTMLInputElement
+
+
+    customerData = {
+        customer_first_name: customerFirstName.value,
+        customer_last_name:  customerLastName.value,
+        customer_address: customerAddress.value,
+        customer_postcode: customerPostal.value,
+        customer_city: customerCity.value,
+        customer_phone: customerPhone.value,
+        customer_email: customerEmail.value
+    }
+
+    // converts customerData to JSON
+    const json = JSON.stringify(customerData)
+
+    // saves JSON to localStorage
+    localStorage.setItem('Customer data', json)
+
+    console.log("customer data:", customerData)
+
+
+}
+
+// Add clickEvent to proceed to check out with all products from cart
+
+document.querySelector('#checkout-btn')!.addEventListener('click', async e => {
+    const target = e.target as HTMLButtonElement
+    if (target.id === 'checkout-btn') {
+        console.log('clicked on checkout')
+        checkout()
+        renderForm()
+    }
+})
+
+// listen for submits, and save customer data to localStorage
+document.querySelector('.customer-details')!.addEventListener('submit', e => {
+    e.preventDefault()
+    saveCustomerData()
+})
+
+// remove saved customer data when reset button is clicked
+document.querySelector('.customer-details')!.addEventListener('reset', () => {
+    localStorage.removeItem('Customer data')
+    document.querySelector('#customer-first-name')?.setAttribute
+})
+
+
 /* functions that are called when the page loads */
 getProducts()
+
+    
 renderCart()
