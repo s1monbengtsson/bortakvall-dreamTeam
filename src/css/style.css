@@ -215,10 +215,6 @@
     animation: shake 0.5s;
     animation-iteration-count: 1;
 }
-.shake {
-    animation: shake 0.5s;
-    animation-iteration-count: 1;
-}
 @keyframes shake {
     0% {
         transform: translate(1px, 1px) rotate(0deg);
@@ -266,6 +262,7 @@
     padding-top: 2em;
 }
 #title-cart:hover {
+    cursor: pointer;
     transform: scale(1.2);
     transition: all 0.3s ease 0s;
 }
@@ -287,35 +284,47 @@
 
 .cart-background {
     position: fixed;
-    background-color: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(3px);
-    width: 100vw;
+    right: 0;
+    /* background-color: rgba(0, 0, 0, 0.5); */
+    /* backdrop-filter: blur(3px); */
+    background: #fff;
+    border-radius: 15px 0 0 15px;
+    width: 75vw;
     height: 100vh;
     display: flex;
-    align-items: center;
+    align-items:flex-end;
     justify-content: center;
     z-index: 4;
     flex-direction: column;
+    transform: translateX(100%);
+    /* transition: all 0.3s ease 0s; */
+    transition: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition-property: all;
+    transition-duration: 0.5s;
+    
+}
+.show {
+    transform: translateX(0);
 }
 #cart {
     display: flex;
     justify-content: space-between;
     align-items: center;
     z-index: 5;
-    background: #fff;
+    /* background: #fff; */
     padding: 1rem 2rem;
-    width: 66%;
-    border-radius: 15px 15px 0 0;
+    width: 100%;
+    /* border-radius: 15px 0 0 0; */
     overflow-y: scroll;
 }
 .cart-item {
     border-bottom: 1px solid #dfdfdf;
 }
 .cart-btn-wrap {
-    background: #fff;
-    width: 66%;
+    /* background: #fff; */
+    width: 100%;
     padding: 1rem 2rem;
-    border-radius: 0 0 15px 15px;
+    /* border-radius: 0 0 0 15px; */
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -346,13 +355,15 @@
     font-weight: bold;
 }
 #cart-list {
-    background: #fff;
+    /* background: #fff; */
     list-style-type: none;
     padding: 0 1em;
     margin: 0;
-    width: 66%;
-    max-height: 66%;
+    height: 99vh;
+    width: 100%;
+    /* max-height: 66%; */
     overflow-y: scroll;
+
 }
 .cart-heading {
     display: block;
@@ -425,3 +436,11 @@
     transition: all 0.3s ease 0s;
 }
 /* end cart section */
+
+
+/* styling for checkout */
+
+.checkout-img {
+    height: 100px;
+    width: 100px;
+}
