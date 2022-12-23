@@ -140,7 +140,7 @@ const getProducts = async (): Promise<void> => {
 const renderProducts = (): void => {
     document.querySelector('.product-main')!.innerHTML = products.data
         .map( prod => `
-            <div class="col- 12 col-sm-6 col-md-6 col-lg-3 product-cards">
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3 product-cards">
                 <div class="card product-wrap border-0"  data-product-id="${prod.id}">
                     <img src="https://www.bortakvall.se${prod.images.thumbnail}" alt="${prod.name}" class="card-img-top card-img product-wrap-child" data-product-id="${prod.id}">
                     <div class="card-body product-wrap-child" data-product-id="${prod.id}">
@@ -339,6 +339,7 @@ const checkout = () => {
         document.querySelector('.cart-background')!.classList.add('d-none')
         document.querySelector('#order-content')!.classList.remove('d-none')
         document.querySelector('.customer-details')!.classList.remove('d-none')
+        document.querySelector('.banner')!.classList.remove('d-none')
 
         document.body.style.removeProperty('overflow');
 
@@ -347,7 +348,7 @@ const checkout = () => {
         document.querySelector('#order-content')!.innerHTML += `
             <li class="list-group-item d-flex justify-content-between align-items-center text-center">
                 <img src="https://www.bortakvall.se/${product.images.thumbnail}" alt="${product.name}" class="checkout-img">
-                ${product.name}<br>x ${product.qty}<span>Styckpris: <br>${product.price} kr</span><span>Total:<br> ${productTotal} kr</span>
+                ${product.name}<br>x ${product.qty}<span>Á pris: <br>${product.price} kr</span><span>Total:<br> ${productTotal} kr</span>
             </li>
         `
     })
@@ -410,7 +411,7 @@ const renderForm = () => {
 
                 <div class="form-group">
                     <label for="customer-phone"></label>
-                    <input type="text" placeholder="Telefon" id="customer-phone" class="form-control form-input">
+                    <input type="text" placeholder="Telefon (valfritt)" id="customer-phone" class="form-control form-input">
                 </div>
 
                 <div class="form-group">
@@ -420,7 +421,7 @@ const renderForm = () => {
 
 
                 <div class="form-group">
-                    <input type="checkbox" value="" id="customer-checkbox" class="form-check-input">
+                    <input type="checkbox" value="" id="customer-checkbox" class="form-check-input" required>
                     <label for="customer-checkbox" class="form-check-label">Jag har kontrollerat att informationen jag angett stämmer</label>
                 </div>  
 
@@ -492,7 +493,6 @@ document.querySelector('.customer-details')!.addEventListener('submit', e => {
 // remove saved customer data when reset button is clicked
 document.querySelector('.customer-details')!.addEventListener('reset', () => {
     localStorage.removeItem('Customer data')
-    document.querySelector('#customer-first-name')?.setAttribute
 })
 
 
