@@ -118,17 +118,12 @@ const renderCartItems = () => {
                     <span data-product-id="${item.id}" class="increase">+</span>
                 </p>
                 <p class="card-text text-dark" id="cart-item-price">${item.price} kr/st  </p>
-                <p class="card-text text-dark item-total">${item.price * item.qty} kr</p>
+                <p class="card-text text-dark" id="item-price-${item.id}">${item.price * item.qty} kr</p>
             </div>
             <button class="btn btn-danger cart-remove-item" data-product-id="${item.id}"><i class="bi bi-trash cart-remove-item-i" data-product-id="${item.id}"></i></button>
         </li>
     `)
     .join('')
-}
-
-const renderItemTotal = (item: IProduct) => {
-    const itemTotal = document.querySelector('.item-total') as HTMLParagraphElement
-    itemTotal.textContent = `${item.price * item.qty} kr`
 }
 
 document.querySelector('#cart-list')?.addEventListener('keyup', e => {
@@ -143,7 +138,10 @@ document.querySelector('#cart-list')?.addEventListener('keyup', e => {
     inCartItem.qty = Number(inputField.value)
     
     saveCart()
-    renderItemTotal(inCartItem)
+
+    const itemTotal = document.querySelector(`#item-price-${clickedId}`) as HTMLParagraphElement
+    itemTotal.textContent = `${inCartItem.price * inCartItem.qty} kr`
+
     renderTotalPrice()
 
     if(target.className.includes('prod-qty')) {
@@ -263,7 +261,6 @@ document.querySelector('main')?.addEventListener('click', async e => {
 
 // View cart
 document.querySelector('#title-cart')!.addEventListener('click', () => {
-    // document.querySelector('.cart-background')!.classList.remove('d-none')
     document.querySelector('.cart-background')!.classList.add('show')
     document.body.style.overflow = 'hidden';
     
@@ -271,7 +268,6 @@ document.querySelector('#title-cart')!.addEventListener('click', () => {
 // close cart
 document.querySelector('#cart-close')!.addEventListener('click', () => {
     document.querySelector('.cart-background')!.classList.remove('show')
-    // document.querySelector('.cart-background')!.classList.add('d-none')
     document.body.style.removeProperty('overflow');
 
 })
@@ -284,9 +280,9 @@ document.querySelector('#clear-cart-btn')?.addEventListener('click', async () =>
     cartItems = JSON.parse(jsonCartItems)
     renderCart()
     setTimeout(() => {
-    document.querySelector('.cart-background')!.classList.add('d-none')
+    document.querySelector('.cart-background')!.classList.remove('show')
     document.body.style.removeProperty('overflow');
-    },950)
+    },500)
 })
 
 /**
@@ -346,7 +342,7 @@ const checkout = () => {
 
         document.querySelector('.content-container')!.classList.add('d-none')
         document.querySelector('#title-cart')!.classList.add('d-none')
-        document.querySelector('.cart-background')!.classList.add('d-none')
+        document.querySelector('.cart-background')!.classList.remove('show')
         document.querySelector('#order-content')!.classList.remove('d-none')
         document.querySelector('.customer-details')!.classList.remove('d-none')
 
