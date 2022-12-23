@@ -359,7 +359,7 @@ const checkout = () => {
 }
 
     // prefill form with customer data on page load
-    const formPreFill = () => {
+    const formAutoFill = () => {
 
         const customerFirstName = document.querySelector('#customer-first-name')! as HTMLInputElement
         const customerLastName = document.querySelector('#customer-last-name')! as HTMLInputElement
@@ -429,7 +429,7 @@ const renderForm = () => {
 
             </div> 
     `
-    formPreFill()
+    formAutoFill()
     
 }
 
