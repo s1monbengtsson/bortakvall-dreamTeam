@@ -397,3 +397,10 @@
 }
 /* end cart section */
 
+
+/* styling for checkout */
+
+.checkout-img {
+    height: 100px;
+    width: 100px;
+}
