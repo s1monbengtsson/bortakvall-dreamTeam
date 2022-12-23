@@ -96,10 +96,8 @@ const countTotalPrice = () => {
 
 // Allt denna funktion ska göra är att hitta produkten man clickar på
 const findClickedProduct = async (clickedId: number): Promise<IProduct> => {
-
     const products = await fetchProducts()
     const foundProduct: IProduct = products.data.find(prod => clickedId === prod.id) as IProduct
-    // console.log('foundProduct:', foundProduct)
     return foundProduct
 }
 
@@ -143,7 +141,6 @@ document.querySelector('#cart-list')?.addEventListener('focusout', e => {
     if (!clickedId) return
     const inCartItem = cartItems.find(item => item.id === clickedId) as IProduct
     if (!(inCartItem.qty > 0)) {
-        console.log('yes now')
         cartItems.splice(cartItems.indexOf(inCartItem), 1)
         renderCart()
     }
@@ -213,25 +210,20 @@ const renderProducts = (): void => {
 document.querySelector('main')?.addEventListener('click', async e => {
     const target = e.target as HTMLElement
     const clickedId = Number(target.dataset.productId)
-    // console.log('clicked product id:', clickedId)
     const clickedProduct = await findClickedProduct(clickedId)
 
     if (target.className.includes('product-wrap' || 'product-wrap-child')) {
 
         // Om man klickar på 'Lägg till i varukorgen' knappen på en produkt
         if (target.tagName === 'BUTTON') {
-            // console.log(clickedProduct)
-
             const inCartIds = cartItems.map(item => item.id)       
             const inCartItem = cartItems.find(item => item.id === clickedId) as IProduct  // Hitta produkten i cart som har samma ID som produkten jag klickade på
-            // console.log(clickedId)
 
             if (!inCartItem || !inCartIds.includes(clickedId)) {
                 clickedProduct.qty = 1
                 cartItems.push(clickedProduct)
             }
             else if (inCartIds.includes(clickedId)) {
-                // console.log('already here')
                 inCartItem.qty++
             }
 
@@ -246,11 +238,8 @@ document.querySelector('main')?.addEventListener('click', async e => {
         }
         // Om man klickar någon annan stans på produkten. (info)
         else {
-            console.log('viewing product')
-
             renderInfo(clickedProduct)
             document.body.style.overflow = 'hidden';
-            findClickedProduct(clickedId)
         }
     }
 })
@@ -305,14 +294,22 @@ const renderInfo = (productInfo: IProduct) => {
 
 document.querySelector('.info-background')!.addEventListener('click', async e => {
     const target = e.target as HTMLElement
-    if (target.tagName === 'BUTTON') {
-        const clickedId = Number(target.dataset.prodId)
-        const clickedProduct = await findClickedProduct(clickedId)
-        
-        // Push item into cartItems
-        cartItems.push(clickedProduct)
+    const clickedId = Number(target.dataset.prodId)
+    const clickedProduct = await findClickedProduct(clickedId)
+
+    if (target.tagName === 'BUTTON') {        
+        const inCartIds = cartItems.map(item => item.id)       
+        const inCartItem = cartItems.find(item => item.id === clickedId) as IProduct  // Hitta produkten i cart som har samma ID som produkten jag klickade på
+
+        if (!inCartItem || !inCartIds.includes(clickedId)) {
+            clickedProduct.qty = 1
+            cartItems.push(clickedProduct)
+        }
+        else if (inCartIds.includes(clickedId)) {
+            inCartItem.qty++
+        }
+
         renderCart()
-        console.log(cartTotal)
         
         document.body.style.removeProperty('overflow');
         document.querySelector('#cart-wrap')!.classList.add('shake')
