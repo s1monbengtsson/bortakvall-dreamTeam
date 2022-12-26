@@ -27,12 +27,14 @@ export interface IOrder {
     customer_email: string,
     customer_phone?: string,
     order_total: number,
-    order_items: {
-        product_id: number,
-        qty: number,
-        item_price: number,
-        item_total: number,
-    }[],
+    order_items: [
+        {
+            product_id: number,
+            qty: number,
+            item_price: number,
+            item_total: number,
+        },{},
+    ]
 }
 
 export interface ICustomerInfo {
