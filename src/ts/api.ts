@@ -18,7 +18,7 @@ export const fetchProducts = async () => {
 	return await res.json() as IData
 }
 
-export const fetchOrder = async (order: IOrder) => {
+export const createNewOrder = async (order: IOrder) => {
     const res = await fetch(`${BASE_URL}${ORDERS}`, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
@@ -27,7 +27,7 @@ export const fetchOrder = async (order: IOrder) => {
 
   if (!res.ok) {
 		throw new Error(`${res.status} ${res.statusText}`)
-	}
+	} 
 
     return await res.json() as IOrder
 }
