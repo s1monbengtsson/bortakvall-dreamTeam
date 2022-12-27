@@ -1,6 +1,14 @@
 /* @media screen and (max-width: 768px) {
 } */
 /* Tablet screen size */
+@media screen and (max-width: 1024px) {
+    .content-container {
+        width: 95vw;
+    }
+}
+
+
+
 @media screen and (max-width: 768px) {
     .banner {
         padding: 0;
@@ -57,9 +65,6 @@
 
     .hero-description {
         width: 100vw;
-    }
-    button.product-btn {
-        height: 3em;
     }
 
     /* start cart-section */
