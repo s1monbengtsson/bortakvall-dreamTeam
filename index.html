@@ -70,41 +70,20 @@
                 </header>
 
                 <!-- navigation menu -->
-                <nav class="nav-menu d-flex justify-content-evenly p-3">
+                <nav class="nav-menu d-flex justify-content-evenly p-3" id="nav-output">
                     <a href="#main" class="nav-item">SORTIMENT</a>
                     <a href="#main" class="nav-item">WEBBSHOP</a>                                      
 
                 </nav>
             </div>
 
-            <!-- hero section -->
-
-            <div class="hero">
-                <div class="hero-description pt-4">
-                    <h2 class="hero-heading pb-2">Lösvikt</h2>
-                    <p class="hero-para px-5">Skapa din egen favoritmix - du beställer och vi plockar ihop! <br> Alla priser nedan är per skopa. Då godisbitarna väger olika mycket så varierar priset per skopa beroende på godissort. Hur mycket en skopa väger ser du på respektive godissort. Vår definition av en skopa är som på följande bilder.</p>
-                </div>
-                <div class="hero-images d-flex col-12">
-                    <img src="https://images.unsplash.com/photo-1635342219731-4ae2bf39e1e9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80" alt="picture of candy" class="img-fluid col-4">
-                    <img src="https://images.unsplash.com/photo-1560793292-24a14149433f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1172&q=80" alt="picture of candy" class="img-fluid col-4">
-                    <img src="https://images.unsplash.com/photo-1600359746315-119f1360d663?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=688&q=80" alt="picture of candy" class="img-fluid col-4" >
-                </div>
-            </div>
-
-            <!-- sub navigation -->
-            <div class="sub-nav-wrapper d-flex justify-content-center" >
-                <nav class="sub-nav py-5" id="nav-output">
-
-                </nav>
-                
-            </div>
             
             <!-- product section -->
             
             <main class="container-fluid bg-light" id="main">
 
                 <div class="spinner-grow text-warning m-5 hide" role="status" id="spinner">
-                    <span class="visually-hidden">Loading...</span>
+                    <span class="visually-hidden"></span>
                   </div>
                   
                 <div class="row g-3 mx-3 product-main"></div>
@@ -112,10 +91,6 @@
         </div>
     </div>
 
-    
-
-    
-    <div class="info-wrap text-center" id="info-section"></div>
 
     <!-- Order page content -->
     <ul class="list-group d-none my-5 w-75 mx-auto" id="order-content">

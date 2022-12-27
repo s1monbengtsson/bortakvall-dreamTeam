@@ -181,8 +181,8 @@ const getProducts = async (): Promise<void> => {
         renderProducts()  
     }
     catch {
-        document.querySelector('#nav-output')!.innerHTML += `<h2 class="nav-item px-2">🚨 KUNDE INTE HÄMTA DATA FRÅN SERVER 🚨 <br> försök igen senare...</h2>`
-        document.querySelector('#main')!.innerHTML += `<h2 class="p-5">❌</h2>`
+        document.querySelector('#nav-output')!.innerHTML = `<h2 class="nav-item px-2">🚨 KUNDE INTE HÄMTA DATA FRÅN SERVER 🚨 <br> försök igen senare...</h2>`
+        document.querySelector('#main')!.innerHTML = `<h2 class="p-5">❌</h2>`
     }
     document.querySelector('#spinner')!.classList.add('hide')
     // console.log(products)
