@@ -43,7 +43,7 @@ const renderCart = () => {
 }
 // localStorage ends
 
-console.log("cart items:", cartItems)
+// console.log("cart items:", cartItems)
 
 
 const testOrder = await fetchOrder(
@@ -188,7 +188,7 @@ const getProducts = async (): Promise<void> => {
 }
 
 const renderProducts = (): void => {
-    console.log(products.status)
+    // console.log(products.status)
     document.querySelector('.product-main')!.innerHTML = products.data
         .map( prod => `
             <div class="col- 12 col-sm-6 col-md-6 col-lg-3 product-cards">
@@ -197,7 +197,9 @@ const renderProducts = (): void => {
                     <div class="card-body product-wrap-child" data-product-id="${prod.id}">
                         <p id="product-name" class="card-title text-dark product-wrap-child" data-product-id="${prod.id}">${prod.name}</p>
                         <p id="product-price" class="card-text text-dark product-wrap-child" data-product-id="${prod.id}">${prod.price} kr</p>
-                        <button class="btn btn-warning btn-span mb-0 py-1 product-wrap-child product-btn" data-product-id="${prod.id}">LÄGG I VARUKORG</button>
+                        <p><i class="bi bi-info-square" id="info-icon" data-id="${prod.id}"></i></p>
+                        
+                        <button class="btn btn-warning btn-span mb-0 py-2 product-wrap-child product-btn" data-product-id="${prod.id}">LÄGG I VARUKORG</button>
                     </div>
                 </div>
             </div>
@@ -212,10 +214,20 @@ const renderProducts = (): void => {
  ********************************************************************************
 * EVENT LISTENERS
 */
+// info icon :hover to show description tooltip
+document.querySelector('main')?.addEventListener('mouseover', async (e) => {
+    const target = e.target as HTMLElement
+    if (target.id === 'info-icon') {
+        let prod = await findClickedProduct(Number(target.dataset.id))
+        console.log(prod.description)
+        document.querySelector('#tooltip')!.innerHTML = prod.description
+    }
+})
 
 // Click event on each product
 document.querySelector('main')?.addEventListener('click', async e => {
     const target = e.target as HTMLElement
+    console.log(target.id)
     const clickedId = Number(target.dataset.productId)
     // console.log('clicked product id:', clickedId)
     const clickedProduct = await findClickedProduct(clickedId)

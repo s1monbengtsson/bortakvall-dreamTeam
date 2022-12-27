@@ -3,8 +3,8 @@
     margin: 0;
     padding: 0;
     /* border: 1px solid black; */
+    /* outline: 3px solid rgb(205, 50, 50); */
 }
-
 .hide {
     display: none;
 }
@@ -120,13 +120,30 @@
     font-weight: bold;
     width: 100%;
 }
-
+#product-name {
+    margin: 0;
+}
+#product-price {
+    margin: 0;
+}
+.bi-info-square {
+    margin-bottom: 0.5em;
+}
+.bi-info-square:hover {
+    color: #ffc107;
+    cursor: pointer;
+}
 .card {
     box-shadow: 1px 1px 10px #e5e5e5;
 }
 
 .card-body {
     font-weight: bold;
+}
+.card-body > button:active {
+    transform: scale(0.9);
+    transition: all 0.3s ease 0s;
+
 }
 
 .card-img {
@@ -137,6 +154,7 @@
     width: 75%;
     margin: 0 auto;
 }
+
 
 /* start info-section */
 .info-background {
