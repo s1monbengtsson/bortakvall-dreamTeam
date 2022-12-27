@@ -112,7 +112,9 @@
 .product-main {
     margin: 0 auto;
 }
-
+.product-wrap-child > p {
+    margin-bottom: 0.5em;
+}
 .product-btn {
     padding: 0 3rem;
     margin-bottom: 1rem;
@@ -120,15 +122,11 @@
     font-weight: bold;
     width: 100%;
 }
-#product-name {
-    margin: 0;
-}
-#product-price {
-    margin: 0;
-}
 .bi-info-square {
-    padding: 0.25em;
-    margin-bottom: 0.5em;
+    font-size: 1.2em;
+    padding: 0.25em 0.5em;
+    margin: 0.5em 0;
+    box-shadow: 1px 1px 10px #e5e5e5;
 }
 .bi-info-square:hover {
     color: #ffc107;
