@@ -3,7 +3,7 @@
     margin: 0;
     padding: 0;
     /* border: 1px solid black; */
-    outline: 1px solid rgba(205, 50, 50, 0.5);
+    /* outline: 1px solid rgb(205, 50, 50); */
 }
 .hide {
     display: none;
@@ -127,6 +127,7 @@
     margin: 0;
 }
 .bi-info-square {
+    padding: 0.25em;
     margin-bottom: 0.5em;
 }
 .bi-info-square:hover {
