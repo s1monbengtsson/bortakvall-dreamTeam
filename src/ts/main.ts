@@ -1,9 +1,3 @@
-/**
- ********************************************************************************
-* IMPORTS
-*/
-
-
 import 'bootstrap/dist/css/bootstrap.css'
 import '../css/style.css'
 import '../css/media.css'
@@ -11,15 +5,8 @@ import '../css/media.css'
 import { fetchProducts, fetchOrder } from "./api"
 import { IData, IProduct, IOrder, ICustomerInfo } from "./interface"
 
-
-/**
- ********************************************************************************
-* VARIABLES
-*/
-
 let products: IData
 // let products: IProduct[] = []
-
 
 // localStorage starts
 let jsonCartItems = localStorage.getItem('Shopping cart') ?? '[]'
@@ -43,35 +30,32 @@ const renderCart = () => {
 }
 // localStorage ends
 
-console.log("cart items:", cartItems)
-
-
-const testOrder = await fetchOrder(
-    {
-        customer_first_name: 'Sean',
-        customer_last_name: 'Banan',
-        customer_address: 'Drottningatan 4b',
-        customer_postcode: '21211',
-        customer_city: 'Malmö',
-        customer_email: 'testhejsan@gmail.com',
-        customer_phone: '0723738495',
-        order_total: 48,
-        order_items: [
-            {
-                product_id: 6545,
-                qty: 3,
-                item_price: 8,
-                item_total: 24,
-            },
-            {
-                product_id: 6545,
-                qty: 3,
-                item_price: 8,
-                item_total: 24,
-            },
-        ],
-    }
-)
+// const testOrder = await fetchOrder(
+//     {
+//         customer_first_name: 'Sean',
+//         customer_last_name: 'Banan',
+//         customer_address: 'Drottningatan 4b',
+//         customer_postcode: '21211',
+//         customer_city: 'Malmö',
+//         customer_email: 'testhejsan@gmail.com',
+//         customer_phone: '0723738495',
+//         order_total: 48,
+//         order_items: [
+//             {
+//                 product_id: 6545,
+//                 qty: 3,
+//                 item_price: 8,
+//                 item_total: 24,
+//             },
+//             {
+//                 product_id: 6545,
+//                 qty: 3,
+//                 item_price: 8,
+//                 item_total: 24,
+//             },
+//         ],
+//     }
+// )
 // console.log(testOrder)
 
 // Cart total price starts
@@ -85,16 +69,7 @@ const countTotalPrice = () => {
     cartTotal = cartPrices.reduce((price, sum) => sum += price)
     localStorage.setItem('Total price', JSON.stringify(cartTotal))
 }
-
 // Cart total price ends
-
-
-
-/**
- ********************************************************************************
-* FUNCTIONS
-*/
-
 
 // Allt denna funktion ska göra är att hitta produkten man clickar på
 const findClickedProduct = async (clickedId: number): Promise<IProduct> => {
@@ -124,6 +99,7 @@ const renderCartItems = () => {
     .join('')
 }
 
+// Input field on every cart item starts
 document.querySelector('#cart-list')?.addEventListener('keyup', e => {
     const target = e.target as HTMLElement
     const clickedId = Number(target.dataset.inputId)
@@ -147,8 +123,9 @@ document.querySelector('#cart-list')?.addEventListener('focusout', e => {
         renderCart()
     }
 })
+// Input field on every cart item ends
 
-// Remove, + and - 
+// Remove, + and - starts
 document.querySelector('#cart-list')?.addEventListener('click', async e => {
     const target = e.target as HTMLElement
     const clickedId = Number(target.dataset.productId)
@@ -170,7 +147,7 @@ document.querySelector('#cart-list')?.addEventListener('click', async e => {
     }
     renderCart()
 })
-
+// Remove, + and - ends
 
 const getProducts = async (): Promise<void> => {
     document.querySelector('#spinner')!.classList.remove('hide')
@@ -183,11 +160,9 @@ const getProducts = async (): Promise<void> => {
         document.querySelector('#main')!.innerHTML += `<h2 class="p-5">❌</h2>`
     }
     document.querySelector('#spinner')!.classList.add('hide')
-    // console.log(products)
 }
 
 const renderProducts = (): void => {
-    console.log(products.status)
     document.querySelector('.product-main')!.innerHTML = products.data
         .map( prod => `
             <div class="col- 12 col-sm-6 col-md-6 col-lg-3 product-cards">
@@ -204,19 +179,11 @@ const renderProducts = (): void => {
         .join('')
 }
 
-
-
-
-/**
- ********************************************************************************
-* EVENT LISTENERS
-*/
-
 // Click event on each product
 document.querySelector('main')?.addEventListener('click', async e => {
     const target = e.target as HTMLElement
     const clickedId = Number(target.dataset.productId)
-    const clickedProduct = await findClickedProduct(clickedId)
+    const clickedProduct = cartItems.find(item => item.id === clickedId) as IProduct
 
     if (target.className.includes('product-wrap' || 'product-wrap-child')) {
 
@@ -256,13 +223,13 @@ document.querySelector('#title-cart')!.addEventListener('click', () => {
     document.body.style.overflow = 'hidden';
     
 })
-// close cart
+
+// Close cart
 document.querySelector('#cart-close')!.addEventListener('click', () => {
     document.querySelector('.cart-background')!.classList.remove('show')
     document.body.style.removeProperty('overflow');
 
 })
-
 
 // Remove items from local storage(cart)
 document.querySelector('#clear-cart-btn')?.addEventListener('click', async () => {
@@ -276,13 +243,7 @@ document.querySelector('#clear-cart-btn')?.addEventListener('click', async () =>
     },500)
 })
 
-/**
- ********************************************************************************
-* START
-*/
-
-
-// start info-section
+// Info-section start
 const renderInfo = (productInfo: IProduct) => {
     document.querySelector('.info-background')!.classList.remove('d-none')
     document.querySelector('.info-background')!.classList.add('show-info')
@@ -308,6 +269,7 @@ const renderInfo = (productInfo: IProduct) => {
     `
 }
 
+// Click event on info-section
 document.querySelector('.info-background')!.addEventListener('click', async e => {
     const target = e.target as HTMLElement
     const clickedId = Number(target.dataset.prodId)
@@ -344,11 +306,8 @@ document.querySelector('.info-background')!.addEventListener('click', async e =>
 
 
 // function that renders checkout-page and form to DOM
-
 const checkout = () => {
     cartItems.map(product => {
-        console.log('cart-item:', product)
-
         document.querySelector('.content-container')!.classList.add('d-none')
         document.querySelector('#title-cart')!.classList.add('d-none')
         document.querySelector('.cart-background')!.classList.remove('show')
@@ -375,7 +334,6 @@ const checkout = () => {
 
     // prefill form with customer data on page load
     const formAutoFill = () => {
-
         const customerFirstName = document.querySelector('#customer-first-name')! as HTMLInputElement
         const customerLastName = document.querySelector('#customer-last-name')! as HTMLInputElement
         const customerAddress = document.querySelector('#customer-address')! as HTMLInputElement
@@ -433,7 +391,6 @@ const renderForm = () => {
                     <input type="email" placeholder="Email" id="customer-email" required class="form-control form-input mb-3">
                 </div>
 
-
                 <div class="form-group">
                     <input type="checkbox" value="" id="customer-checkbox" class="form-check-input">
                     <label for="customer-checkbox" class="form-check-label">Jag har kontrollerat att informationen jag angett stämmer</label>
@@ -441,22 +398,19 @@ const renderForm = () => {
 
                 <button type="submit" class="send-order btn btn-primary my-3 py-2">Skicka beställning</button>
                 <button type="reset" class="empty-form btn btn-warning my-3 py-2">Töm formulär</button>
-
             </div> 
     `
     formAutoFill()
     
 }
 
-    // get json data from localStorage
-    let jsonCustomerData = localStorage.getItem('Customer data') ?? '[]'
+// get json data from localStorage
+let jsonCustomerData = localStorage.getItem('Customer data') ?? '[]'
 
-    // parse json data into object
-    let customerData: ICustomerInfo = JSON.parse(jsonCustomerData)
-
+// parse json data into object
+let customerData: ICustomerInfo = JSON.parse(jsonCustomerData)
 
 const saveCustomerData = () => {
-
     const customerFirstName = document.querySelector('#customer-first-name')! as HTMLInputElement
     const customerLastName = document.querySelector('#customer-last-name')! as HTMLInputElement
     const customerAddress = document.querySelector('#customer-address')! as HTMLInputElement
@@ -464,7 +418,6 @@ const saveCustomerData = () => {
     const customerCity = document.querySelector('#customer-city')! as HTMLInputElement
     const customerPhone = document.querySelector('#customer-phone')! as HTMLInputElement
     const customerEmail = document.querySelector('#customer-email')! as HTMLInputElement
-
 
     customerData = {
         customer_first_name: customerFirstName.value,
@@ -513,6 +466,5 @@ document.querySelector('.customer-details')!.addEventListener('reset', () => {
 
 /* functions that are called when the page loads */
 getProducts()
-
     
 renderCart()
