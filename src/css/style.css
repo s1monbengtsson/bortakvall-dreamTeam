@@ -3,7 +3,7 @@
     margin: 0;
     padding: 0;
     /* border: 1px solid black; */
-    outline: 1px solid rgb(205, 50, 50);
+    /* outline: 1px solid rgb(205, 50, 50); */
 }
 .hide {
     display: none;
@@ -35,10 +35,7 @@
 }
 
 .content-wrapper {
-    background-image: url("https://images.unsplash.com/photo-1576712967455-c8d22580e9be?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80");
-    background-position: bottom;
-    background-size: contain;
-    background-attachment: fixed;
+    background-color: #e6e6e6;
 }
 
 .content-container {
@@ -123,11 +120,29 @@
     margin-bottom: 0.5em;
 }
 .product-btn {
+    border: 1px solid #6495ed;
+    background-color: #fff;
     padding: 0 3rem;
     margin-bottom: 1rem;
     font-size: 0.8rem;
     font-weight: bold;
     width: 100%;
+    border-radius: 5px;
+    border-radius: 5px;
+    box-shadow: 1px 1px 10px #e5e5e5;
+}
+.product-btn:hover {
+    border: 1px solid #6495ed;
+    transform: scale(1.1);
+    transition: all 0.3s ease 0s;
+}
+.product-btn:active  {
+    box-shadow: 1px 1px 10px #e5e5e5;
+    border-radius: 15px;
+    transform: scale(0.9);
+    transition: all 0.3s ease 0s;
+    background: #6495ed;
+    border: 2px solid #6495ed;
 }
 .bi-info-square {
     font-size: 1.2em;
@@ -145,11 +160,6 @@
 
 .card-body {
     font-weight: bold;
-}
-.card-body > button:active {
-    transform: scale(0.9);
-    transition: all 0.3s ease 0s;
-
 }
 
 .card-img {

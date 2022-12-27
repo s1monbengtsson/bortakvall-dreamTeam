@@ -200,7 +200,7 @@ const renderProducts = (): void => {
                         <p id="product-price" class="card-text text-dark product-wrap-child" data-product-id="${prod.id}">${prod.price} kr</p>
                         <p><i class="product-wrap-child bi bi-info-square" id="info-icon" data-product-id="${prod.id}"></i></p>
                         
-                        <button class="btn btn-warning btn-span mb-0 py-2 product-wrap-child product-btn" data-product-id="${prod.id}">LÄGG I VARUKORG</button>
+                        <button class=" mb-0 py-2 product-wrap-child product-btn" data-product-id="${prod.id}">LÄGG I VARUKORG</button>
                     </div>
                 </div>
             </div>
@@ -309,7 +309,7 @@ const renderInfo = (productInfo: IProduct) => {
                     <span>kr</span>
                 </span>
             </p>
-            <button class="btn btn-warning m-2 p-2" data-prod-id="${productInfo.id}" style="font-weight: bold;">Lägg till i varukorg</button>
+            <button class="product-btn m-2 p-2" data-prod-id="${productInfo.id}" style="font-weight: bold;">Lägg till i varukorg</button>
         </div>
         <div class="info-section-r">
             <h3>Beskrivning</h3>
