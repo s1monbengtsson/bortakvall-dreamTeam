@@ -3,7 +3,7 @@
     margin: 0;
     padding: 0;
     /* border: 1px solid black; */
-    /* outline: 1px solid rgb(205, 50, 50); */
+    outline: 1px solid rgb(205, 50, 50);
 }
 .hide {
     display: none;
@@ -43,6 +43,7 @@
 
 .content-container {
     width: 85vw;
+    max-width: 1710px;
     margin: 0 auto;
 }
 
@@ -108,9 +109,15 @@
 }
 
 /* styling for product page */
-
+.product-main {
+    display: flex;
+    justify-content: center;
+}
 .product-main {
     margin: 0 auto;
+}
+.product-cards {
+    max-width: 275px;
 }
 .product-wrap-child > p {
     margin-bottom: 0.5em;
