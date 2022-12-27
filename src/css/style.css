@@ -2,7 +2,7 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    /* border: 1px solid black; */
+    /* outline: 1px solid black; */
 }
 
 .hide {
@@ -383,3 +383,17 @@
     background: black
 }
 
+.checkout-wrap {
+    display: flex;
+    gap: 1em;
+    padding: 1em;
+}
+#order-content {
+    max-width: 50%;
+}
+.checkout-btn-wrap, #check-box {
+    margin-top: 1em;
+    display: flex;
+    justify-content: center;
+    gap: 2em;
+}

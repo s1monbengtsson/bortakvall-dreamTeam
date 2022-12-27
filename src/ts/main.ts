@@ -319,7 +319,6 @@ document.querySelector('.info-background')!.addEventListener('click', async e =>
 const checkout = () => {
     cartItems.map(product => {
         // console.log('cart-item:', product)
-
         document.querySelector('.content-wrapper')!.classList.add('banner-checkout')
         document.querySelector('.content-display')!.classList.add('d-none')
         document.querySelector('#title-cart')!.classList.add('d-none')
