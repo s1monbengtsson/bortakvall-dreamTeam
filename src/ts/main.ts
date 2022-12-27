@@ -197,7 +197,7 @@ const renderProducts = (): void => {
                     <div class="card-body product-wrap-child" data-product-id="${prod.id}">
                         <p id="product-name" class="card-title text-dark product-wrap-child" data-product-id="${prod.id}">${prod.name}</p>
                         <p id="product-price" class="card-text text-dark product-wrap-child" data-product-id="${prod.id}">${prod.price} kr</p>
-                        <p><i class="bi bi-info-square" id="info-icon" data-id="${prod.id}"></i></p>
+                        <p><i class="product-wrap-child bi bi-info-square" id="info-icon" data-product-id="${prod.id}"></i></p>
                         
                         <button class="btn btn-warning btn-span mb-0 py-2 product-wrap-child product-btn" data-product-id="${prod.id}">LÄGG I VARUKORG</button>
                     </div>
@@ -215,19 +215,20 @@ const renderProducts = (): void => {
 * EVENT LISTENERS
 */
 // info icon :hover to show description tooltip
-document.querySelector('main')?.addEventListener('mouseover', async (e) => {
-    const target = e.target as HTMLElement
-    if (target.id === 'info-icon') {
-        let prod = await findClickedProduct(Number(target.dataset.id))
-        console.log(prod.description)
-        document.querySelector('#tooltip')!.innerHTML = prod.description
-    }
-})
+// document.querySelector('main')?.addEventListener('mouseover', async (e) => {
+//     const target = e.target as HTMLElement
+//     if (target.id === 'info-icon') {
+//         let prod = await findClickedProduct(Number(target.dataset.id))
+//         console.log(prod.description)
+//         document.querySelector('#tooltip')!.innerHTML = prod.description
+//     }
+// })
 
 // Click event on each product
 document.querySelector('main')?.addEventListener('click', async e => {
     const target = e.target as HTMLElement
-    console.log(target.id)
+    console.log(target)
+
     const clickedId = Number(target.dataset.productId)
     // console.log('clicked product id:', clickedId)
     const clickedProduct = await findClickedProduct(clickedId)
@@ -254,10 +255,8 @@ document.querySelector('main')?.addEventListener('click', async e => {
             renderCart()
 
             document.querySelector('#cart-wrap')!.classList.add('shake')
-            document.querySelector('#cart-wrap')!.classList.add('move')
             setTimeout( () => {
                 document.querySelector('#cart-wrap')!.classList.remove('shake')                
-                document.querySelector('#cart-wrap')!.classList.remove('move')
             },950)
         }
         // Om man klickar någon annan stans på produkten. (info)
