@@ -447,9 +447,9 @@
 .increase {
     padding: 0.5em;
 }
-.decrease,
+.decrease:hover,
 .increase:hover {
-    cursor: pointer;
+    cursor: pointer;    
 }
 .cart-remove-item {
     margin-left: 1rem;
