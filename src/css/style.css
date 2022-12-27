@@ -3,8 +3,8 @@
     margin: 0;
     padding: 0;
     /* border: 1px solid black; */
+    /* outline: 3px solid rgb(205, 50, 50); */
 }
-
 .hide {
     display: none;
 }
@@ -140,6 +140,11 @@
 .card-body {
     font-weight: bold;
 }
+.card-body > button:active {
+    transform: scale(0.9);
+    transition: all 0.3s ease 0s;
+
+}
 
 .card-img {
     cursor: pointer;
@@ -149,6 +154,7 @@
     width: 75%;
     margin: 0 auto;
 }
+
 
 /* start info-section */
 .info-background {
