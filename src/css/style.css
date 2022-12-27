@@ -178,7 +178,7 @@
 .info-close {
     padding-top: 3em;
 }
-.info-close:hover {
+.info-close i:hover {
     cursor: pointer;
 }
 .info-wrap {

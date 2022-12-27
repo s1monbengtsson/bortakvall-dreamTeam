@@ -98,10 +98,8 @@ const countTotalPrice = () => {
 
 // Allt denna funktion ska göra är att hitta produkten man clickar på
 const findClickedProduct = async (clickedId: number): Promise<IProduct> => {
-
     const products = await fetchProducts()
     const foundProduct: IProduct = products.data.find(prod => clickedId === prod.id) as IProduct
-    // console.log('foundProduct:', foundProduct)
     return foundProduct
 }
 
@@ -133,21 +131,22 @@ document.querySelector('#cart-list')?.addEventListener('keyup', e => {
     const clickedId = Number(target.dataset.inputId)
     if (!clickedId) return
     const inCartItem = cartItems.find(item => item.id === clickedId) as IProduct
-    
     const inputField = document.querySelector(`#input-${clickedId}`) as HTMLInputElement
-    console.log(Number(inputField.value))
-
     inCartItem.qty = Number(inputField.value)
-    
     saveCart()
-
     const itemTotal = document.querySelector(`#item-price-${clickedId}`) as HTMLParagraphElement
     itemTotal.textContent = `${inCartItem.price * inCartItem.qty} kr`
-
     renderTotalPrice()
+})
 
-    if(target.className.includes('prod-qty')) {
-        // console.log(inCartItem.qty)
+document.querySelector('#cart-list')?.addEventListener('focusout', e => {
+    const target = e.target as HTMLElement
+    const clickedId = Number(target.dataset.inputId)
+    if (!clickedId) return
+    const inCartItem = cartItems.find(item => item.id === clickedId) as IProduct
+    if (!(inCartItem.qty > 0)) {
+        cartItems.splice(cartItems.indexOf(inCartItem), 1)
+        renderCart()
     }
 })
 
@@ -232,25 +231,20 @@ document.querySelector('main')?.addEventListener('click', async e => {
     console.log(target)
 
     const clickedId = Number(target.dataset.productId)
-    // console.log('clicked product id:', clickedId)
     const clickedProduct = await findClickedProduct(clickedId)
 
     if (target.className.includes('product-wrap' || 'product-wrap-child')) {
 
         // Om man klickar på 'Lägg till i varukorgen' knappen på en produkt
         if (target.tagName === 'BUTTON') {
-            // console.log(clickedProduct)
-
             const inCartIds = cartItems.map(item => item.id)       
             const inCartItem = cartItems.find(item => item.id === clickedId) as IProduct  // Hitta produkten i cart som har samma ID som produkten jag klickade på
-            // console.log(clickedId)
 
             if (!inCartItem || !inCartIds.includes(clickedId)) {
                 clickedProduct.qty = 1
                 cartItems.push(clickedProduct)
             }
             else if (inCartIds.includes(clickedId)) {
-                // console.log('already here')
                 inCartItem.qty++
             }
 
@@ -263,11 +257,8 @@ document.querySelector('main')?.addEventListener('click', async e => {
         }
         // Om man klickar någon annan stans på produkten. (info)
         else {
-            console.log('viewing product')
-
             renderInfo(clickedProduct)
             document.body.style.overflow = 'hidden';
-            findClickedProduct(clickedId)
         }
     }
 })
@@ -309,27 +300,45 @@ const renderInfo = (productInfo: IProduct) => {
     document.querySelector('.info-background')!.classList.remove('d-none')
     document.querySelector('.info-background')!.classList.add('show-info')
     document.querySelector('#info-section')!.innerHTML = `    
-    <div class="info-section-l">
-        <img src="https://www.bortakvall.se/${productInfo.images.large}" alt="${productInfo.name}" class="info-img">
-        <p class="info-name" class="mt-3">${productInfo.name}<span class="info-price">${productInfo.price}<span>kr</span></span></p>
-        <button class="btn btn-warning m-2 p-2" data-prod-id="${productInfo.id}" style="font-weight: bold;">Lägg till i varukorg</button>
-    </div>
-    <div class="info-section-r"><h3>Beskrivning</h3>${productInfo.description}
-    <p class="info-close"><i class="bi bi-x-lg"></i></p>
-    </div>
+        <div class="info-section-l">
+            <img src="https://www.bortakvall.se/${productInfo.images.large}" alt="${productInfo.name}" class="info-img">
+            <p class="info-name" class="mt-3">
+                ${productInfo.name}
+                <span class="info-price">
+                    ${productInfo.price}
+                    <span>kr</span>
+                </span>
+            </p>
+            <button class="btn btn-warning m-2 p-2" data-prod-id="${productInfo.id}" style="font-weight: bold;">Lägg till i varukorg</button>
+        </div>
+        <div class="info-section-r">
+            <h3>Beskrivning</h3>
+            ${productInfo.description}
+            <p class="info-close">
+                <i class="bi bi-x-lg close-info"></i>
+            </p>
+        </div>
     `
 }
 
 document.querySelector('.info-background')!.addEventListener('click', async e => {
     const target = e.target as HTMLElement
-    if (target.tagName === 'BUTTON') {
-        const clickedId = Number(target.dataset.prodId)
-        const clickedProduct = await findClickedProduct(clickedId)
-        
-        // Push item into cartItems
-        cartItems.push(clickedProduct)
+    const clickedId = Number(target.dataset.prodId)
+    const clickedProduct = await findClickedProduct(clickedId)
+
+    if (target.tagName === 'BUTTON') {        
+        const inCartIds = cartItems.map(item => item.id)       
+        const inCartItem = cartItems.find(item => item.id === clickedId) as IProduct  // Hitta produkten i cart som har samma ID som produkten jag klickade på
+
+        if (!inCartItem || !inCartIds.includes(clickedId)) {
+            clickedProduct.qty = 1
+            cartItems.push(clickedProduct)
+        }
+        else if (inCartIds.includes(clickedId)) {
+            inCartItem.qty++
+        }
+
         renderCart()
-        console.log(cartTotal)
         
         document.body.style.removeProperty('overflow');
         document.querySelector('#cart-wrap')!.classList.add('shake')
@@ -338,7 +347,7 @@ document.querySelector('.info-background')!.addEventListener('click', async e =>
             document.querySelector('#cart-wrap')!.classList.remove('shake')                
         },950)
     }
-    else {
+    else if (target.className.includes('close-info')) {
         document.querySelector('.info-background')!.classList.add('d-none')
         document.body.style.removeProperty('overflow');
     }
