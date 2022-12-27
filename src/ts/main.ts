@@ -200,7 +200,7 @@ const renderProducts = (): void => {
                         <p id="product-price" class="card-text text-dark product-wrap-child" data-product-id="${prod.id}">${prod.price} kr</p>
                         <p><i class="product-wrap-child bi bi-info-square" id="info-icon" data-product-id="${prod.id}"></i></p>
                         
-                        <button class=" mb-0 py-2 product-wrap-child product-btn" data-product-id="${prod.id}">LÄGG I VARUKORG</button>
+                        <button class="product-wrap-child product-btn" data-product-id="${prod.id}">LÄGG I VARUKORG</button>
                     </div>
                 </div>
             </div>
