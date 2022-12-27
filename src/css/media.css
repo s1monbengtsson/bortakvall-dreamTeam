@@ -130,7 +130,7 @@
 /* Checkout section starts */
 .checkout-wrap {
     display: flex;
-    flex-direction: column;
+    flex-direction: column-reverse;
     gap: 1em;
     padding: 1em;
     margin-bottom: 2em;
