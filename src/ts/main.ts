@@ -181,7 +181,7 @@ const getProducts = async (): Promise<void> => {
         renderProducts()  
     }
     catch {
-        document.querySelector('#nav-output')!.innerHTML = `<h2 class="nav-item px-2">🚨 KUNDE INTE HÄMTA DATA FRÅN SERVER 🚨 <br> försök igen senare...</h2>`
+        document.querySelector('#output')!.innerHTML = `<h2 class="nav-item px-2">🚨 KUNDE INTE HÄMTA DATA FRÅN SERVER 🚨 <br> försök igen senare...</h2>`
         document.querySelector('#main')!.innerHTML = `<h2 class="p-5">❌</h2>`
     }
     document.querySelector('#spinner')!.classList.add('hide')
@@ -189,7 +189,12 @@ const getProducts = async (): Promise<void> => {
 }
 
 const renderProducts = (): void => {
-    // console.log(products.status)
+    const itemsInStock = products.data
+    .map( prod => prod.stock_status)
+    .filter(x => x === 'instock').length
+
+    document.querySelector('#output')!.innerHTML = `Vi har ${itemsInStock} av ${products.data.length} produkter i lager`
+
     document.querySelector('.product-main')!.innerHTML = products.data
         .map( prod => `
             <div class="col- 12 col-sm-6 col-md-6 col-lg-3 product-cards">
@@ -228,7 +233,7 @@ const renderProducts = (): void => {
 // Click event on each product
 document.querySelector('main')?.addEventListener('click', async e => {
     const target = e.target as HTMLElement
-    console.log(target)
+    // console.log(target)
 
     const clickedId = Number(target.dataset.productId)
     const clickedProduct = await findClickedProduct(clickedId)

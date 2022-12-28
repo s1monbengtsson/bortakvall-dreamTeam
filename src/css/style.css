@@ -48,6 +48,11 @@
     font-size: 0.85rem;
     font-weight: bold;
 }
+.status-output {
+    background-color: #d6576c;
+    padding: 1rem;
+    color: #fff;
+}
 /* styling for product page */
 .product-main {
     display: flex;
