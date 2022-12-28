@@ -203,7 +203,7 @@ document.querySelector('main')?.addEventListener('click', async e => {
     // console.log(target)
 
     const clickedId = Number(target.dataset.productId)
-    const clickedProduct = cartItems.find(item => item.id === clickedId) as IProduct
+    const clickedProduct = await findClickedProduct(clickedId)
 
     if (target.className.includes('product-wrap-child')) {
 
