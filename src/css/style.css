@@ -532,3 +532,15 @@ footer > p {
     padding: 1rem 0;
 }
 /* footer end */
+
+.no-more-candy {
+    position: fixed;
+    top: 40%;
+    left: 30%;
+    right: 30%;
+    background-color: rgb(214, 87, 108);
+    border-radius: 15px;
+    padding: 1rem 2rem;
+    text-align: center;
+    color: white;
+}

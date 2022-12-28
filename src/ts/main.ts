@@ -198,6 +198,15 @@ const renderProducts = (): void => {
 
 }
 
+const noMoreCandy = (candy: IProduct) => {
+    const noMoreCandy = document.querySelector('#no-more-candy')!
+    noMoreCandy.innerHTML = `<p>${candy.name} är inte längre tillgängligt.</p>`
+    noMoreCandy.classList.remove('hide')
+    setTimeout(() => {
+        noMoreCandy.classList.add('hide')
+    }, 2000)
+}
+
 // Click event on each product
 document.querySelector('main')?.addEventListener('click', async e => {
     const target = e.target as HTMLElement
@@ -222,6 +231,7 @@ document.querySelector('main')?.addEventListener('click', async e => {
         else if (inCartIds.includes(clickedId)) {
 
             if (!(inCartItem.stock_quantity > inCartItem.qty)) {
+                noMoreCandy(inCartItem)
                 console.log(`No more in stock, max amount of ${inCartItem.name} is ${inCartItem.stock_quantity}`)
                 return
             }
