@@ -69,6 +69,11 @@
 .product-wrap-child > p {
     margin-bottom: 0.5rem;
 }
+#stock-qty {
+    display: block;
+    font-size: 0.95rem;
+    font-weight: 400;
+}
 .product-btn {
     border: 1px solid #6495ed;
     background-color: #fff;
@@ -76,7 +81,7 @@
     margin-bottom: 1rem;
     font-size: 0.8rem;
     font-weight: bold;
-    width: 100%;
+    width: 90%;
     border-radius: 5px;
     box-shadow: 1px 1px 10px #e5e5e5;
 }
@@ -109,6 +114,7 @@
 }
 .card-body {
     font-weight: bold;
+    padding: 0;
 }
 .card-img {
     cursor: pointer;

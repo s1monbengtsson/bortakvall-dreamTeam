@@ -212,15 +212,14 @@ const renderProducts = (): void => {
                     <p><i class="product-wrap-child bi bi-info-square" id="info-icon" data-product-id="${prod.id}"></i></p>
 
                     <button class="product-wrap-child product-btn" data-product-id="${prod.id}" ${(prod.stock_status === 'outofstock') ? 'disabled' : ''}>${(prod.stock_status === 'outofstock') ? 'SLUT I LAGER' : 'LÄGG TILL I VARUKORG'}</button>
+                    <p id="stock-qty">Antal i lager: ${(prod.stock_quantity === null) ? '0': prod.stock_quantity} </p>
                 </div>
             </div>
         </div>
     `)
     .join('')
 
-
 }
-
 
 /**
  ********************************************************************************
