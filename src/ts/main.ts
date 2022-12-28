@@ -189,11 +189,14 @@ const getProducts = async (): Promise<void> => {
 }
 
 const renderProducts = (): void => {
-    const itemsInStock = products.data
+    const itemsInStock = products.data // räknar antal produkter instock och totalt antal produkter
     .map( prod => prod.stock_status)
     .filter(x => x === 'instock').length
-
     document.querySelector('#output')!.innerHTML = `Vi har ${itemsInStock} av ${products.data.length} produkter i lager`
+     
+    products.data // sorteras efter produktnamn
+    .sort((a, b) => a.name
+    .localeCompare(b.name))
 
     document.querySelector('.product-main')!.innerHTML = products.data
         .map( prod => `
