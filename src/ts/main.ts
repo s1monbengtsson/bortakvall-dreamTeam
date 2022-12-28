@@ -420,13 +420,16 @@ document.querySelector('#checkout-btn')!.addEventListener('click', e => {
 
 
 
+
+
 // listen for submits, and save customer data to localStorage
 form.addEventListener('submit', async e => {
     e.preventDefault()
     saveCustomerData()
 
+    const orderedItems = cartItems.map(item => ({product_id: item.id, qty: item.qty, item_price: item.price, item_total:item.price*item.qty}))
+
     // object containing order content
-    for(let i = 0; i < cartItems.length; i++){
     const newOrder: IOrder =   {
             customer_first_name: customerFirstName.value,
             customer_last_name: customerLastName.value,
@@ -436,27 +439,22 @@ form.addEventListener('submit', async e => {
             customer_email: customerEmail.value,
             customer_phone: customerPhone.value,
             order_total: cartTotal,
-            order_items: [
-                {
-                    product_id: cartItems[i].id,
-                    qty: cartItems[i].qty,
-                    item_price: cartItems[i].price,
-                    item_total: cartItems[i].price * cartItems[i].qty,
-                },
+            order_items: orderedItems
 
-            ],
         }
     
 
         // posting new order to server
         await createNewOrder(newOrder)
-        console.log('test-order', newOrder)
+        // console.log('test-order', newOrder)
 
-        console.log('cartItems:', cartItems)
-        
-    }
-    alert('Tack för din beställning!')
+        // console.log('cartItems:', cartItems)
+
+    
+
 })
+
+
 
 
 
