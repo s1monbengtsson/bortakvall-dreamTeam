@@ -120,7 +120,7 @@ const renderCartItems = () => {
                 
                 <p class="card-text text-dark" id="item-price-${item.id}">${item.price * item.qty} kr</p>
             </div>
-            <button class="btn btn-danger cart-remove-item" data-product-id="${item.id}"><i class="bi bi-trash cart-remove-item-i" data-product-id="${item.id}"></i></button>
+            <button class="cart-remove-item" data-product-id="${item.id}"><i class="bi bi-trash cart-remove-item-i" data-product-id="${item.id}"></i></button>
         </li>
     `)
     .join('')
