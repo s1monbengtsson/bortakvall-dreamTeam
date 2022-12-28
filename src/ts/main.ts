@@ -91,9 +91,9 @@ const renderCartItems = () => {
                     <input class="prod-qty" data-input-id="${item.id}" id="input-${item.id}" value="${item.qty}" style="width: 30px; text-align: center">
                     <span data-product-id="${item.id}" class="increase">+</span>
                 </p>
-                <p class="card-text text-dark" id="cart-item-price">${item.price} kr/st  </p>
+                <p class="card-text-cart text-dark" id="cart-item-price">${item.price} kr/st  </p>
                 
-                <p class="card-text text-dark" id="item-price-${item.id}">${item.price * item.qty} kr</p>
+                <p class="card-text-cart text-dark" id="item-price-${item.id}">${item.price * item.qty} kr</p>
             </div>
             <button class="cart-remove-item" data-product-id="${item.id}"><i class="bi bi-trash cart-remove-item-i" data-product-id="${item.id}"></i></button>
         </li>
@@ -165,8 +165,6 @@ const getProducts = async (): Promise<void> => {
 }
 
 const renderProducts = (): void => {
-
-    console.log(products)
     console.log(products.data)
     const itemsInStock = products.data // räknar antal produkter instock och totalt antal produkter
     .map( prod => prod.stock_status)
@@ -183,11 +181,14 @@ const renderProducts = (): void => {
             <div class="card product-wrap border-0">
                 <img src="https://www.bortakvall.se${prod.images.thumbnail}" alt="${prod.name}" class="card-img-top card-img product-wrap-child" data-product-id="${prod.id}">
                 <div class="card-body">
-                    <p id="product-name" class="card-title text-dark product-wrap-child" data-product-id="${prod.id}">${prod.name}</p>
+                    <p id="product-name" class="card-title product-wrap-child" data-product-id="${prod.id}">${prod.name}</p>
                     <p id="product-price" class="card-text text-dark">${prod.price} kr</p>
-                    <p><i class="product-wrap-child bi bi-info-square" id="info-icon" data-product-id="${prod.id}"></i></p>
-
-                    <button class="product-wrap-child product-btn" data-product-id="${prod.id}" ${(prod.stock_status === 'outofstock') ? 'disabled' : ''}>${(prod.stock_status === 'outofstock') ? 'SLUT I LAGER' : 'LÄGG TILL I VARUKORG'}</button>
+                    <p class="info-icon-wrap">
+                        <i class="product-wrap-child bi bi-info-square" id="info-icon" data-product-id="${prod.id}"></i>
+                    </p>
+                    <button class="product-wrap-child product-btn ${(prod.stock_status === 'outofstock') ? 'product-btn-outofstock' : ''}" data-product-id="${prod.id}" ${(prod.stock_status === 'outofstock') ? 'disabled' : ''}>
+                        ${(prod.stock_status === 'outofstock') ? 'SLUT I LAGER' : 'LÄGG TILL I VARUKORG'}
+                    </button>
                 </div>
             </div>
         </div>
