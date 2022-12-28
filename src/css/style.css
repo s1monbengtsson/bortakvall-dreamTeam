@@ -63,6 +63,9 @@
 .product-cards {
     max-width: 275px;
 }
+.product-wrap-child {
+    cursor: pointer;
+}
 .product-wrap-child > p {
     margin-bottom: 0.5rem;
 }

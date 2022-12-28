@@ -189,34 +189,35 @@ const getProducts = async (): Promise<void> => {
 }
 
 const renderProducts = (): void => {
+    console.log(products.data)
     const itemsInStock = products.data // räknar antal produkter instock och totalt antal produkter
     .map( prod => prod.stock_status)
     .filter(x => x === 'instock').length
-    document.querySelector('#output')!.innerHTML = `Vi har ${itemsInStock} av ${products.data.length} produkter i lager`
+    document.querySelector('#output')!.innerHTML = `Vi har ${itemsInStock} st av ${products.data.length} st produkter i lager`
      
     products.data // sorteras efter produktnamn
     .sort((a, b) => a.name
     .localeCompare(b.name))
 
     document.querySelector('.product-main')!.innerHTML = products.data
-        .map( prod => `
-            <div class="col- 12 col-sm-6 col-md-6 col-lg-3 product-cards">
-                <div class="card product-wrap border-0"  data-product-id="${prod.id}">
-                    <img src="https://www.bortakvall.se${prod.images.thumbnail}" alt="${prod.name}" class="card-img-top card-img product-wrap-child" data-product-id="${prod.id}">
-                    <div class="card-body product-wrap-child" data-product-id="${prod.id}">
-                        <p id="product-name" class="card-title text-dark product-wrap-child" data-product-id="${prod.id}">${prod.name}</p>
-                        <p id="product-price" class="card-text text-dark product-wrap-child" data-product-id="${prod.id}">${prod.price} kr</p>
-                        <p><i class="product-wrap-child bi bi-info-square" id="info-icon" data-product-id="${prod.id}"></i></p>
-                        
-                        <button class="product-wrap-child product-btn" data-product-id="${prod.id}">LÄGG I VARUKORG</button>
-                    </div>
+    .map( prod => `
+        <div class="col- 12 col-sm-6 col-md-6 col-lg-3 product-cards">
+            <div class="card product-wrap border-0">
+                <img src="https://www.bortakvall.se${prod.images.thumbnail}" alt="${prod.name}" class="card-img-top card-img product-wrap-child" data-product-id="${prod.id}">
+                <div class="card-body">
+                    <p id="product-name" class="card-title text-dark product-wrap-child" data-product-id="${prod.id}">${prod.name}</p>
+                    <p id="product-price" class="card-text text-dark">${prod.price} kr</p>
+                    <p><i class="product-wrap-child bi bi-info-square" id="info-icon" data-product-id="${prod.id}"></i></p>
+
+                    <button class="product-wrap-child product-btn" data-product-id="${prod.id}" ${(prod.stock_status === 'outofstock') ? 'disabled' : ''}>${(prod.stock_status === 'outofstock') ? 'SLUT I LAGER' : 'LÄGG TILL I VARUKORG'}</button>
                 </div>
             </div>
-        `)
-        .join('')
+        </div>
+    `)
+    .join('')
+
+
 }
-
-
 
 
 /**
@@ -241,7 +242,7 @@ document.querySelector('main')?.addEventListener('click', async e => {
     const clickedId = Number(target.dataset.productId)
     const clickedProduct = await findClickedProduct(clickedId)
 
-    if (target.className.includes('product-wrap' || 'product-wrap-child')) {
+    if (target.className.includes('product-wrap-child')) {
 
         // Om man klickar på 'Lägg till i varukorgen' knappen på en produkt
         if (target.tagName === 'BUTTON') {
@@ -317,7 +318,7 @@ const renderInfo = (productInfo: IProduct) => {
                     <span>kr</span>
                 </span>
             </p>
-            <button class="product-btn m-2 p-2" data-prod-id="${productInfo.id}" style="font-weight: bold;">Lägg till i varukorg</button>
+            <button class="product-btn m-2 p-2" data-prod-id="${productInfo.id}" style="font-weight: bold;" ${(productInfo.stock_status === 'outofstock') ? 'disabled' : ''}>${(productInfo.stock_status === 'outofstock') ? 'SLUT I LAGER' : 'LÄGG TILL I VARUKORG'}</button>
         </div>
         <div class="info-section-r">
             <h3>Beskrivning</h3>
