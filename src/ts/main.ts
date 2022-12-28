@@ -189,6 +189,8 @@ const getProducts = async (): Promise<void> => {
 }
 
 const renderProducts = (): void => {
+
+    console.log(products)
     console.log(products.data)
     const itemsInStock = products.data // räknar antal produkter instock och totalt antal produkter
     .map( prod => prod.stock_status)
