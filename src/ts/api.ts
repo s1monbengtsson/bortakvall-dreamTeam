@@ -15,6 +15,7 @@ export const fetchProducts = async () => {
         document.querySelector('#nav-output')!.innerHTML = `<h2 class="nav-item px-2">${res.status} ${res.statusText}</h2>`
 		
 		throw new Error(`Could not get data, reason: ${res.status} ${res.statusText}`)
+        
 	}
   
 	return await res.json() as IData

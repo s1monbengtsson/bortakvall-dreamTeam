@@ -85,15 +85,17 @@ const renderCartItems = () => {
             <img class="cart-image" src="https://www.bortakvall.se${item.images.thumbnail}" alt="${item.name}">
             <div class="card-body cart-descript">
                 <p class="card-title text-dark">${item.name}</p>
+                
                 <p class="cart-adjust">
                     <span data-product-id="${item.id}" class="decrease">-</span>
                     <input class="prod-qty" data-input-id="${item.id}" id="input-${item.id}" value="${item.qty}" style="width: 30px; text-align: center">
                     <span data-product-id="${item.id}" class="increase">+</span>
                 </p>
                 <p class="card-text text-dark" id="cart-item-price">${item.price} kr/st  </p>
+                
                 <p class="card-text text-dark" id="item-price-${item.id}">${item.price * item.qty} kr</p>
             </div>
-            <button class="btn btn-danger cart-remove-item" data-product-id="${item.id}"><i class="bi bi-trash cart-remove-item-i" data-product-id="${item.id}"></i></button>
+            <button class="cart-remove-item" data-product-id="${item.id}"><i class="bi bi-trash cart-remove-item-i" data-product-id="${item.id}"></i></button>
         </li>
     `)
     .join('')
@@ -156,36 +158,52 @@ const getProducts = async (): Promise<void> => {
         renderProducts()  
     }
     catch {
-        document.querySelector('#nav-output')!.innerHTML += `<h2 class="nav-item px-2">🚨 KUNDE INTE HÄMTA DATA FRÅN SERVER 🚨 <br> försök igen senare...</h2>`
-        document.querySelector('#main')!.innerHTML += `<h2 class="p-5">❌</h2>`
+        document.querySelector('#output')!.innerHTML = `<h2 class="nav-item px-2">🚨 KUNDE INTE HÄMTA DATA FRÅN SERVER 🚨 <br> försök igen senare...</h2>`
+        document.querySelector('#main')!.innerHTML = `<h2 class="p-5">❌</h2>`
     }
     document.querySelector('#spinner')!.classList.add('hide')
 }
 
 const renderProducts = (): void => {
+    console.log(products.data)
+    const itemsInStock = products.data // räknar antal produkter instock och totalt antal produkter
+    .map( prod => prod.stock_status)
+    .filter(x => x === 'instock').length
+    document.querySelector('#output')!.innerHTML = `Vi har ${itemsInStock} st av ${products.data.length} st produkter i lager`
+     
+    products.data // sorteras efter produktnamn
+    .sort((a, b) => a.name
+    .localeCompare(b.name))
+
     document.querySelector('.product-main')!.innerHTML = products.data
-        .map( prod => `
-            <div class="col- 12 col-sm-6 col-md-6 col-lg-3 product-cards">
-                <div class="card product-wrap border-0"  data-product-id="${prod.id}">
-                    <img src="https://www.bortakvall.se${prod.images.thumbnail}" alt="${prod.name}" class="card-img-top card-img product-wrap-child" data-product-id="${prod.id}">
-                    <div class="card-body product-wrap-child" data-product-id="${prod.id}">
-                        <p id="product-name" class="card-title text-dark product-wrap-child" data-product-id="${prod.id}">${prod.name}</p>
-                        <p id="product-price" class="card-text text-dark product-wrap-child" data-product-id="${prod.id}">${prod.price} kr</p>
-                        <button class="btn btn-warning btn-span mb-0 py-1 product-wrap-child product-btn" data-product-id="${prod.id}">LÄGG I VARUKORG</button>
-                    </div>
+    .map( prod => `
+        <div class="col- 12 col-sm-6 col-md-6 col-lg-3 product-cards">
+            <div class="card product-wrap border-0">
+                <img src="https://www.bortakvall.se${prod.images.thumbnail}" alt="${prod.name}" class="card-img-top card-img product-wrap-child" data-product-id="${prod.id}">
+                <div class="card-body">
+                    <p id="product-name" class="card-title text-dark product-wrap-child" data-product-id="${prod.id}">${prod.name}</p>
+                    <p id="product-price" class="card-text text-dark">${prod.price} kr</p>
+                    <p><i class="product-wrap-child bi bi-info-square" id="info-icon" data-product-id="${prod.id}"></i></p>
+
+                    <button class="product-wrap-child product-btn" data-product-id="${prod.id}" ${(prod.stock_status === 'outofstock') ? 'disabled' : ''}>${(prod.stock_status === 'outofstock') ? 'SLUT I LAGER' : 'LÄGG TILL I VARUKORG'}</button>
                 </div>
             </div>
-        `)
-        .join('')
+        </div>
+    `)
+    .join('')
+
+
 }
 
 // Click event on each product
 document.querySelector('main')?.addEventListener('click', async e => {
     const target = e.target as HTMLElement
+    // console.log(target)
+
     const clickedId = Number(target.dataset.productId)
     const clickedProduct = cartItems.find(item => item.id === clickedId) as IProduct
 
-    if (target.className.includes('product-wrap' || 'product-wrap-child')) {
+    if (target.className.includes('product-wrap-child')) {
 
         // Om man klickar på 'Lägg till i varukorgen' knappen på en produkt
         if (target.tagName === 'BUTTON') {
@@ -203,10 +221,8 @@ document.querySelector('main')?.addEventListener('click', async e => {
             renderCart()
 
             document.querySelector('#cart-wrap')!.classList.add('shake')
-            document.querySelector('#cart-wrap')!.classList.add('move')
             setTimeout( () => {
                 document.querySelector('#cart-wrap')!.classList.remove('shake')                
-                document.querySelector('#cart-wrap')!.classList.remove('move')
             },950)
         }
         // Om man klickar någon annan stans på produkten. (info)
@@ -257,7 +273,7 @@ const renderInfo = (productInfo: IProduct) => {
                     <span>kr</span>
                 </span>
             </p>
-            <button class="btn btn-warning m-2 p-2" data-prod-id="${productInfo.id}" style="font-weight: bold;">Lägg till i varukorg</button>
+            <button class="product-btn m-2 p-2" data-prod-id="${productInfo.id}" style="font-weight: bold;" ${(productInfo.stock_status === 'outofstock') ? 'disabled' : ''}>${(productInfo.stock_status === 'outofstock') ? 'SLUT I LAGER' : 'LÄGG TILL I VARUKORG'}</button>
         </div>
         <div class="info-section-r">
             <h3>Beskrivning</h3>
