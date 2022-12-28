@@ -186,7 +186,9 @@ const renderProducts = (): void => {
                     <p class="info-icon-wrap">
                         <i class="product-wrap-child bi bi-info-square" id="info-icon" data-product-id="${prod.id}"></i>
                     </p>
-                    <button class="product-wrap-child product-btn" data-product-id="${prod.id}" ${(prod.stock_status === 'outofstock') ? 'disabled' : ''}>${(prod.stock_status === 'outofstock') ? 'SLUT I LAGER' : 'LÄGG TILL I VARUKORG'}</button>
+                    <button class="product-wrap-child product-btn ${(prod.stock_status === 'outofstock') ? 'product-btn-outofstock' : ''}" data-product-id="${prod.id}" ${(prod.stock_status === 'outofstock') ? 'disabled' : ''}>
+                        ${(prod.stock_status === 'outofstock') ? 'SLUT I LAGER' : 'LÄGG TILL I VARUKORG'}
+                    </button>
                 </div>
             </div>
         </div>

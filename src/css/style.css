@@ -81,12 +81,25 @@
     box-shadow: 1px 1px 10px #e5e5e5;
     color: white;
 }
+.product-btn-outofstock {
+    background: white;
+    color: #6495ed;
+    border: 1px solid rgb(100, 149, 237);
+}
+
 .product-btn:hover {
     transform: scale(1.1);
     transition: all 0.3s ease 0s;
 }
+.product-btn-outofstock:hover {
+    transform: none;
+    transition: none;
+}
 .product-btn:not(:hover) {
     transition: all 0.3s ease 0s;
+}
+.product-btn-outofstock:not(:hover) {
+    transition: none;
 }
 .product-btn:active {
     box-shadow: 1px 1px 10px #e5e5e5;
@@ -96,6 +109,12 @@
     border: 1px solid rgb(100, 149, 237);
     background-color: #fff;
     color: black;
+}
+.product-btn-outofstock:active {
+    transform: none;
+    transition: none;
+    border-radius: 5px;
+    color: rgb(100, 149, 237);
 }
 .bi-info-square {
     font-size: 1.2rem;
