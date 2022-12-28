@@ -206,33 +206,41 @@ document.querySelector('main')?.addEventListener('click', async e => {
     const clickedId = Number(target.dataset.productId)
     const clickedProduct = await findClickedProduct(clickedId)
 
-    if (target.className.includes('product-wrap-child')) {
+    // Skippa allt efter denna rad om man inte klicka på rätt ställe
+    if (!target.className.includes('product-wrap-child')) return
+    
+    // 'Lägg till i varukorgen' knappen på en produkt
+    if (target.tagName === 'BUTTON') {
+        const inCartIds = cartItems.map(item => item.id)       
+        const inCartItem = cartItems.find(item => item.id === clickedId) as IProduct  // Hitta produkten i cart som har samma ID som produkten jag klickade på
 
-        // Om man klickar på 'Lägg till i varukorgen' knappen på en produkt
-        if (target.tagName === 'BUTTON') {
-            const inCartIds = cartItems.map(item => item.id)       
-            const inCartItem = cartItems.find(item => item.id === clickedId) as IProduct  // Hitta produkten i cart som har samma ID som produkten jag klickade på
+        // Kolla om produkten redan finns i varukorgen
+        if (!inCartItem || !inCartIds.includes(clickedId)) {
+            clickedProduct.qty = 1
+            cartItems.push(clickedProduct)
+        }
+        else if (inCartIds.includes(clickedId)) {
 
-            if (!inCartItem || !inCartIds.includes(clickedId)) {
-                clickedProduct.qty = 1
-                cartItems.push(clickedProduct)
+            if (!(inCartItem.stock_quantity > inCartItem.qty)) {
+                console.log(`No more in stock, max amount of ${inCartItem.name} is ${inCartItem.stock_quantity}`)
+                return
             }
-            else if (inCartIds.includes(clickedId)) {
+            else {
                 inCartItem.qty++
             }
-
-            renderCart()
-
-            document.querySelector('#cart-wrap')!.classList.add('shake')
-            setTimeout( () => {
-                document.querySelector('#cart-wrap')!.classList.remove('shake')                
-            },950)
         }
-        // Om man klickar någon annan stans på produkten. (info)
-        else {
-            renderInfo(clickedProduct)
-            document.body.style.overflow = 'hidden';
-        }
+
+        renderCart()
+
+        document.querySelector('#cart-wrap')!.classList.add('shake')
+        setTimeout( () => {
+            document.querySelector('#cart-wrap')!.classList.remove('shake')                
+        },950)
+    }
+    // Om man klickar någon annan stans på produkten. (info)
+    else {
+        renderInfo(clickedProduct)
+        document.body.style.overflow = 'hidden';
     }
 })
 
