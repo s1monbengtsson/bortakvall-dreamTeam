@@ -337,17 +337,32 @@ document.querySelector('.info-background')!.addEventListener('click', async e =>
 
 // function that renders checkout-page and form to DOM
 const checkout = () => {
-    cartItems.map(product => {
-        // console.log('cart-item:', product)
-        document.querySelector('.content-wrapper')!.classList.add('banner-checkout')
-        document.querySelector('.content-display')!.classList.add('d-none')
-        document.querySelector('#title-cart')!.classList.add('d-none')
-        document.querySelector('.cart-background')!.classList.remove('show')
-        document.querySelector('#order-content')!.classList.remove('d-none')
-        document.querySelector('.customer-details')!.classList.remove('d-none')
-
+    // document.querySelector('.content-wrapper')!.classList.add('banner-checkout')
+    // document.querySelector('.content-display')!.classList.add('d-none')
+    // document.querySelector('#main')!.classList.add('d-none')
+    // document.querySelector('footer')!.classList.add('d-none')
+    // document.querySelector('#order-content')!.classList.remove('d-none')
+    // document.querySelector('.back-button')!.classList.remove('d-none')
+    // document.querySelector('#title-cart')!.classList.add('d-none')
+    // document.querySelector('.cart-background')!.classList.remove('show')
+    // document.querySelector('.customer-details')!.classList.remove('d-none')
         
 
+
+
+    document.querySelector('.content-display')!.classList.add('d-none')
+    document.querySelector('#title-cart')!.classList.add('d-none')
+    document.querySelector('.cart-background')!.classList.remove('show')
+    document.querySelector('#order-content')!.classList.remove('d-none')
+    document.querySelector('.customer-details')!.classList.remove('d-none')
+    document.querySelector('.banner')!.classList.add('banner-checkout')
+    document.querySelector('.content-wrapper')!.classList.add('banner-checkout')
+    document.querySelector('.back-button')!.classList.remove('d-none')
+    document.querySelector('#main')!.classList.add('d-none')
+    document.querySelector('footer')!.classList.add('d-none')
+
+
+    cartItems.map(product => {
         document.body.style.removeProperty('overflow');
 
         let productTotal = (product.price * product.qty)
@@ -490,13 +505,28 @@ document.querySelector('.customer-details')!.addEventListener('reset', () => {
 
 // go back to product page once back button is clicked
 document.querySelector('.back-button')!.addEventListener('click', () => {
+
     document.querySelector('.content-display')!.classList.remove('d-none')
     document.querySelector('#title-cart')!.classList.remove('d-none')
-    document.querySelector('.cart-background')!.classList.add('d-none')
     document.querySelector('#order-content')!.classList.add('d-none')
     document.querySelector('.customer-details')!.classList.add('d-none')
     document.querySelector('.banner')!.classList.remove('banner-checkout')
     document.querySelector('.content-wrapper')!.classList.remove('banner-checkout')
+    document.querySelector('.back-button')!.classList.add('d-none')
+    document.querySelector('#main')!.classList.remove('d-none')
+    document.querySelector('footer')!.classList.remove('d-none')
+
+    document.querySelector('.content-display')!.classList.add('d-none')
+    document.querySelector('#title-cart')!.classList.add('d-none')
+    document.querySelector('#order-content')!.classList.remove('d-none')
+    document.querySelector('.customer-details')!.classList.remove('d-none')
+    document.querySelector('.banner')!.classList.add('banner-checkout')
+    document.querySelector('.content-wrapper')!.classList.add('banner-checkout')
+    document.querySelector('.back-button')!.classList.remove('d-none')
+    document.querySelector('#main')!.classList.add('d-none')
+    document.querySelector('footer')!.classList.add('d-none')
+    document.querySelector('.cart-background')!.classList.remove('show')
+
 
     // empty HTML before checkout() runs again
     document.querySelector('#order-content')!.innerHTML = ''

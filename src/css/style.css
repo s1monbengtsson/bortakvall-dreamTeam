@@ -42,7 +42,6 @@
 
 /* styling for navigation */
 
-
 .banner > h1 {
     font-size: 3rem;
     font-weight: bold;
@@ -193,7 +192,7 @@
     width: 600px;
     display: flex;
     color: #000;
-    max-height: 100vh;   
+    max-height: 100vh;
 }
 .info-section-l {
     overflow-y: scroll;
@@ -567,7 +566,7 @@ footer > p {
     border: 1px solid #ffc107;
 }
 .banner-checkout {
-    background: black
+    background: white;
 }
 
 .checkout-wrap {
@@ -578,7 +577,8 @@ footer > p {
 #order-content {
     max-width: 50%;
 }
-.checkout-btn-wrap, #check-box {
+.checkout-btn-wrap,
+#check-box {
     margin-top: 1em;
     display: flex;
     justify-content: center;
