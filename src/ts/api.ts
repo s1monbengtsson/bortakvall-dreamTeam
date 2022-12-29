@@ -1,4 +1,4 @@
-import { IData, IOrder,  } from "./interface";
+import { IData, IOrder } from "./interface";
 
 
 /* Fetch products from api */
@@ -43,7 +43,14 @@ export const createNewOrder = async (order: IOrder) => {
             <p>Betalt: <strong>${orderInfo.data.order_total} kr</strong></p>
             </div>
             <p class="mt-5 text-muted">Du kan nu stänga sidan!</p>
+            <button class="btn btn-dark close">Stäng X</button>
         `
+        document.querySelector('.close')!.addEventListener('click', () => {
+            window.location.reload()
+            localStorage.removeItem('Shopping cart')
+            localStorage.removeItem('Total price')
+            localStorage.removeItem('Total amount')
+        })
         
     }
 
