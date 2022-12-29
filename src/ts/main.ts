@@ -1,9 +1,3 @@
-/**
- ********************************************************************************
-* IMPORTS
-*/
-
-
 import 'bootstrap/dist/css/bootstrap.css'
 import '../css/style.css'
 import '../css/media.css'
@@ -11,15 +5,8 @@ import '../css/media.css'
 import { fetchProducts, fetchOrder } from "./api"
 import { IData, IProduct, IOrder, ICustomerInfo } from "./interface"
 
-
-/**
- ********************************************************************************
-* VARIABLES
-*/
-
 let products: IData
 // let products: IProduct[] = []
-
 
 // localStorage starts
 let jsonCartItems = localStorage.getItem('Shopping cart') ?? '[]'
@@ -43,35 +30,32 @@ const renderCart = () => {
 }
 // localStorage ends
 
-// console.log("cart items:", cartItems)
-
-
-const testOrder = await fetchOrder(
-    {
-        customer_first_name: 'Sean',
-        customer_last_name: 'Banan',
-        customer_address: 'Drottningatan 4b',
-        customer_postcode: '21211',
-        customer_city: 'Malmö',
-        customer_email: 'testhejsan@gmail.com',
-        customer_phone: '0723738495',
-        order_total: 48,
-        order_items: [
-            {
-                product_id: 6545,
-                qty: 3,
-                item_price: 8,
-                item_total: 24,
-            },
-            {
-                product_id: 6545,
-                qty: 3,
-                item_price: 8,
-                item_total: 24,
-            },
-        ],
-    }
-)
+// const testOrder = await fetchOrder(
+//     {
+//         customer_first_name: 'Sean',
+//         customer_last_name: 'Banan',
+//         customer_address: 'Drottningatan 4b',
+//         customer_postcode: '21211',
+//         customer_city: 'Malmö',
+//         customer_email: 'testhejsan@gmail.com',
+//         customer_phone: '0723738495',
+//         order_total: 48,
+//         order_items: [
+//             {
+//                 product_id: 6545,
+//                 qty: 3,
+//                 item_price: 8,
+//                 item_total: 24,
+//             },
+//             {
+//                 product_id: 6545,
+//                 qty: 3,
+//                 item_price: 8,
+//                 item_total: 24,
+//             },
+//         ],
+//     }
+// )
 // console.log(testOrder)
 
 // Cart total price starts
@@ -85,16 +69,7 @@ const countTotalPrice = () => {
     cartTotal = cartPrices.reduce((price, sum) => sum += price)
     localStorage.setItem('Total price', JSON.stringify(cartTotal))
 }
-
 // Cart total price ends
-
-
-
-/**
- ********************************************************************************
-* FUNCTIONS
-*/
-
 
 // Allt denna funktion ska göra är att hitta produkten man clickar på
 const findClickedProduct = async (clickedId: number): Promise<IProduct> => {
@@ -116,9 +91,9 @@ const renderCartItems = () => {
                     <input class="prod-qty" data-input-id="${item.id}" id="input-${item.id}" value="${item.qty}" style="width: 30px; text-align: center">
                     <span data-product-id="${item.id}" class="increase">+</span>
                 </p>
-                <p class="card-text text-dark" id="cart-item-price">${item.price} kr/st  </p>
+                <p class="card-text-cart text-dark" id="cart-item-price">${item.price} kr/st  </p>
                 
-                <p class="card-text text-dark" id="item-price-${item.id}">${item.price * item.qty} kr</p>
+                <p class="card-text-cart text-dark" id="item-price-${item.id}">${item.price * item.qty} kr</p>
             </div>
             <button class="cart-remove-item" data-product-id="${item.id}"><i class="bi bi-trash cart-remove-item-i" data-product-id="${item.id}"></i></button>
         </li>
@@ -126,6 +101,7 @@ const renderCartItems = () => {
     .join('')
 }
 
+// Input field on every cart item starts
 document.querySelector('#cart-list')?.addEventListener('keyup', e => {
     const target = e.target as HTMLElement
     const clickedId = Number(target.dataset.inputId)
@@ -149,8 +125,9 @@ document.querySelector('#cart-list')?.addEventListener('focusout', e => {
         renderCart()
     }
 })
+// Input field on every cart item ends
 
-// Remove, + and - 
+// Remove, + and - starts
 document.querySelector('#cart-list')?.addEventListener('click', async e => {
     const target = e.target as HTMLElement
     const clickedId = Number(target.dataset.productId)
@@ -172,7 +149,7 @@ document.querySelector('#cart-list')?.addEventListener('click', async e => {
     }
     renderCart()
 })
-
+// Remove, + and - ends
 
 const getProducts = async (): Promise<void> => {
     document.querySelector('#spinner')!.classList.remove('hide')
@@ -185,12 +162,9 @@ const getProducts = async (): Promise<void> => {
         document.querySelector('#main')!.innerHTML = `<h2 class="p-5">❌</h2>`
     }
     document.querySelector('#spinner')!.classList.add('hide')
-    // console.log(products)
 }
 
 const renderProducts = (): void => {
-
-    console.log(products)
     console.log(products.data)
     const itemsInStock = products.data // räknar antal produkter instock och totalt antal produkter
     .map( prod => prod.stock_status)
@@ -207,12 +181,14 @@ const renderProducts = (): void => {
             <div class="card product-wrap border-0">
                 <img src="https://www.bortakvall.se${prod.images.thumbnail}" alt="${prod.name}" class="card-img-top card-img product-wrap-child" data-product-id="${prod.id}">
                 <div class="card-body">
-                    <p id="product-name" class="card-title text-dark product-wrap-child" data-product-id="${prod.id}">${prod.name}</p>
+                    <p id="product-name" class="card-title product-wrap-child" data-product-id="${prod.id}">${prod.name}</p>
                     <p id="product-price" class="card-text text-dark">${prod.price} kr</p>
-                    <p><i class="product-wrap-child bi bi-info-square" id="info-icon" data-product-id="${prod.id}"></i></p>
-
-                    <button class="product-wrap-child product-btn" data-product-id="${prod.id}" ${(prod.stock_status === 'outofstock') ? 'disabled' : ''}>${(prod.stock_status === 'outofstock') ? 'SLUT I LAGER' : 'LÄGG TILL I VARUKORG'}</button>
-                    <p id="stock-qty">Antal i lager: ${(prod.stock_quantity === null) ? '0': prod.stock_quantity} </p>
+                    <p class="info-icon-wrap">
+                        <i class="product-wrap-child bi bi-info-square" id="info-icon" data-product-id="${prod.id}"></i>
+                    </p>
+                    <button class="product-wrap-child product-btn ${(prod.stock_status === 'outofstock') ? 'product-btn-outofstock' : ''}" data-product-id="${prod.id}" ${(prod.stock_status === 'outofstock') ? 'disabled' : ''}>
+                        ${(prod.stock_status === 'outofstock') ? 'SLUT I LAGER' : 'LÄGG TILL I VARUKORG'}
+                    </button>
                 </div>
             </div>
         </div>
@@ -221,19 +197,14 @@ const renderProducts = (): void => {
 
 }
 
-/**
- ********************************************************************************
-* EVENT LISTENERS
-*/
-// info icon :hover to show description tooltip
-// document.querySelector('main')?.addEventListener('mouseover', async (e) => {
-//     const target = e.target as HTMLElement
-//     if (target.id === 'info-icon') {
-//         let prod = await findClickedProduct(Number(target.dataset.id))
-//         console.log(prod.description)
-//         document.querySelector('#tooltip')!.innerHTML = prod.description
-//     }
-// })
+const noMoreCandy = (candy: IProduct) => {
+    const noMoreCandy = document.querySelector('#no-more-candy')!
+    noMoreCandy.innerHTML = `<p>${candy.name} är inte längre tillgängligt.</p>`
+    noMoreCandy.classList.remove('hide')
+    setTimeout(() => {
+        noMoreCandy.classList.add('hide')
+    }, 2000)
+}
 
 // Click event on each product
 document.querySelector('main')?.addEventListener('click', async e => {
@@ -243,33 +214,42 @@ document.querySelector('main')?.addEventListener('click', async e => {
     const clickedId = Number(target.dataset.productId)
     const clickedProduct = await findClickedProduct(clickedId)
 
-    if (target.className.includes('product-wrap-child')) {
+    // Skippa allt efter denna rad om man inte klicka på rätt ställe
+    if (!target.className.includes('product-wrap-child')) return
+    
+    // 'Lägg till i varukorgen' knappen på en produkt
+    if (target.tagName === 'BUTTON') {
+        const inCartIds = cartItems.map(item => item.id)       
+        const inCartItem = cartItems.find(item => item.id === clickedId) as IProduct  // Hitta produkten i cart som har samma ID som produkten jag klickade på
 
-        // Om man klickar på 'Lägg till i varukorgen' knappen på en produkt
-        if (target.tagName === 'BUTTON') {
-            const inCartIds = cartItems.map(item => item.id)       
-            const inCartItem = cartItems.find(item => item.id === clickedId) as IProduct  // Hitta produkten i cart som har samma ID som produkten jag klickade på
+        // Kolla om produkten redan finns i varukorgen
+        if (!inCartItem || !inCartIds.includes(clickedId)) {
+            clickedProduct.qty = 1
+            cartItems.push(clickedProduct)
+        }
+        else if (inCartIds.includes(clickedId)) {
 
-            if (!inCartItem || !inCartIds.includes(clickedId)) {
-                clickedProduct.qty = 1
-                cartItems.push(clickedProduct)
+            if (!(inCartItem.stock_quantity > inCartItem.qty)) {
+                noMoreCandy(inCartItem)
+                console.log(`No more in stock, max amount of ${inCartItem.name} is ${inCartItem.stock_quantity}`)
+                return
             }
-            else if (inCartIds.includes(clickedId)) {
+            else {
                 inCartItem.qty++
             }
-
-            renderCart()
-
-            document.querySelector('#cart-wrap')!.classList.add('shake')
-            setTimeout( () => {
-                document.querySelector('#cart-wrap')!.classList.remove('shake')                
-            },950)
         }
-        // Om man klickar någon annan stans på produkten. (info)
-        else {
-            renderInfo(clickedProduct)
-            document.body.style.overflow = 'hidden';
-        }
+
+        renderCart()
+
+        document.querySelector('#cart-wrap')!.classList.add('shake')
+        setTimeout( () => {
+            document.querySelector('#cart-wrap')!.classList.remove('shake')                
+        },950)
+    }
+    // Om man klickar någon annan stans på produkten. (info)
+    else {
+        renderInfo(clickedProduct)
+        document.body.style.overflow = 'hidden';
     }
 })
 
@@ -279,13 +259,13 @@ document.querySelector('#title-cart')!.addEventListener('click', () => {
     document.body.style.overflow = 'hidden';
     
 })
-// close cart
+
+// Close cart
 document.querySelector('#cart-close')!.addEventListener('click', () => {
     document.querySelector('.cart-background')!.classList.remove('show')
     document.body.style.removeProperty('overflow');
 
 })
-
 
 // Remove items from local storage(cart)
 document.querySelector('#clear-cart-btn')?.addEventListener('click', async () => {
@@ -299,13 +279,7 @@ document.querySelector('#clear-cart-btn')?.addEventListener('click', async () =>
     },500)
 })
 
-/**
- ********************************************************************************
-* START
-*/
-
-
-// start info-section
+// Info-section start
 const renderInfo = (productInfo: IProduct) => {
     document.querySelector('.info-background')!.classList.remove('d-none')
     document.querySelector('.info-background')!.classList.add('show-info')
@@ -331,6 +305,7 @@ const renderInfo = (productInfo: IProduct) => {
     `
 }
 
+// Click event on info-section
 document.querySelector('.info-background')!.addEventListener('click', async e => {
     const target = e.target as HTMLElement
     const clickedId = Number(target.dataset.prodId)
@@ -367,11 +342,8 @@ document.querySelector('.info-background')!.addEventListener('click', async e =>
 
 
 // function that renders checkout-page and form to DOM
-
 const checkout = () => {
     cartItems.map(product => {
-        console.log('cart-item:', product)
-
         document.querySelector('.content-container')!.classList.add('d-none')
         document.querySelector('#title-cart')!.classList.add('d-none')
         document.querySelector('.cart-background')!.classList.remove('show')
@@ -398,7 +370,6 @@ const checkout = () => {
 
     // prefill form with customer data on page load
     const formAutoFill = () => {
-
         const customerFirstName = document.querySelector('#customer-first-name')! as HTMLInputElement
         const customerLastName = document.querySelector('#customer-last-name')! as HTMLInputElement
         const customerAddress = document.querySelector('#customer-address')! as HTMLInputElement
@@ -456,7 +427,6 @@ const renderForm = () => {
                     <input type="email" placeholder="Email" id="customer-email" required class="form-control form-input mb-3">
                 </div>
 
-
                 <div class="form-group">
                     <input type="checkbox" value="" id="customer-checkbox" class="form-check-input">
                     <label for="customer-checkbox" class="form-check-label">Jag har kontrollerat att informationen jag angett stämmer</label>
@@ -464,22 +434,19 @@ const renderForm = () => {
 
                 <button type="submit" class="send-order btn btn-primary my-3 py-2">Skicka beställning</button>
                 <button type="reset" class="empty-form btn btn-warning my-3 py-2">Töm formulär</button>
-
             </div> 
     `
     formAutoFill()
     
 }
 
-    // get json data from localStorage
-    let jsonCustomerData = localStorage.getItem('Customer data') ?? '[]'
+// get json data from localStorage
+let jsonCustomerData = localStorage.getItem('Customer data') ?? '[]'
 
-    // parse json data into object
-    let customerData: ICustomerInfo = JSON.parse(jsonCustomerData)
-
+// parse json data into object
+let customerData: ICustomerInfo = JSON.parse(jsonCustomerData)
 
 const saveCustomerData = () => {
-
     const customerFirstName = document.querySelector('#customer-first-name')! as HTMLInputElement
     const customerLastName = document.querySelector('#customer-last-name')! as HTMLInputElement
     const customerAddress = document.querySelector('#customer-address')! as HTMLInputElement
@@ -487,7 +454,6 @@ const saveCustomerData = () => {
     const customerCity = document.querySelector('#customer-city')! as HTMLInputElement
     const customerPhone = document.querySelector('#customer-phone')! as HTMLInputElement
     const customerEmail = document.querySelector('#customer-email')! as HTMLInputElement
-
 
     customerData = {
         customer_first_name: customerFirstName.value,
@@ -536,6 +502,5 @@ document.querySelector('.customer-details')!.addEventListener('reset', () => {
 
 /* functions that are called when the page loads */
 getProducts()
-
     
 renderCart()
