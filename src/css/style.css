@@ -183,6 +183,8 @@
     width: 600px;
     display: flex;
     color: #000;
+    max-height: 100vh;
+    
 }
 .info-section-l {
     width: 50%;
@@ -195,6 +197,7 @@
     font-size: 1.9rem;
 }
 .info-section-r {
+    overflow-y: scroll;
     width: 50%;
     font-size: 0.8rem;
     padding-top: 2rem;
