@@ -6,7 +6,7 @@ import { IData, IProduct, IOrder, ICustomerInfo } from "./interface"
 
 /**
  ********************************************************************************************
- * FÖRKORNINGAR
+ * DOCUMENTATION
  */
 
 const dqs = (el: string) => document.querySelector(`${el}`)!
