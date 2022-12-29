@@ -40,13 +40,12 @@ export interface ICustomerInfo {
     customer_email: string
 }
 
-export interface IPostResponse {
-    order_id: number,
-    order_date: string
-}
-
 export interface IPostData {
-    data:Array<IPostData>
+    data: {
+        id: number,
+        order_date: string,
+        order_total: number
+    }
 }
 
 
