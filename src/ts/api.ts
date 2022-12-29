@@ -13,7 +13,10 @@ const ORDERS = '/orders'
 export const fetchProducts = async () => {
   const res = await fetch(`${BASE_URL}${PRODUCTS}`)
   if (!res.ok) {
-		throw new Error(`${res.status} ${res.statusText}`)
+        document.querySelector('#nav-output')!.innerHTML = `<h2 class="nav-item px-2">${res.status} ${res.statusText}</h2>`
+		
+		throw new Error(`Could not get data, reason: ${res.status} ${res.statusText}`)
+        
 	}
   
 	return await res.json() as IData
@@ -43,13 +46,12 @@ export const createNewOrder = async (order: IOrder) => {
             <p>Betalt: <strong>${orderInfo.data.order_total} kr</strong></p>
             </div>
             <p class="mt-5 text-muted">Du kan nu stänga sidan!</p>
-            <button class="btn btn-dark close">Stäng X</button>
+            <button class="btn btn-dark close">Stäng</button>
         `
         document.querySelector('.close')!.addEventListener('click', () => {
             window.location.reload()
-            localStorage.removeItem('Shopping cart')
             localStorage.removeItem('Total price')
-            localStorage.removeItem('Total amount')
+            localStorage.removeItem('Shopping cart')
         })
         
     }

@@ -14,7 +14,7 @@ export interface IProduct {
         large: string,
       },
       stock_status: string,
-      stock_quantity?: number,  
+      stock_quantity: number,  
       qty: number,
 }
 
