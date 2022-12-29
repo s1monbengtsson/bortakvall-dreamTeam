@@ -200,7 +200,7 @@ const renderProducts = (): void => {
 
 const noMoreCandy = (candy: IProduct) => {
     const noMoreCandy = document.querySelector('#no-more-candy')!
-    noMoreCandy.innerHTML = `<p>${candy.name} är inte längre tillgängligt.</p>`
+    noMoreCandy.innerHTML = `<p>${candy.name}<br> är inte längre tillgängligt.</p>`
     noMoreCandy.classList.remove('hide')
     setTimeout(() => {
         noMoreCandy.classList.add('hide')
