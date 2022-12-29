@@ -1,27 +1,30 @@
 import 'bootstrap/dist/css/bootstrap.css'
 import '../css/style.css'
 import '../css/media.css'
-
 import { fetchProducts, createNewOrder } from "./api"
 import { IData, IProduct, IOrder, ICustomerInfo } from "./interface"
 
 /**
- * DOM elements
+ ********************************************************************************************
+ * FÖRKORNINGAR
  */
-const form = document.querySelector('.customer-details')! as HTMLFormElement
-const customerFirstName = document.querySelector('#customer-first-name')! as HTMLInputElement
-const customerLastName = document.querySelector('#customer-last-name')! as HTMLInputElement
-const customerAddress = document.querySelector('#customer-address')! as HTMLInputElement
-const customerPostal = document.querySelector('#customer-postal-number')! as HTMLInputElement
-const customerCity = document.querySelector('#customer-city')! as HTMLInputElement
-const customerPhone = document.querySelector('#customer-phone')! as HTMLInputElement
-const customerEmail = document.querySelector('#customer-email')! as HTMLInputElement
 
+const dqs = (el: string) => document.querySelector(`${el}`)!
+const hide = (element: string) => dqs(element).classList.add('d-none')
+const display = (element: string) => dqs(element).classList.remove('d-none')
 
 /**
- ********************************************************************************
- * VARIABLES
+ ********************************************************************************************
  */
+
+const form = dqs('.customer-details') as HTMLFormElement
+const customerFirstName = dqs('#customer-first-name') as HTMLInputElement
+const customerLastName = dqs('#customer-last-name') as HTMLInputElement
+const customerAddress = dqs('#customer-address') as HTMLInputElement
+const customerPostal = dqs('#customer-postal-number') as HTMLInputElement
+const customerCity = dqs('#customer-city') as HTMLInputElement
+const customerPhone = dqs('#customer-phone') as HTMLInputElement
+const customerEmail = dqs('#customer-email') as HTMLInputElement
 
 let products: IData
 // let products: IProduct[] = []
@@ -34,7 +37,7 @@ let jsonCartTotal = localStorage.getItem('Total price') ?? '0'
 let cartTotal: number = JSON.parse(jsonCartTotal)
 
 const saveCart = () => {
-    document.querySelector('#cart-item-count')!.textContent = String(cartItems
+    dqs('#cart-item-count').textContent = String(cartItems
         .map( item => item.qty )
         .reduce( (num, sum) => num + sum, 0))
     localStorage.setItem('Shopping cart', JSON.stringify(cartItems))
@@ -48,12 +51,9 @@ const renderCart = () => {
 }
 // localStorage ends
 
-console.log("cart items:", cartItems)
-
-
 // Cart total price starts
 const renderTotalPrice = () => {
-    document.querySelector('#cart-total')!.textContent = `${cartTotal}kr`
+    dqs('#cart-total').textContent = `${cartTotal}kr`
 }
 
 const countTotalPrice = () => {
@@ -72,7 +72,7 @@ const findClickedProduct = async (clickedId: number): Promise<IProduct> => {
 }
 
 const renderCartItems = () => {
-    document.querySelector('#cart-list')!.innerHTML = cartItems
+    dqs('#cart-list').innerHTML = cartItems
     .map(item => `
         <li class="cart-item">
             <img class="cart-image" src="https://www.bortakvall.se${item.images.thumbnail}" alt="${item.name}">
@@ -95,20 +95,20 @@ const renderCartItems = () => {
 }
 
 // Input field on every cart item starts
-document.querySelector('#cart-list')?.addEventListener('keyup', e => {
+dqs('#cart-list').addEventListener('keyup', e => {
     const target = e.target as HTMLElement
     const clickedId = Number(target.dataset.inputId)
     if (!clickedId) return
     const inCartItem = cartItems.find(item => item.id === clickedId) as IProduct
-    const inputField = document.querySelector(`#input-${clickedId}`) as HTMLInputElement
+    const inputField = dqs(`#input-${clickedId}`) as HTMLInputElement
     inCartItem.qty = Number(inputField.value)
     saveCart()
-    const itemTotal = document.querySelector(`#item-price-${clickedId}`) as HTMLParagraphElement
+    const itemTotal = dqs(`#item-price-${clickedId}`) as HTMLParagraphElement
     itemTotal.textContent = `${inCartItem.price * inCartItem.qty} kr`
     renderTotalPrice()
 })
 
-document.querySelector('#cart-list')?.addEventListener('focusout', e => {
+dqs('#cart-list').addEventListener('focusout', e => {
     const target = e.target as HTMLElement
     const clickedId = Number(target.dataset.inputId)
     if (!clickedId) return
@@ -121,7 +121,7 @@ document.querySelector('#cart-list')?.addEventListener('focusout', e => {
 // Input field on every cart item ends
 
 // Remove, + and - starts
-document.querySelector('#cart-list')?.addEventListener('click', async e => {
+dqs('#cart-list').addEventListener('click', async e => {
     const target = e.target as HTMLElement
     const clickedId = Number(target.dataset.productId)
     if (!clickedId) return
@@ -151,8 +151,8 @@ const getProducts = async (): Promise<void> => {
         renderProducts()  
     }
     catch {
-        document.querySelector('#output')!.innerHTML = `<h2 class="nav-item px-2">🚨 KUNDE INTE HÄMTA DATA FRÅN SERVER 🚨 <br> försök igen senare...</h2>`
-        document.querySelector('#main')!.innerHTML = `<h2 class="p-5">❌</h2>`
+        dqs('#output').innerHTML = `<h2 class="nav-item px-2">🚨 KUNDE INTE HÄMTA DATA FRÅN SERVER 🚨 <br> försök igen senare...</h2>`
+        dqs('#main').innerHTML = `<h2 class="p-5">❌</h2>`
     }
     hide('#spinner')
 }
@@ -162,13 +162,13 @@ const renderProducts = (): void => {
     const itemsInStock = products.data // räknar antal produkter instock och totalt antal produkter
     .map( prod => prod.stock_status)
     .filter(x => x === 'instock').length
-    document.querySelector('#output')!.innerHTML = `Vi har ${itemsInStock} st av ${products.data.length} st produkter i lager`
+    dqs('#output').innerHTML = `Vi har ${itemsInStock} st av ${products.data.length} st produkter i lager`
      
     products.data // sorteras efter produktnamn
     .sort((a, b) => a.name
     .localeCompare(b.name))
 
-    document.querySelector('.product-main')!.innerHTML = products.data
+    dqs('.product-main').innerHTML = products.data
     .map( prod => `
         <div class="col- 12 col-sm-6 col-md-6 col-lg-3 product-cards">
             <div class="card product-wrap border-0">
@@ -192,7 +192,7 @@ const renderProducts = (): void => {
 }
 
 const noMoreCandy = (candy: IProduct) => {
-    document.querySelector('#no-more-candy')!.innerHTML = `<p>${candy.name}<br> är inte längre tillgängligt.</p>`
+    dqs('#no-more-candy').innerHTML = `<p>${candy.name}<br> är inte längre tillgängligt.</p>`
     display('#no-more-candy')
     setTimeout(() => {
         hide('#no-more-candy')
@@ -227,7 +227,7 @@ const increaseQty = (prod: IProduct) => {
 }
 
 // Click event on each product
-document.querySelector('main')?.addEventListener('click', async e => {
+dqs('main').addEventListener('click', async e => {
     const target = e.target as HTMLElement
     const clickedId = Number(target.dataset.productId)
     const clickedProduct = await findClickedProduct(clickedId)
@@ -241,9 +241,9 @@ document.querySelector('main')?.addEventListener('click', async e => {
         await addProduct(target)
         renderCart()
 
-        document.querySelector('#cart-wrap')!.classList.add('shake')
+        dqs('#cart-wrap').classList.add('shake')
         setTimeout( () => {
-            document.querySelector('#cart-wrap')!.classList.remove('shake')                
+            dqs('#cart-wrap').classList.remove('shake')                
         },950)
     }
     // Om man klickar någon annan stans på produkten. (info)
@@ -254,44 +254,36 @@ document.querySelector('main')?.addEventListener('click', async e => {
 })
 
 // View cart
-document.querySelector('#title-cart')!.addEventListener('click', () => {
-    document.querySelector('.cart-background')!.classList.add('show')
+dqs('#title-cart').addEventListener('click', () => {
+    dqs('.cart-background').classList.add('show')
     document.body.style.overflow = 'hidden';
     
 })
 
 // Close cart
-document.querySelector('#cart-close')!.addEventListener('click', () => {
-    document.querySelector('.cart-background')!.classList.remove('show')
+dqs('#cart-close').addEventListener('click', () => {
+    dqs('.cart-background').classList.remove('show')
     document.body.style.removeProperty('overflow');
 
 })
 
 // Remove items from local storage(cart)
-document.querySelector('#clear-cart-btn')?.addEventListener('click', async () => {
+dqs('#clear-cart-btn').addEventListener('click', async () => {
     localStorage.removeItem('Shopping cart')
     jsonCartItems = localStorage.getItem('Shopping cart') ?? '[]'
     cartItems = JSON.parse(jsonCartItems)
     renderCart()
     setTimeout(() => {
-    document.querySelector('.cart-background')!.classList.remove('show')
+    dqs('.cart-background').classList.remove('show')
     document.body.style.removeProperty('overflow');
     },500)
 })
 
-const hide = (el: string) => {
-    document.querySelector(`${el}`)!.classList.add('d-none')
-}
-
-const display = (el: string) => {
-    document.querySelector(`${el}`)!.classList.remove('d-none')
-}
-
 // Info-section start
 const renderInfo = (productInfo: IProduct) => {
     display('.info-background')
-    document.querySelector('.info-background')!.classList.add('show-info')
-    document.querySelector('#info-section')!.innerHTML = `    
+    dqs('.info-background').classList.add('show-info')
+    dqs('#info-section').innerHTML = `    
         <div class="info-section-l">
             <img src="https://www.bortakvall.se/${productInfo.images.large}" alt="${productInfo.name}" class="info-img">
             <p class="info-name" class="mt-3">
@@ -314,7 +306,7 @@ const renderInfo = (productInfo: IProduct) => {
 }
 
 // Click event on info-section
-document.querySelector('.info-background')!.addEventListener('click', async e => {
+dqs('.info-background').addEventListener('click', async e => {
     const target = e.target as HTMLElement
 
     if (target.tagName === 'BUTTON') {      
@@ -322,10 +314,10 @@ document.querySelector('.info-background')!.addEventListener('click', async e =>
         renderCart()
         
         document.body.style.removeProperty('overflow');
-        document.querySelector('#cart-wrap')!.classList.add('shake')
+        dqs('#cart-wrap').classList.add('shake')
         setTimeout( () => { 
             hide('.info-background')
-            document.querySelector('#cart-wrap')!.classList.remove('shake')
+            dqs('#cart-wrap').classList.remove('shake')
         },950)
     }
     else if (target.className.includes('close-info')) {
@@ -346,15 +338,15 @@ const checkout = () => {
     display('#order-content')
     display('.customer-details')
     display('.back-button')
-    document.querySelector('.content-wrapper')!.classList.add('banner-checkout')
-    document.querySelector('.cart-background')!.classList.remove('show')
+    dqs('.content-wrapper').classList.add('banner-checkout')
+    dqs('.cart-background').classList.remove('show')
 
     cartItems.map(product => {
         document.body.style.removeProperty('overflow');
 
         let productTotal = (product.price * product.qty)
 
-        document.querySelector('#order-content')!.innerHTML += `
+        dqs('#order-content').innerHTML += `
             <li class="list-group-item d-flex justify-content-between align-items-center text-center">
                 <img src="https://www.bortakvall.se/${product.images.thumbnail}" alt="${product.name}" class="checkout-img">
                 ${product.name}<br>x ${product.qty}<span>Á pris: <br>${product.price} kr</span><span>Total:<br> ${productTotal} kr</span>
@@ -362,7 +354,7 @@ const checkout = () => {
         `
     })
 
-    document.querySelector('#order-content')!.innerHTML += `
+    dqs('#order-content').innerHTML += `
 
             <h3 class="text-center mt-3">Att betala: ${cartTotal} kr</h3>
         `
@@ -388,11 +380,11 @@ const renderForm = () => {
 }
 
 // enable submit button when checkbox is checked
-const checkbox = document.querySelector('#customer-checkbox')! as HTMLInputElement
+const checkbox = dqs('#customer-checkbox') as HTMLInputElement
 
 
 checkbox.addEventListener('change', () => {
-    document.querySelector('.send-order')!.toggleAttribute('disabled' )
+    dqs('.send-order').toggleAttribute('disabled' )
 })
 
 // get json data from localStorage
@@ -425,7 +417,7 @@ console.log("customer data:", customerData)
 
 // Add clickEvent to proceed to check out with all products from cart
 
-document.querySelector('#checkout-btn')!.addEventListener('click', e => {
+dqs('#checkout-btn').addEventListener('click', e => {
     const target = e.target as HTMLButtonElement
     if (target.id === 'checkout-btn') {
         console.log('clicked on checkout')
@@ -474,14 +466,14 @@ form.addEventListener('submit', async e => {
 
 
 // remove saved customer data when reset button is clicked
-document.querySelector('.customer-details')!.addEventListener('reset', () => {
+dqs('.customer-details').addEventListener('reset', () => {
     localStorage.removeItem('Customer data')
     checkbox.checked = false
-    document.querySelector('.send-order')!.setAttribute('disabled', 'disabled')
+    dqs('.send-order').setAttribute('disabled', 'disabled')
 })
 
 // go back to product page once back button is clicked
-document.querySelector('.back-button')!.addEventListener('click', () => {
+dqs('.back-button').addEventListener('click', () => {
     display('.content-display')
     display('#title-cart')
     display('#main')
@@ -489,10 +481,10 @@ document.querySelector('.back-button')!.addEventListener('click', () => {
     hide('#order-content')
     hide('.customer-details')
     hide('.back-button')
-    document.querySelector('.content-wrapper')!.classList.remove('banner-checkout')
+    dqs('.content-wrapper').classList.remove('banner-checkout')
 
     // empty HTML before checkout() runs again
-    document.querySelector('#order-content')!.innerHTML = ''
+    dqs('#order-content').innerHTML = ''
 })
 
 
