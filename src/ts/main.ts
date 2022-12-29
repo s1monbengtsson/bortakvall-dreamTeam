@@ -3,7 +3,7 @@ import '../css/style.css'
 import '../css/media.css'
 
 import { fetchProducts, createNewOrder } from "./api"
-import { IData, IProduct, IOrder, ICustomerInfo } from "./interface"
+import { IData, IProduct, IOrder, ICustomerInfo, IPostData } from "./interface"
 
 /**
  * DOM elements
@@ -439,13 +439,17 @@ document.querySelector('#checkout-btn')!.addEventListener('click', e => {
 
 
 
+
 // listen for submits, and save customer data to localStorage
 form.addEventListener('submit', async e => {
     e.preventDefault()
     saveCustomerData()
 
+
+    
     // mapping over cartItems to store only needed keys
     const orderedItems = cartItems.map(item => ({product_id: item.id, qty: item.qty, item_price: item.price, item_total:item.price*item.qty}))
+    
 
     // object containing order content
     const newOrder: IOrder =   {
@@ -460,20 +464,63 @@ form.addEventListener('submit', async e => {
             order_items: orderedItems
 
         }
-    
 
-        // posting new order to server
-        await createNewOrder(newOrder)
+        
+    // store ordered items and print to DOM
+    const orderConfirmation = async () => {
+        const orderInfo:IPostData = await createNewOrder(newOrder)
 
-        // console.log('test-order', newOrder)
+        try{
+            document.querySelector('.checkout-wrap')!.classList.add('d-none')
+            document.querySelector('.back-button')!.classList.add('d-none')
+            document.querySelector('.order-confirmation')!.innerHTML += `
+            <h2 class="mb-3"> Tack för din beställning!</h2>
+            <div class="w-75 row mx-auto pt-3 col-12 border rounded confirmation-wrapper">
+                <h3 class="mb-3"> Orderbekräftelse</h3>
+                <div class="customer-info col">
+                    <p><strong>Beställare:</strong> ${customerData.customer_first_name} ${customerData.customer_last_name}</p>
+                    <p><strong>Leveransadress:</strong> ${customerData.customer_address}, ${customerData.customer_postcode}, ${customerData.customer_city}</p>
+                    <p><strong>Kontaktuppgifter:</strong><br>Telefon: ${customerData.customer_phone}<br>Email: ${customerData.customer_email}
+                </div>
+                <div class="order-details col">
+                    <p><strong>Ordernummer:</strong> ${orderInfo.data.id}</p>
+                    <p><strong>Beställningsdatum:</strong> ${orderInfo.data.order_date}</p>
+                    <p><strong>Betalt:</strong> ${orderInfo.data.order_total} kr</p>
+                </div>
+                <ul class="list-group item-container"></ul>
+            </div>
+            
+        `
+        cartItems.forEach(product => {
+            document.querySelector('.item-container')!.innerHTML += `
+            <li class="list-group-item d-flex justify-content-around align-items-center text-center">
+                <img class="confirmation-img"src="https://www.bortakvall.se/${product.images.thumbnail}" alt="${product.name}" class="checkout-img">
+                ${product.name}<br>x ${product.qty}
+            </li>
+            `
+        })
 
-        // console.log('cartItems:', cartItems)
+        document.querySelector('.order-confirmation')!.innerHTML += `
+            <p class="mt-5 text-muted">Du kan nu stänga sidan!</p>
+            <button class="btn btn-dark close mb-5">Stäng</button>
+        `
+        document.querySelector('.close')!.addEventListener('click', () => {
+            window.location.reload()
+            localStorage.removeItem('Total price')
+            localStorage.removeItem('Shopping cart')
+        })
+            
+        }
+        catch {
+            alert('Ordern kunde inte slutföras.. Vänligen försök igen.')
+        }
 
-    
+        console.log("order info:", orderInfo)
+  }
+
+  await orderConfirmation()
 
 })
-
-
 
 
 // remove saved customer data when reset button is clicked
