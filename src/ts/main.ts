@@ -427,6 +427,7 @@ form.addEventListener('submit', async e => {
     e.preventDefault()
     saveCustomerData()
 
+    // mapping over cartItems to store only needed keys
     const orderedItems = cartItems.map(item => ({product_id: item.id, qty: item.qty, item_price: item.price, item_total:item.price*item.qty}))
 
     // object containing order content
@@ -446,6 +447,7 @@ form.addEventListener('submit', async e => {
 
         // posting new order to server
         await createNewOrder(newOrder)
+
         // console.log('test-order', newOrder)
 
         // console.log('cartItems:', cartItems)
