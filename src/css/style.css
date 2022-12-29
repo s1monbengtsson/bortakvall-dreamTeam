@@ -59,6 +59,7 @@
 }
 .status-output {
     background-color: #d6576c;
+    border-top: 2px solid #ffc107;
     padding: 1rem;
     color: #fff;
 }
@@ -273,7 +274,7 @@
     }
 }
 #title-cart {
-    box-shadow: 0px 0px 5px 5px rgba(18, 18, 18, 0.75);
+    box-shadow: 0px 0px 3px 1px rgba(44, 44, 44, 0.75);
     position: fixed;
     z-index: 1;
     bottom: 0.5rem;
@@ -419,6 +420,7 @@
     background: #fff;
     margin: 0 auto;
     border-bottom: 1px solid #dfdfdf;
+
 }
 .cart-heading-wrap {
     margin: 0 auto;
@@ -494,7 +496,7 @@
     cursor: pointer;
 }
 .cart-remove-item {
-    margin-left: 1rem;
+    margin-left: 0.5rem;
     height: 2.5rem;
     padding: 0.5rem;
     border: 1px solid #b22222;
@@ -524,6 +526,7 @@
 
 /* footer start */
 footer {
+    border-top: 2px solid #ffc107;
     background-color: #d6576c;
     padding: 1rem;
 }
@@ -557,6 +560,7 @@ footer > p {
     top: 40%;
     left: 30%;
     right: 30%;
+    z-index: 5;
     background-color: rgb(214, 87, 108);
     border-radius: 15px;
     padding: 1rem 2rem;
