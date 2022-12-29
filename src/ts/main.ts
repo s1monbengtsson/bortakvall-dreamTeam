@@ -189,6 +189,7 @@ const renderProducts = (): void => {
                     <button class="product-wrap-child product-btn ${(prod.stock_status === 'outofstock') ? 'product-btn-outofstock' : ''}" data-product-id="${prod.id}" ${(prod.stock_status === 'outofstock') ? 'disabled' : ''}>
                         ${(prod.stock_status === 'outofstock') ? 'SLUT I LAGER' : 'LÄGG TILL I VARUKORG'}
                     </button>
+                    <p id="stock-qty">Antal i lager: ${(prod.stock_quantity === null) ? '0': prod.stock_quantity} </p>
                 </div>
             </div>
         </div>
