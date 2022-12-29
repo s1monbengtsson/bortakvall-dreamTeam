@@ -127,8 +127,24 @@
 
 
     /* end cart-section */
-
-
+/* Checkout section starts */
+.checkout-wrap {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 1em;
+    padding: 1em;
+    margin-bottom: 2em;
+}
+#order-content {
+    max-width: initial;
+}
+.checkout-btn-wrap, #check-box {
+    margin-top: 1em;
+    display: flex;
+    justify-content: center;
+    gap: 2em;
+}
+/* Checkout section ends */
 }
 
 
