@@ -81,6 +81,7 @@
     font-size: 0.8rem;
     font-weight: bold;
     width: 100%;
+    max-width: 250px;
     border: none;
     border-radius: 5px;
     box-shadow: 1px 1px 10px #e5e5e5;
