@@ -128,7 +128,14 @@ document.querySelector('#cart-list')?.addEventListener('click', async e => {
     const inCartItem = cartItems.find(item => item.id === clickedId) as IProduct  // Hitta produkten i cart som har samma ID som produkten jag klickade på
 
     if (target.className.includes('increase')) {
-        inCartItem.qty++
+        if (!(inCartItem.stock_quantity > inCartItem.qty)) {
+            noMoreCandy(inCartItem)
+            console.log(`No more in stock, max amount of ${inCartItem.name} is ${inCartItem.stock_quantity}`)
+            return
+        }
+        else {
+            inCartItem.qty++
+        }
     }
     else if (target.className.includes('decrease')) {
         inCartItem.qty--
