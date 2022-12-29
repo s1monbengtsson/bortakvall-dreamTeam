@@ -39,7 +39,22 @@
     max-width: 1710px;
     margin: 0 auto;
 }
-.nav-menu {
+
+/* styling for navigation */
+
+.banner{
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.banner > h1 {
+    font-size: 3rem;
+    font-weight: bold;
+}
+
+.nav-menu,
+.sub-nav {
     background-color: #d6576c;
 }
 .nav-item {
@@ -266,9 +281,9 @@
 #title-cart {
     box-shadow: 0px 0px 5px 5px rgba(18, 18, 18, 0.75);
     position: fixed;
-    z-index: 1;
-    bottom: 0.5rem;
-    right: 0.5rem;
+    z-index: 20;
+    top: 0;
+    right: 1em;
     color: black;
     border-radius: 20px;
     background-color: #d6576c;
@@ -555,4 +570,22 @@ footer > p {
     color: white;
     font-size: 1.2rem;
     border: 1px solid #ffc107;
+}
+.banner-checkout {
+    background: black
+}
+
+.checkout-wrap {
+    display: flex;
+    gap: 1em;
+    padding: 1em;
+}
+#order-content {
+    max-width: 50%;
+}
+.checkout-btn-wrap, #check-box {
+    margin-top: 1em;
+    display: flex;
+    justify-content: center;
+    gap: 2em;
 }

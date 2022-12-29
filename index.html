@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Bortakväll - Lösgodis online</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
-  </head>
+    
+</head>
 
   <body>
     <div class="info-background close-info d-none">
@@ -69,6 +70,8 @@
                     </h1></a>
                 </header>
 
+                <div class="content-display">
+
                 <!-- navigation menu -->
                 <nav class="nav-menu d-flex justify-content-evenly p-3" id="nav-output">
                     <a href="#main" class="nav-item">SORTIMENT</a>
@@ -96,13 +99,75 @@
 
 
     <!-- Order page content -->
+    <button class="btn btn-dark m-3 back-button">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+        </svg>
+    Tillbaka</button>
+    
+<div class="checkout-wrap">
+    <!-- customer details form -->
+    <form action="" class="customer-details w-50 mx-auto d-none">
+        <h2 class="form-heading text-center mt-5">Beställare</h2>
+            <div class="form-row">
+                <div class="inputs">
+
+                    <div class="form-group">
+                        <label for="customer-first-name"></label>
+                        <input type="text" placeholder="Förnamn" id="customer-first-name" required class="form-control form-input">
+                    </div>
+                    <div class="form-group">
+                        <label for="customer-last-name"></label>
+                        <input type="text" placeholder="Efternamn" id="customer-last-name" required class="form-control form-input">
+                    </div>
+                    <div class="form-group">
+                        <label for="customer-address"></label>
+                        <input type="text" placeholder="Adress" id="customer-address" required class="form-control form-input">
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="customer-postal-number"></label>
+                        <input type="text" placeholder="Postnummer" id="customer-postal-number" required class="form-control form-input">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="customer-city"></label>
+                        <input type="text" placeholder="Ort" id="customer-city" required class="form-control form-input">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="customer-phone"></label>
+                        <input type="text" placeholder="Telefon (valfritt)" id="customer-phone" class="form-control form-input">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="customer-email"></label>
+                        <input type="email" placeholder="Email" id="customer-email" required class="form-control form-input mb-3">
+                    </div>
+
+
+                    <div class="form-group" id="check-box">
+                        <input type="checkbox" value="" id="customer-checkbox" class="form-check-input" required>
+                        <label for="customer-checkbox" class="form-check-label">Jag har kontrollerat att informationen jag angett stämmer</label>
+                    </div> 
+                    
+                </div>
+                <div class="checkout-btn-wrap">
+                <button type="submit" disabled class="send-order btn btn-primary ">Skicka beställning</button>
+                <button type="reset" class="empty-form btn btn-warning">Töm formulär</button>
+                </div>
+            </div> 
+    </form>
+
     <ul class="list-group d-none my-5 w-75 mx-auto" id="order-content">
         <h1 class="text-center mb-5">Orderöversikt</h1>
     </ul>
+</div>
 
-
-    <!-- customer details form -->
-    <form action="" class="customer-details w-50 mx-auto d-none"></form>
+    <div class="order-confirmation text-center mt-5">
+        
+    </div>
         
     
 
