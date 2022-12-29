@@ -183,10 +183,10 @@
     width: 600px;
     display: flex;
     color: #000;
-    max-height: 100vh;
-    
+    max-height: 100vh;   
 }
 .info-section-l {
+    overflow-y: scroll;
     width: 50%;
 }
 .info-name {
