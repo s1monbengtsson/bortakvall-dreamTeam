@@ -27,12 +27,7 @@ export interface IOrder {
     customer_email: string,
     customer_phone?: string,
     order_total: number,
-    order_items: {
-        product_id: number,
-        qty: number,
-        item_price: number,
-        item_total: number,
-    }[],
+    order_items: object[]
 }
 
 export interface ICustomerInfo {
@@ -43,6 +38,15 @@ export interface ICustomerInfo {
     customer_city: string,
     customer_phone?: string,
     customer_email: string
+}
+
+export interface IPostResponse {
+    order_id: number,
+    order_date: string
+}
+
+export interface IPostData {
+    data:Array<IPostData>
 }
 
 
