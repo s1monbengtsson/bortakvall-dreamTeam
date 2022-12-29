@@ -39,7 +39,16 @@
     max-width: 1710px;
     margin: 0 auto;
 }
-.nav-menu {
+
+/* styling for navigation */
+
+.banner > h1 {
+    font-size: 3rem;
+    font-weight: bold;
+}
+
+.nav-menu,
+.sub-nav {
     background-color: #d6576c;
 }
 .nav-item {
@@ -183,7 +192,7 @@
     width: 600px;
     display: flex;
     color: #000;
-    max-height: 100vh;   
+    max-height: 100vh;
 }
 .info-section-l {
     overflow-y: scroll;
@@ -556,4 +565,23 @@ footer > p {
     color: white;
     font-size: 1.2rem;
     border: 1px solid #ffc107;
+}
+.banner-checkout {
+    background: white;
+}
+
+.checkout-wrap {
+    display: flex;
+    gap: 1em;
+    padding: 1em;
+}
+#order-content {
+    max-width: 50%;
+}
+.checkout-btn-wrap,
+#check-box {
+    margin-top: 1em;
+    display: flex;
+    justify-content: center;
+    gap: 2em;
 }
