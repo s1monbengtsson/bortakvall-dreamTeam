@@ -195,7 +195,7 @@
     max-height: 100vh;
 }
 .info-section-l {
-    overflow-y: scroll;
+    overflow-y: auto;
     width: 50%;
 }
 .info-name {
@@ -206,7 +206,7 @@
     font-size: 1.9rem;
 }
 .info-section-r {
-    overflow-y: scroll;
+    overflow-y: auto;
     width: 50%;
     font-size: 0.8rem;
     padding-top: 2rem;
@@ -411,7 +411,7 @@
     margin: 0;
     height: 99vh;
     width: 100%;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 .cart-heading {
     display: block;
