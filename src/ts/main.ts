@@ -200,39 +200,42 @@ const noMoreCandy = (candy: IProduct) => {
     }, 2000)
 }
 
+const addProduct = async (target: HTMLElement) => {
+    const clickedId = Number(target.dataset.productId)
+    const clickedProduct = await findClickedProduct(clickedId)
+    const inCartIds = cartItems.map(item => item.id)       
+    const inCartItem = cartItems.find(item => item.id === clickedId) as IProduct  // Hitta produkten i cart som har samma ID som produkten jag klickade på
+
+    // Kolla om produkten redan finns i varukorgen
+    if (!inCartItem || !inCartIds.includes(clickedId)) {
+        clickedProduct.qty = 1
+        cartItems.push(clickedProduct)
+    }
+    else if (inCartIds.includes(clickedId)) {
+
+        if (!(inCartItem.stock_quantity > inCartItem.qty)) {
+            noMoreCandy(inCartItem)
+            return
+        }
+        else {
+            inCartItem.qty++
+        }
+    }
+}
+
 // Click event on each product
 document.querySelector('main')?.addEventListener('click', async e => {
     const target = e.target as HTMLElement
-    // console.log(target)
-
     const clickedId = Number(target.dataset.productId)
     const clickedProduct = await findClickedProduct(clickedId)
-
+    
     // Skippa allt efter denna rad om man inte klicka på rätt ställe
     if (!target.className.includes('product-wrap-child')) return
     
     // 'Lägg till i varukorgen' knappen på en produkt
     if (target.tagName === 'BUTTON') {
-        const inCartIds = cartItems.map(item => item.id)       
-        const inCartItem = cartItems.find(item => item.id === clickedId) as IProduct  // Hitta produkten i cart som har samma ID som produkten jag klickade på
 
-        // Kolla om produkten redan finns i varukorgen
-        if (!inCartItem || !inCartIds.includes(clickedId)) {
-            clickedProduct.qty = 1
-            cartItems.push(clickedProduct)
-        }
-        else if (inCartIds.includes(clickedId)) {
-
-            if (!(inCartItem.stock_quantity > inCartItem.qty)) {
-                noMoreCandy(inCartItem)
-                console.log(`No more in stock, max amount of ${inCartItem.name} is ${inCartItem.stock_quantity}`)
-                return
-            }
-            else {
-                inCartItem.qty++
-            }
-        }
-
+        await addProduct(target)
         renderCart()
 
         document.querySelector('#cart-wrap')!.classList.add('shake')
@@ -287,7 +290,7 @@ const renderInfo = (productInfo: IProduct) => {
                     <span>kr</span>
                 </span>
             </p>
-            <button class="product-btn m-2 p-2" data-prod-id="${productInfo.id}" style="font-weight: bold;" ${(productInfo.stock_status === 'outofstock') ? 'disabled' : ''}>${(productInfo.stock_status === 'outofstock') ? 'SLUT I LAGER' : 'LÄGG TILL I VARUKORG'}</button>
+            <button class="product-btn m-2 p-2" data-product-id="${productInfo.id}" style="font-weight: bold;" ${(productInfo.stock_status === 'outofstock') ? 'disabled' : ''}>${(productInfo.stock_status === 'outofstock') ? 'SLUT I LAGER' : 'LÄGG TILL I VARUKORG'}</button>
         </div>
         <div class="info-section-r">
             <h3>Beskrivning</h3>
@@ -302,21 +305,9 @@ const renderInfo = (productInfo: IProduct) => {
 // Click event on info-section
 document.querySelector('.info-background')!.addEventListener('click', async e => {
     const target = e.target as HTMLElement
-    const clickedId = Number(target.dataset.prodId)
-    const clickedProduct = await findClickedProduct(clickedId)
 
-    if (target.tagName === 'BUTTON') {        
-        const inCartIds = cartItems.map(item => item.id)       
-        const inCartItem = cartItems.find(item => item.id === clickedId) as IProduct  // Hitta produkten i cart som har samma ID som produkten jag klickade på
-
-        if (!inCartItem || !inCartIds.includes(clickedId)) {
-            clickedProduct.qty = 1
-            cartItems.push(clickedProduct)
-        }
-        else if (inCartIds.includes(clickedId)) {
-            inCartItem.qty++
-        }
-
+    if (target.tagName === 'BUTTON') {      
+        await addProduct(target)
         renderCart()
         
         document.body.style.removeProperty('overflow');
