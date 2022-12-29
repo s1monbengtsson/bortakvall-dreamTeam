@@ -145,7 +145,7 @@ document.querySelector('#cart-list')?.addEventListener('click', async e => {
 // Remove, + and - ends
 
 const getProducts = async (): Promise<void> => {
-    document.querySelector('#spinner')!.classList.remove('hide')
+    display('#spinner')
     try {
         products = await fetchProducts()
         renderProducts()  
@@ -154,7 +154,7 @@ const getProducts = async (): Promise<void> => {
         document.querySelector('#output')!.innerHTML = `<h2 class="nav-item px-2">🚨 KUNDE INTE HÄMTA DATA FRÅN SERVER 🚨 <br> försök igen senare...</h2>`
         document.querySelector('#main')!.innerHTML = `<h2 class="p-5">❌</h2>`
     }
-    document.querySelector('#spinner')!.classList.add('hide')
+    hide('#spinner')
 }
 
 const renderProducts = (): void => {
@@ -192,11 +192,10 @@ const renderProducts = (): void => {
 }
 
 const noMoreCandy = (candy: IProduct) => {
-    const noMoreCandy = document.querySelector('#no-more-candy')!
-    noMoreCandy.innerHTML = `<p>${candy.name}<br> är inte längre tillgängligt.</p>`
-    noMoreCandy.classList.remove('hide')
+    document.querySelector('#no-more-candy')!.innerHTML = `<p>${candy.name}<br> är inte längre tillgängligt.</p>`
+    display('#no-more-candy')
     setTimeout(() => {
-        noMoreCandy.classList.add('hide')
+        hide('#no-more-candy')
     }, 2000)
 }
 
@@ -326,7 +325,7 @@ document.querySelector('.info-background')!.addEventListener('click', async e =>
         document.querySelector('#cart-wrap')!.classList.add('shake')
         setTimeout( () => { 
             hide('.info-background')
-            document.querySelector('#cart-wrap')!.classList.remove('shake')                
+            document.querySelector('#cart-wrap')!.classList.remove('shake')
         },950)
     }
     else if (target.className.includes('close-info')) {

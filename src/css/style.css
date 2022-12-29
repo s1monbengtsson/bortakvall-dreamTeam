@@ -4,9 +4,6 @@
     padding: 0;
     /* outline: 1px solid black; */
 }
-.hide {
-    display: none;
-}
 
 /* styling for LOGO */
 .a-logo {
@@ -420,7 +417,6 @@
     background: #fff;
     margin: 0 auto;
     border-bottom: 1px solid #dfdfdf;
-
 }
 .cart-heading-wrap {
     margin: 0 auto;
