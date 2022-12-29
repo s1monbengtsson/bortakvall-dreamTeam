@@ -548,6 +548,7 @@ footer > p {
     top: 40%;
     left: 30%;
     right: 30%;
+    z-index: 5;
     background-color: rgb(214, 87, 108);
     border-radius: 15px;
     padding: 1rem 2rem;
