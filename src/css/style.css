@@ -318,7 +318,7 @@
     justify-content: center;
     z-index: 4;
     flex-direction: column;
-    /* transform: translateX(100%); */
+    transform: translateX(100%);
     transition: cubic-bezier(0.175, 0.885, 0.32, 1.275);
     transition-property: all;
     transition-duration: 0.5s;
