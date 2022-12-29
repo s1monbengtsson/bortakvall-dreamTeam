@@ -280,9 +280,17 @@ document.querySelector('#clear-cart-btn')?.addEventListener('click', async () =>
     },500)
 })
 
+const hide = (el: string) => {
+    document.querySelector(`${el}`)!.classList.add('d-none')
+}
+
+const display = (el: string) => {
+    document.querySelector(`${el}`)!.classList.remove('d-none')
+}
+
 // Info-section start
 const renderInfo = (productInfo: IProduct) => {
-    document.querySelector('.info-background')!.classList.remove('d-none')
+    display('.info-background')
     document.querySelector('.info-background')!.classList.add('show-info')
     document.querySelector('#info-section')!.innerHTML = `    
         <div class="info-section-l">
@@ -317,12 +325,12 @@ document.querySelector('.info-background')!.addEventListener('click', async e =>
         document.body.style.removeProperty('overflow');
         document.querySelector('#cart-wrap')!.classList.add('shake')
         setTimeout( () => { 
-            document.querySelector('.info-background')!.classList.add('d-none')
+            hide('.info-background')
             document.querySelector('#cart-wrap')!.classList.remove('shake')                
         },950)
     }
     else if (target.className.includes('close-info')) {
-        document.querySelector('.info-background')!.classList.add('d-none')
+        hide('.info-background')
         document.body.style.removeProperty('overflow');
     }
 })
@@ -332,15 +340,14 @@ document.querySelector('.info-background')!.addEventListener('click', async e =>
 
 // function that renders checkout-page and form to DOM
 const checkout = () => {
-
+    hide('.content-display')
+    hide('#title-cart')
+    hide('#main')
+    hide('footer')
+    display('#order-content')
+    display('.customer-details')
+    display('.back-button')
     document.querySelector('.content-wrapper')!.classList.add('banner-checkout')
-    document.querySelector('.content-display')!.classList.add('d-none')
-    document.querySelector('#title-cart')!.classList.add('d-none')
-    document.querySelector('#order-content')!.classList.remove('d-none')
-    document.querySelector('.customer-details')!.classList.remove('d-none')
-    document.querySelector('.back-button')!.classList.remove('d-none')
-    document.querySelector('#main')!.classList.add('d-none')
-    document.querySelector('footer')!.classList.add('d-none')
     document.querySelector('.cart-background')!.classList.remove('show')
 
     cartItems.map(product => {
@@ -377,10 +384,8 @@ const checkout = () => {
 
 // function that renders form to DOM
 const renderForm = () => {
-    document.querySelector('.customer-details')!.classList.remove('d-none')
-
-    formAutoFill()           
-              
+    display('.customer-details')
+    formAutoFill()            
 }
 
 // enable submit button when checkbox is checked
@@ -478,15 +483,14 @@ document.querySelector('.customer-details')!.addEventListener('reset', () => {
 
 // go back to product page once back button is clicked
 document.querySelector('.back-button')!.addEventListener('click', () => {
-
+    display('.content-display')
+    display('#title-cart')
+    display('#main')
+    display('footer')
+    hide('#order-content')
+    hide('.customer-details')
+    hide('.back-button')
     document.querySelector('.content-wrapper')!.classList.remove('banner-checkout')
-    document.querySelector('.content-display')!.classList.remove('d-none')
-    document.querySelector('#title-cart')!.classList.remove('d-none')
-    document.querySelector('#order-content')!.classList.add('d-none')
-    document.querySelector('.customer-details')!.classList.add('d-none')
-    document.querySelector('.back-button')!.classList.add('d-none')
-    document.querySelector('#main')!.classList.remove('d-none')
-    document.querySelector('footer')!.classList.remove('d-none')
 
     // empty HTML before checkout() runs again
     document.querySelector('#order-content')!.innerHTML = ''
