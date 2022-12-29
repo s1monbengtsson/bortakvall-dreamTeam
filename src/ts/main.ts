@@ -92,6 +92,12 @@ const renderCartItems = () => {
         </li>
     `)
     .join('')
+                // disable checkout button if product qty < 1
+if (cartItems.length === 0) {
+    document.querySelector('#checkout-btn')!.setAttribute('disabled', 'disabled')
+} else {
+    document.querySelector('#checkout-btn')!.removeAttribute('disabled')
+}
 }
 
 // Input field on every cart item starts
@@ -145,7 +151,7 @@ document.querySelector('#cart-list')?.addEventListener('click', async e => {
 // Remove, + and - ends
 
 const getProducts = async (): Promise<void> => {
-    document.querySelector('#spinner')!.classList.remove('hide')
+    document.querySelector('#spinner')!.classList.remove('d-none')
     try {
         products = await fetchProducts()
         renderProducts()  
@@ -154,7 +160,7 @@ const getProducts = async (): Promise<void> => {
         document.querySelector('#output')!.innerHTML = `<h2 class="nav-item px-2">🚨 KUNDE INTE HÄMTA DATA FRÅN SERVER 🚨 <br> försök igen senare...</h2>`
         document.querySelector('#main')!.innerHTML = `<h2 class="p-5">❌</h2>`
     }
-    document.querySelector('#spinner')!.classList.add('hide')
+    document.querySelector('#spinner')!.classList.add('d-none')
 }
 
 const renderProducts = (): void => {
@@ -424,10 +430,14 @@ localStorage.setItem('Customer data', json)
 console.log("customer data:", customerData)
 }
 
+
+
+
 // Add clickEvent to proceed to check out with all products from cart
 
 document.querySelector('#checkout-btn')!.addEventListener('click', e => {
     const target = e.target as HTMLButtonElement
+    
     if (target.id === 'checkout-btn') {
         console.log('clicked on checkout')
         checkout()
@@ -435,7 +445,11 @@ document.querySelector('#checkout-btn')!.addEventListener('click', e => {
     }
 })
 
-
+const errorWarning = () => {
+    document.querySelector('.order-confirmation')!.innerHTML = `
+    <div class="alert alert-danger">Your order could not be placed. Please try again</div>
+    `
+}
 
 
 
@@ -444,6 +458,9 @@ document.querySelector('#checkout-btn')!.addEventListener('click', e => {
 form.addEventListener('submit', async e => {
     e.preventDefault()
     saveCustomerData()
+
+    document.querySelector('#spinner')!.classList.remove('d-none')
+    document.querySelector('.checkout-wrap')!.classList.add('d-none')
 
 
     
@@ -469,6 +486,7 @@ form.addEventListener('submit', async e => {
     // store ordered items and print to DOM
     const orderConfirmation = async () => {
         const orderInfo:IPostData = await createNewOrder(newOrder)
+
 
         try{
             document.querySelector('.checkout-wrap')!.classList.add('d-none')
@@ -512,13 +530,20 @@ form.addEventListener('submit', async e => {
             
         }
         catch {
-            alert('Ordern kunde inte slutföras.. Vänligen försök igen.')
+            errorWarning()
+            
         }
+
 
         console.log("order info:", orderInfo)
   }
 
-  await orderConfirmation()
+
+
+   await orderConfirmation()
+
+   document.querySelector('#spinner')!.classList.add('d-none')
+
 
 })
 
