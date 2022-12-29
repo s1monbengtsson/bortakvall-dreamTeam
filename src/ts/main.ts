@@ -396,8 +396,6 @@ checkbox.addEventListener('change', () => {
     document.querySelector('.send-order')!.toggleAttribute('disabled' )
 })
 
-
-
 // get json data from localStorage
 let jsonCustomerData = localStorage.getItem('Customer data') ?? '[]'
 
@@ -408,24 +406,22 @@ let customerData: ICustomerInfo = JSON.parse(jsonCustomerData)
 const saveCustomerData = () => {
 
     customerData = {
-        customer_first_name: customerFirstName.value,
-        customer_last_name:  customerLastName.value,
-        customer_address: customerAddress.value,
-        customer_postcode: customerPostal.value,
-        customer_city: customerCity.value,
-        customer_phone: customerPhone.value,
-        customer_email: customerEmail.value
-    }
+    customer_first_name: customerFirstName.value,
+    customer_last_name:  customerLastName.value,
+    customer_address: customerAddress.value,
+    customer_postcode: customerPostal.value,
+    customer_city: customerCity.value,
+    customer_phone: customerPhone.value,
+    customer_email: customerEmail.value
+}
 
-    // converts customerData to JSON
-    const json = JSON.stringify(customerData)
+// converts customerData to JSON
+const json = JSON.stringify(customerData)
 
-    // saves JSON to localStorage
-    localStorage.setItem('Customer data', json)
+// saves JSON to localStorage
+localStorage.setItem('Customer data', json)
 
-    console.log("customer data:", customerData)
-
-
+console.log("customer data:", customerData)
 }
 
 // Add clickEvent to proceed to check out with all products from cart
