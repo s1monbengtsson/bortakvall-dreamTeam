@@ -184,17 +184,17 @@ const renderProducts = (): void => {
     .map( prod => `
         <div class="col- 12 col-sm-6 col-md-6 col-lg-3 product-cards">
             <div class="card product-wrap border-0">
-                <img src="https://www.bortakvall.se${prod.images.thumbnail}" alt="${prod.name}" class="card-img-top card-img product-wrap-child" data-product-id="${prod.id}">
+                <img src="https://www.bortakvall.se${prod.images.thumbnail}" alt="${prod.name}" class="card-img-top card-img product-click-event" data-product-id="${prod.id}">
                 <div class="card-body">
-                    <p class="card-title product-wrap-child" data-product-id="${prod.id}">${prod.name}</p>
+                    <p class="card-title product-click-event" data-product-id="${prod.id}">${prod.name}</p>
                     <p class="card-text text-dark">${prod.price} kr</p>
-                    <p class="info-icon-wrap product-wrap-child">     
-                        <svg xmlns="http://www.w3.org/2000/svg" class="product-wrap-child bi-info-square info-icon" data-product-id="${prod.id}" width="35" height="35" fill="currentColor" viewBox="0 0 16 16">
-                            <path class="product-wrap-child" d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
-                            <path class="product-wrap-child" d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                    <p class="info-icon-wrap product-click-event">     
+                        <svg xmlns="http://www.w3.org/2000/svg" class="product-click-event bi-info-square info-icon" data-product-id="${prod.id}" width="35" height="35" fill="currentColor" viewBox="0 0 16 16">
+                            <path class="product-click-event" d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+                            <path class="product-click-event" d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
                         </svg>
                     </p>
-                    <button class="product-wrap-child product-btn ${(prod.stock_status === 'outofstock') ? 'product-btn-outofstock' : ''}" data-product-id="${prod.id}" ${(prod.stock_status === 'outofstock') ? 'disabled' : ''}>
+                    <button class="product-click-event product-btn ${(prod.stock_status === 'outofstock') ? 'product-btn-outofstock' : ''}" data-product-id="${prod.id}" ${(prod.stock_status === 'outofstock') ? 'disabled' : ''}>
                         ${(prod.stock_status === 'outofstock') ? 'SLUT I LAGER' : 'LÄGG TILL I VARUKORG'}
                     </button>
                     <p class="stock-qty">Antal i lager: ${(prod.stock_quantity === null) ? '0': prod.stock_quantity} </p>
@@ -247,7 +247,7 @@ dqs('main').addEventListener('click', async e => {
     const clickedProduct = await findClickedProduct(clickedId)
 
     // Skippa allt efter denna rad om man inte klicka på rätt ställe
-    if (!target.getAttribute('class')?.includes('product-wrap-child')) return
+    if (!target.getAttribute('class')?.includes('product-click-event')) return
     
     // 'Lägg till i varukorgen' knappen på en produkt
     if (target.tagName === 'BUTTON') {
