@@ -47,8 +47,7 @@
     font-weight: bold;
 }
 
-.nav-menu,
-.sub-nav {
+.nav-menu {
     background-color: #d6576c;
 }
 .nav-item {
@@ -56,6 +55,9 @@
     color: white;
     font-size: 0.85rem;
     font-weight: bold;
+}.nav-item:hover {
+    text-decoration: none;
+    color: white;
 }
 .status-output {
     background-color: #d6576c;
