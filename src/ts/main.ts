@@ -250,7 +250,7 @@ dqs('main').addEventListener('click', async e => {
     const clickedProduct = await findClickedProduct(clickedId)
   
     // Skippa allt efter denna rad om man inte klicka på rätt ställe
-    if (!target.className.includes('product-wrap-child')) return
+    // if (!target.className.includes('product-wrap-child')) return
     
     // 'Lägg till i varukorgen' knappen på en produkt
     if (target.tagName === 'BUTTON') {
