@@ -52,7 +52,8 @@
     color: white;
     font-size: 0.85rem;
     font-weight: bold;
-}.nav-item:hover {
+}
+.nav-item:hover {
     text-decoration: none;
     color: white;
 }
@@ -78,7 +79,7 @@
 .product-wrap-child > p {
     margin-bottom: 0.5rem;
 }
-#stock-qty {
+.stock-qty {
     display: block;
     font-size: 0.9rem;
     font-weight: 400;
@@ -453,7 +454,7 @@
     text-align: center;
     margin: 0 auto;
 }
-#cart-item-price {
+.cart-item-price {
     display: flex;
     align-items: center;
     text-align: center;
