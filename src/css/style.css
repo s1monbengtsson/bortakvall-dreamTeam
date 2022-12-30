@@ -590,3 +590,7 @@ footer > p {
     justify-content: center;
     gap: 2em;
 }
+
+.confirmation-img {
+    height: 50px;
+}

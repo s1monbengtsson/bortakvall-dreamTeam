@@ -3,7 +3,7 @@ import '../css/style.css'
 import '../css/media.css'
 
 import { fetchProducts, createNewOrder } from "./api"
-import { IData, IProduct, IOrder, ICustomerInfo } from "./interface"
+import { IData, IProduct, IOrder, ICustomerInfo, IPostData } from "./interface"
 
 /**
  * DOM elements
@@ -92,6 +92,12 @@ const renderCartItems = () => {
         </li>
     `)
     .join('')
+                // disable checkout button if product qty < 1
+if (cartItems.length === 0) {
+    document.querySelector('#checkout-btn')!.setAttribute('disabled', 'disabled')
+} else {
+    document.querySelector('#checkout-btn')!.removeAttribute('disabled')
+}
 }
 
 // Input field on every cart item starts
@@ -152,7 +158,7 @@ document.querySelector('#cart-list')?.addEventListener('click', async e => {
 // Remove, + and - ends
 
 const getProducts = async (): Promise<void> => {
-    document.querySelector('#spinner')!.classList.remove('hide')
+    document.querySelector('#spinner')!.classList.remove('d-none')
     try {
         products = await fetchProducts()
         renderProducts()  
@@ -161,7 +167,7 @@ const getProducts = async (): Promise<void> => {
         document.querySelector('#output')!.innerHTML = `<h2 class="nav-item px-2">🚨 KUNDE INTE HÄMTA DATA FRÅN SERVER 🚨 <br> försök igen senare...</h2>`
         document.querySelector('#main')!.innerHTML = `<h2 class="p-5">❌</h2>`
     }
-    document.querySelector('#spinner')!.classList.add('hide')
+    document.querySelector('#spinner')!.classList.add('d-none')
 }
 
 const renderProducts = (): void => {
@@ -439,10 +445,14 @@ localStorage.setItem('Customer data', json)
 console.log("customer data:", customerData)
 }
 
+
+
+
 // Add clickEvent to proceed to check out with all products from cart
 
 document.querySelector('#checkout-btn')!.addEventListener('click', e => {
     const target = e.target as HTMLButtonElement
+    
     if (target.id === 'checkout-btn') {
         console.log('clicked on checkout')
         checkout()
@@ -450,6 +460,11 @@ document.querySelector('#checkout-btn')!.addEventListener('click', e => {
     }
 })
 
+const errorWarning = () => {
+    document.querySelector('.order-confirmation')!.innerHTML = `
+    <div class="alert alert-danger">Your order could not be placed. Please try again</div>
+    `
+}
 
 
 
@@ -459,7 +474,14 @@ form.addEventListener('submit', async e => {
     e.preventDefault()
     saveCustomerData()
 
+    document.querySelector('#spinner')!.classList.remove('d-none')
+    document.querySelector('.checkout-wrap')!.classList.add('d-none')
+
+
+    
+    // mapping over cartItems to store only needed keys
     const orderedItems = cartItems.map(item => ({product_id: item.id, qty: item.qty, item_price: item.price, item_total:item.price*item.qty}))
+    
 
     // object containing order content
     const newOrder: IOrder =   {
@@ -474,19 +496,71 @@ form.addEventListener('submit', async e => {
             order_items: orderedItems
 
         }
-    
 
-        // posting new order to server
-        await createNewOrder(newOrder)
-        // console.log('test-order', newOrder)
+        
+    // store ordered items and print to DOM
+    const orderConfirmation = async () => {
+        const orderInfo:IPostData = await createNewOrder(newOrder)
 
-        // console.log('cartItems:', cartItems)
 
-    
+        try{
+            document.querySelector('.checkout-wrap')!.classList.add('d-none')
+            document.querySelector('.back-button')!.classList.add('d-none')
+            document.querySelector('.order-confirmation')!.innerHTML += `
+            <h2 class="mb-3"> Tack för din beställning!</h2>
+            <div class="w-75 row mx-auto pt-3 col-12 border rounded confirmation-wrapper">
+                <h3 class="mb-3"> Orderbekräftelse</h3>
+                <div class="customer-info col">
+                    <p><strong>Beställare:</strong> ${customerData.customer_first_name} ${customerData.customer_last_name}</p>
+                    <p><strong>Leveransadress:</strong> ${customerData.customer_address}, ${customerData.customer_postcode}, ${customerData.customer_city}</p>
+                    <p><strong>Kontaktuppgifter:</strong><br>Telefon: ${customerData.customer_phone}<br>Email: ${customerData.customer_email}
+                </div>
+                <div class="order-details col">
+                    <p><strong>Ordernummer:</strong> ${orderInfo.data.id}</p>
+                    <p><strong>Beställningsdatum:</strong> ${orderInfo.data.order_date}</p>
+                    <p><strong>Betalt:</strong> ${orderInfo.data.order_total} kr</p>
+                </div>
+                <ul class="list-group item-container"></ul>
+            </div>
+            
+        `
+        cartItems.forEach(product => {
+            document.querySelector('.item-container')!.innerHTML += `
+            <li class="list-group-item d-flex justify-content-around align-items-center text-center">
+                <img class="confirmation-img"src="https://www.bortakvall.se/${product.images.thumbnail}" alt="${product.name}" class="checkout-img">
+                ${product.name}<br>x ${product.qty}
+            </li>
+            `
+        })
+
+        document.querySelector('.order-confirmation')!.innerHTML += `
+            <p class="mt-5 text-muted">Du kan nu stänga sidan!</p>
+            <button class="btn btn-dark close mb-5">Stäng</button>
+        `
+        document.querySelector('.close')!.addEventListener('click', () => {
+            window.location.reload()
+            localStorage.removeItem('Total price')
+            localStorage.removeItem('Shopping cart')
+        })
+            
+        }
+        catch {
+            errorWarning()
+            
+        }
+
+
+        console.log("order info:", orderInfo)
+  }
+
+
+
+   await orderConfirmation()
+
+   document.querySelector('#spinner')!.classList.add('d-none')
+
 
 })
-
-
 
 
 // remove saved customer data when reset button is clicked
