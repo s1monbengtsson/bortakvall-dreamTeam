@@ -174,7 +174,6 @@
     z-index: 2;
 }
 .bi-x-lg {
-    font-size: 2.5rem;
     padding: 0.25rem 0.5rem;
     border-radius: 100px;
 }
@@ -225,9 +224,10 @@
 
 /* start cart-section */
 #cart-item-count {
+    outline: 1px solid black;
     position: relative;
-    left: -10px;
-    top: -22px;
+    left: -16px;
+    top: -16px;
     z-index: 2;
     font-weight: 700;
     font-size: 1.25rem;
@@ -283,8 +283,7 @@
     color: black;
     border-radius: 20px;
     background-color: #d6576c;
-    padding: 1rem;
-    padding-top: 2rem;
+    padding: 1.75rem 0rem 0.75rem 0.75rem;
     border: 1px solid #ffc107;
 }
 #title-cart:hover {
@@ -499,9 +498,8 @@
     margin-left: 0.5rem;
     height: 2.5rem;
     padding: 0.5rem;
-    border: 1px solid #b22222;
     background-color: #fff;
-    border-radius: 5px;
+    border-radius: 100px;
     box-shadow: 1px 1px 10px #e5e5e5;
 }
 .cart-remove-item:hover {

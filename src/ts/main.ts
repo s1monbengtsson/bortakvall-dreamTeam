@@ -88,7 +88,11 @@ const renderCartItems = () => {
                 
                 <p class="card-text-cart text-dark" id="item-price-${item.id}">${item.price * item.qty} kr</p>
             </div>
-            <button class="cart-remove-item" data-product-id="${item.id}"><i class="bi bi-trash cart-remove-item-i" data-product-id="${item.id}"></i></button>
+            <svg xmlns="http://www.w3.org/2000/svg" class="bi-trash cart-remove-item" data-product-id="${item.id}" width="40" height="40" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
+            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+            </svg>
+            
         </li>
     `)
     .join('')
@@ -133,14 +137,14 @@ dqs('#cart-list').addEventListener('click', async e => {
     if (!clickedId) return
     const inCartItem = cartItems.find(item => item.id === clickedId) as IProduct  // Hitta produkten i cart som har samma ID som produkten jag klickade på
 
-    if (target.className.includes('increase')) {
+    if (target.tagName === 'svg') {
+        inCartItem.qty = 0
+    }
+    else if (target.className.includes('increase')) {
         increaseQty(inCartItem)
     }
     else if (target.className.includes('decrease')) {
         inCartItem.qty--
-    }
-    else if (target.className.includes('cart-remove-item' || 'cart-remove-item-i')) {
-        inCartItem.qty = 0
     }
 
     if (!(inCartItem.qty > 0)) {
@@ -165,6 +169,8 @@ const getProducts = async (): Promise<void> => {
 
 const renderProducts = (): void => {
     console.log(products.data)
+    console.log(products.data.map(sale => sale.on_sale))
+    console.log('Produkter on_sale:',products.data.map(sale => sale.on_sale).filter(x => x === true).length)
     const itemsInStock = products.data // räknar antal produkter instock och totalt antal produkter
     .map( prod => prod.stock_status)
     .filter(x => x === 'instock').length
@@ -182,8 +188,11 @@ const renderProducts = (): void => {
                 <div class="card-body">
                     <p id="product-name" class="card-title product-wrap-child" data-product-id="${prod.id}">${prod.name}</p>
                     <p id="product-price" class="card-text text-dark">${prod.price} kr</p>
-                    <p class="info-icon-wrap">
-                        <i class="product-wrap-child bi bi-info-square" id="info-icon" data-product-id="${prod.id}"></i>
+                    <p class="info-icon-wrap">     
+                        <svg xmlns="http://www.w3.org/2000/svg" class="product-wrap-child bi-info-square" id="info-icon" data-product-id="${prod.id}" width="35" height="35" fill="currentColor" class="bi bi-info-square" viewBox="0 0 16 16">
+                        <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+                        <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                        </svg>
                     </p>
                     <button class="product-wrap-child product-btn ${(prod.stock_status === 'outofstock') ? 'product-btn-outofstock' : ''}" data-product-id="${prod.id}" ${(prod.stock_status === 'outofstock') ? 'disabled' : ''}>
                         ${(prod.stock_status === 'outofstock') ? 'SLUT I LAGER' : 'LÄGG TILL I VARUKORG'}
@@ -239,7 +248,7 @@ dqs('main').addEventListener('click', async e => {
     const clickedProduct = await findClickedProduct(clickedId)
     
     // Skippa allt efter denna rad om man inte klicka på rätt ställe
-    if (!target.className.includes('product-wrap-child')) return
+    // if (!target.className.includes('product-wrap-child')) return
     
     // 'Lägg till i varukorgen' knappen på en produkt
     if (target.tagName === 'BUTTON') {
@@ -247,13 +256,13 @@ dqs('main').addEventListener('click', async e => {
         await addProduct(target)
         renderCart()
 
-        dqs('#cart-wrap').classList.add('shake')
+        dqs('#title-cart').classList.add('shake')
         setTimeout( () => {
-            dqs('#cart-wrap').classList.remove('shake')                
+            dqs('#title-cart').classList.remove('shake')                
         },950)
     }
     // Om man klickar någon annan stans på produkten. (info)
-    else {
+    else if (target.tagName === 'svg') {
         renderInfo(clickedProduct)
         document.body.style.overflow = 'hidden';
     }
@@ -305,7 +314,9 @@ const renderInfo = (productInfo: IProduct) => {
             <h3>Beskrivning</h3>
             ${productInfo.description}
             <p class="info-close">
-                <i class="bi bi-x-lg close-info"></i>
+                <svg class="bi-x-lg close-info" xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+                </svg>
             </p>
         </div>
     `
@@ -326,7 +337,7 @@ dqs('.info-background').addEventListener('click', async e => {
             dqs('#cart-wrap').classList.remove('shake')
         },950)
     }
-    else if (target.className.includes('close-info')) {
+    else if (target.tagName === 'svg' || target.tagName ==='path') {
         hide('.info-background')
         document.body.style.removeProperty('overflow');
     }
