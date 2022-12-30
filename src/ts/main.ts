@@ -1,27 +1,30 @@
 import 'bootstrap/dist/css/bootstrap.css'
 import '../css/style.css'
 import '../css/media.css'
-
 import { fetchProducts, createNewOrder } from "./api"
 import { IData, IProduct, IOrder, ICustomerInfo, IPostData } from "./interface"
 
 /**
- * DOM elements
+ ********************************************************************************************
+ * DOCUMENTATION
  */
-const form = document.querySelector('.customer-details')! as HTMLFormElement
-const customerFirstName = document.querySelector('#customer-first-name')! as HTMLInputElement
-const customerLastName = document.querySelector('#customer-last-name')! as HTMLInputElement
-const customerAddress = document.querySelector('#customer-address')! as HTMLInputElement
-const customerPostal = document.querySelector('#customer-postal-number')! as HTMLInputElement
-const customerCity = document.querySelector('#customer-city')! as HTMLInputElement
-const customerPhone = document.querySelector('#customer-phone')! as HTMLInputElement
-const customerEmail = document.querySelector('#customer-email')! as HTMLInputElement
 
+const dqs = (el: string) => document.querySelector(`${el}`)!
+const hide = (element: string) => dqs(element).classList.add('d-none')
+const display = (element: string) => dqs(element).classList.remove('d-none')
 
 /**
- ********************************************************************************
- * VARIABLES
+ ********************************************************************************************
  */
+
+const form = dqs('.customer-details') as HTMLFormElement
+const customerFirstName = dqs('#customer-first-name') as HTMLInputElement
+const customerLastName = dqs('#customer-last-name') as HTMLInputElement
+const customerAddress = dqs('#customer-address') as HTMLInputElement
+const customerPostal = dqs('#customer-postal-number') as HTMLInputElement
+const customerCity = dqs('#customer-city') as HTMLInputElement
+const customerPhone = dqs('#customer-phone') as HTMLInputElement
+const customerEmail = dqs('#customer-email') as HTMLInputElement
 
 let products: IData
 // let products: IProduct[] = []
@@ -34,7 +37,7 @@ let jsonCartTotal = localStorage.getItem('Total price') ?? '0'
 let cartTotal: number = JSON.parse(jsonCartTotal)
 
 const saveCart = () => {
-    document.querySelector('#cart-item-count')!.textContent = String(cartItems
+    dqs('#cart-item-count').textContent = String(cartItems
         .map( item => item.qty )
         .reduce( (num, sum) => num + sum, 0))
     localStorage.setItem('Shopping cart', JSON.stringify(cartItems))
@@ -48,12 +51,9 @@ const renderCart = () => {
 }
 // localStorage ends
 
-console.log("cart items:", cartItems)
-
-
 // Cart total price starts
 const renderTotalPrice = () => {
-    document.querySelector('#cart-total')!.textContent = `${cartTotal}kr`
+    dqs('#cart-total').textContent = `${cartTotal}kr`
 }
 
 const countTotalPrice = () => {
@@ -72,7 +72,7 @@ const findClickedProduct = async (clickedId: number): Promise<IProduct> => {
 }
 
 const renderCartItems = () => {
-    document.querySelector('#cart-list')!.innerHTML = cartItems
+    dqs('#cart-list').innerHTML = cartItems
     .map(item => `
         <li class="cart-item">
             <img class="cart-image" src="https://www.bortakvall.se${item.images.thumbnail}" alt="${item.name}">
@@ -101,20 +101,20 @@ if (cartItems.length === 0) {
 }
 
 // Input field on every cart item starts
-document.querySelector('#cart-list')?.addEventListener('keyup', e => {
+dqs('#cart-list').addEventListener('keyup', e => {
     const target = e.target as HTMLElement
     const clickedId = Number(target.dataset.inputId)
     if (!clickedId) return
     const inCartItem = cartItems.find(item => item.id === clickedId) as IProduct
-    const inputField = document.querySelector(`#input-${clickedId}`) as HTMLInputElement
+    const inputField = dqs(`#input-${clickedId}`) as HTMLInputElement
     inCartItem.qty = Number(inputField.value)
     saveCart()
-    const itemTotal = document.querySelector(`#item-price-${clickedId}`) as HTMLParagraphElement
+    const itemTotal = dqs(`#item-price-${clickedId}`) as HTMLParagraphElement
     itemTotal.textContent = `${inCartItem.price * inCartItem.qty} kr`
     renderTotalPrice()
 })
 
-document.querySelector('#cart-list')?.addEventListener('focusout', e => {
+dqs('#cart-list').addEventListener('focusout', e => {
     const target = e.target as HTMLElement
     const clickedId = Number(target.dataset.inputId)
     if (!clickedId) return
@@ -127,21 +127,14 @@ document.querySelector('#cart-list')?.addEventListener('focusout', e => {
 // Input field on every cart item ends
 
 // Remove, + and - starts
-document.querySelector('#cart-list')?.addEventListener('click', async e => {
+dqs('#cart-list').addEventListener('click', async e => {
     const target = e.target as HTMLElement
     const clickedId = Number(target.dataset.productId)
     if (!clickedId) return
     const inCartItem = cartItems.find(item => item.id === clickedId) as IProduct  // Hitta produkten i cart som har samma ID som produkten jag klickade på
 
     if (target.className.includes('increase')) {
-        if (!(inCartItem.stock_quantity > inCartItem.qty)) {
-            noMoreCandy(inCartItem)
-            console.log(`No more in stock, max amount of ${inCartItem.name} is ${inCartItem.stock_quantity}`)
-            return
-        }
-        else {
-            inCartItem.qty++
-        }
+        increaseQty(inCartItem)
     }
     else if (target.className.includes('decrease')) {
         inCartItem.qty--
@@ -158,16 +151,16 @@ document.querySelector('#cart-list')?.addEventListener('click', async e => {
 // Remove, + and - ends
 
 const getProducts = async (): Promise<void> => {
-    document.querySelector('#spinner')!.classList.remove('d-none')
+    display('#spinner')
     try {
         products = await fetchProducts()
         renderProducts()  
     }
     catch {
-        document.querySelector('#output')!.innerHTML = `<h2 class="nav-item px-2">🚨 KUNDE INTE HÄMTA DATA FRÅN SERVER 🚨 <br> försök igen senare...</h2>`
-        document.querySelector('#main')!.innerHTML = `<h2 class="p-5">❌</h2>`
+        dqs('#output').innerHTML = `<h2 class="nav-item px-2">🚨 KUNDE INTE HÄMTA DATA FRÅN SERVER 🚨 <br> försök igen senare...</h2>`
+        dqs('#main').innerHTML = `<h2 class="p-5">❌</h2>`
     }
-    document.querySelector('#spinner')!.classList.add('d-none')
+    hide('#spinner')
 }
 
 const renderProducts = (): void => {
@@ -175,13 +168,13 @@ const renderProducts = (): void => {
     const itemsInStock = products.data // räknar antal produkter instock och totalt antal produkter
     .map( prod => prod.stock_status)
     .filter(x => x === 'instock').length
-    document.querySelector('#output')!.innerHTML = `Vi har ${itemsInStock} st av ${products.data.length} st produkter i lager`
+    dqs('#output').innerHTML = `Vi har ${itemsInStock} st av ${products.data.length} st produkter i lager`
      
     products.data // sorteras efter produktnamn
     .sort((a, b) => a.name
     .localeCompare(b.name))
 
-    document.querySelector('.product-main')!.innerHTML = products.data
+    dqs('.product-main').innerHTML = products.data
     .map( prod => `
         <div class="col- 12 col-sm-6 col-md-6 col-lg-3 product-cards">
             <div class="card product-wrap border-0">
@@ -205,52 +198,58 @@ const renderProducts = (): void => {
 }
 
 const noMoreCandy = (candy: IProduct) => {
-    const noMoreCandy = document.querySelector('#no-more-candy')!
-    noMoreCandy.innerHTML = `<p>${candy.name}<br> är inte längre tillgängligt.</p>`
-    noMoreCandy.classList.remove('hide')
+    dqs('#no-more-candy').innerHTML = `<p>${candy.name}<br> är inte längre tillgängligt.</p>`
+    display('#no-more-candy')
     setTimeout(() => {
-        noMoreCandy.classList.add('hide')
+        hide('#no-more-candy')
     }, 2000)
 }
 
-// Click event on each product
-document.querySelector('main')?.addEventListener('click', async e => {
-    const target = e.target as HTMLElement
-    // console.log(target)
-
+const addProduct = async (target: HTMLElement) => {
     const clickedId = Number(target.dataset.productId)
     const clickedProduct = await findClickedProduct(clickedId)
+    const inCartIds = cartItems.map(item => item.id)       
+    const inCartItem = cartItems.find(item => item.id === clickedId) as IProduct  // Hitta produkten i cart som har samma ID som produkten jag klickade på
 
+    // Kolla om produkten redan finns i varukorgen
+    if (!inCartItem || !inCartIds.includes(clickedId)) {
+        clickedProduct.qty = 1
+        cartItems.push(clickedProduct)
+    }
+    else if (inCartIds.includes(clickedId)) {
+        increaseQty(inCartItem)
+        
+    }
+}
+
+const increaseQty = (prod: IProduct) => {
+    if (!(prod.stock_quantity > prod.qty)) {
+        noMoreCandy(prod)
+        return
+    }
+    else {
+        prod.qty++
+    }
+}
+
+// Click event on each product
+dqs('main').addEventListener('click', async e => {
+    const target = e.target as HTMLElement
+    const clickedId = Number(target.dataset.productId)
+    const clickedProduct = await findClickedProduct(clickedId)
+    
     // Skippa allt efter denna rad om man inte klicka på rätt ställe
     if (!target.className.includes('product-wrap-child')) return
     
     // 'Lägg till i varukorgen' knappen på en produkt
     if (target.tagName === 'BUTTON') {
-        const inCartIds = cartItems.map(item => item.id)       
-        const inCartItem = cartItems.find(item => item.id === clickedId) as IProduct  // Hitta produkten i cart som har samma ID som produkten jag klickade på
 
-        // Kolla om produkten redan finns i varukorgen
-        if (!inCartItem || !inCartIds.includes(clickedId)) {
-            clickedProduct.qty = 1
-            cartItems.push(clickedProduct)
-        }
-        else if (inCartIds.includes(clickedId)) {
-
-            if (!(inCartItem.stock_quantity > inCartItem.qty)) {
-                noMoreCandy(inCartItem)
-                console.log(`No more in stock, max amount of ${inCartItem.name} is ${inCartItem.stock_quantity}`)
-                return
-            }
-            else {
-                inCartItem.qty++
-            }
-        }
-
+        await addProduct(target)
         renderCart()
 
-        document.querySelector('#cart-wrap')!.classList.add('shake')
+        dqs('#cart-wrap').classList.add('shake')
         setTimeout( () => {
-            document.querySelector('#cart-wrap')!.classList.remove('shake')                
+            dqs('#cart-wrap').classList.remove('shake')                
         },950)
     }
     // Om man klickar någon annan stans på produkten. (info)
@@ -261,36 +260,36 @@ document.querySelector('main')?.addEventListener('click', async e => {
 })
 
 // View cart
-document.querySelector('#title-cart')!.addEventListener('click', () => {
-    document.querySelector('.cart-background')!.classList.add('show')
+dqs('#title-cart').addEventListener('click', () => {
+    dqs('.cart-background').classList.add('show')
     document.body.style.overflow = 'hidden';
     
 })
 
 // Close cart
-document.querySelector('#cart-close')!.addEventListener('click', () => {
-    document.querySelector('.cart-background')!.classList.remove('show')
+dqs('#cart-close').addEventListener('click', () => {
+    dqs('.cart-background').classList.remove('show')
     document.body.style.removeProperty('overflow');
 
 })
 
 // Remove items from local storage(cart)
-document.querySelector('#clear-cart-btn')?.addEventListener('click', async () => {
+dqs('#clear-cart-btn').addEventListener('click', async () => {
     localStorage.removeItem('Shopping cart')
     jsonCartItems = localStorage.getItem('Shopping cart') ?? '[]'
     cartItems = JSON.parse(jsonCartItems)
     renderCart()
     setTimeout(() => {
-    document.querySelector('.cart-background')!.classList.remove('show')
+    dqs('.cart-background').classList.remove('show')
     document.body.style.removeProperty('overflow');
     },500)
 })
 
 // Info-section start
 const renderInfo = (productInfo: IProduct) => {
-    document.querySelector('.info-background')!.classList.remove('d-none')
-    document.querySelector('.info-background')!.classList.add('show-info')
-    document.querySelector('#info-section')!.innerHTML = `    
+    display('.info-background')
+    dqs('.info-background').classList.add('show-info')
+    dqs('#info-section').innerHTML = `    
         <div class="info-section-l">
             <img src="https://www.bortakvall.se/${productInfo.images.large}" alt="${productInfo.name}" class="info-img">
             <p class="info-name" class="mt-3">
@@ -300,7 +299,7 @@ const renderInfo = (productInfo: IProduct) => {
                     <span>kr</span>
                 </span>
             </p>
-            <button class="product-btn m-2 p-2" data-prod-id="${productInfo.id}" style="font-weight: bold;" ${(productInfo.stock_status === 'outofstock') ? 'disabled' : ''}>${(productInfo.stock_status === 'outofstock') ? 'SLUT I LAGER' : 'LÄGG TILL I VARUKORG'}</button>
+            <button class="product-btn m-2 p-2" data-product-id="${productInfo.id}" style="font-weight: bold;" ${(productInfo.stock_status === 'outofstock') ? 'disabled' : ''}>${(productInfo.stock_status === 'outofstock') ? 'SLUT I LAGER' : 'LÄGG TILL I VARUKORG'}</button>
         </div>
         <div class="info-section-r">
             <h3>Beskrivning</h3>
@@ -313,42 +312,22 @@ const renderInfo = (productInfo: IProduct) => {
 }
 
 // Click event on info-section
-document.querySelector('.info-background')!.addEventListener('click', async e => {
+dqs('.info-background').addEventListener('click', async e => {
     const target = e.target as HTMLElement
-    const clickedId = Number(target.dataset.prodId)
-    const clickedProduct = await findClickedProduct(clickedId)
 
-    if (target.tagName === 'BUTTON') {        
-        const inCartIds = cartItems.map(item => item.id)       
-        const inCartItem = cartItems.find(item => item.id === clickedId) as IProduct  // Hitta produkten i cart som har samma ID som produkten jag klickade på
-
-        if (!inCartItem || !inCartIds.includes(clickedId)) {
-            clickedProduct.qty = 1
-            cartItems.push(clickedProduct)
-        }
-        else if (inCartIds.includes(clickedId)) {
-            
-            if (!(inCartItem.stock_quantity > inCartItem.qty)) {
-                noMoreCandy(inCartItem)
-                console.log(`No more in stock, max amount of ${inCartItem.name} is ${inCartItem.stock_quantity}`)
-                return
-            }
-            else {
-                inCartItem.qty++
-            }
-        }
-
+    if (target.tagName === 'BUTTON') {      
+        await addProduct(target)
         renderCart()
         
         document.body.style.removeProperty('overflow');
-        document.querySelector('#cart-wrap')!.classList.add('shake')
+        dqs('#cart-wrap').classList.add('shake')
         setTimeout( () => { 
-            document.querySelector('.info-background')!.classList.add('d-none')
-            document.querySelector('#cart-wrap')!.classList.remove('shake')                
+            hide('.info-background')
+            dqs('#cart-wrap').classList.remove('shake')
         },950)
     }
     else if (target.className.includes('close-info')) {
-        document.querySelector('.info-background')!.classList.add('d-none')
+        hide('.info-background')
         document.body.style.removeProperty('overflow');
     }
 })
@@ -358,23 +337,22 @@ document.querySelector('.info-background')!.addEventListener('click', async e =>
 
 // function that renders checkout-page and form to DOM
 const checkout = () => {
-
-    document.querySelector('.content-wrapper')!.classList.add('banner-checkout')
-    document.querySelector('.content-display')!.classList.add('d-none')
-    document.querySelector('#title-cart')!.classList.add('d-none')
-    document.querySelector('#order-content')!.classList.remove('d-none')
-    document.querySelector('.customer-details')!.classList.remove('d-none')
-    document.querySelector('.back-button')!.classList.remove('d-none')
-    document.querySelector('#main')!.classList.add('d-none')
-    document.querySelector('footer')!.classList.add('d-none')
-    document.querySelector('.cart-background')!.classList.remove('show')
+    hide('.content-display')
+    hide('#title-cart')
+    hide('#main')
+    hide('footer')
+    display('#order-content')
+    display('.customer-details')
+    display('.back-button')
+    dqs('.content-wrapper').classList.add('banner-checkout')
+    dqs('.cart-background').classList.remove('show')
 
     cartItems.map(product => {
         document.body.style.removeProperty('overflow');
 
         let productTotal = (product.price * product.qty)
 
-        document.querySelector('#order-content')!.innerHTML += `
+        dqs('#order-content').innerHTML += `
             <li class="list-group-item d-flex justify-content-between align-items-center text-center">
                 <img src="https://www.bortakvall.se/${product.images.thumbnail}" alt="${product.name}" class="checkout-img">
                 ${product.name}<br>x ${product.qty}<span>Á pris: <br>${product.price} kr</span><span>Total:<br> ${productTotal} kr</span>
@@ -382,7 +360,7 @@ const checkout = () => {
         `
     })
 
-    document.querySelector('#order-content')!.innerHTML += `
+    dqs('#order-content').innerHTML += `
 
             <h3 class="text-center mt-3">Att betala: ${cartTotal} kr</h3>
         `
@@ -403,18 +381,16 @@ const checkout = () => {
 
 // function that renders form to DOM
 const renderForm = () => {
-    document.querySelector('.customer-details')!.classList.remove('d-none')
-
-    formAutoFill()           
-              
+    display('.customer-details')
+    formAutoFill()            
 }
 
 // enable submit button when checkbox is checked
-const checkbox = document.querySelector('#customer-checkbox')! as HTMLInputElement
+const checkbox = dqs('#customer-checkbox') as HTMLInputElement
 
 
 checkbox.addEventListener('change', () => {
-    document.querySelector('.send-order')!.toggleAttribute('disabled' )
+    dqs('.send-order').toggleAttribute('disabled' )
 })
 
 // get json data from localStorage
@@ -450,7 +426,7 @@ console.log("customer data:", customerData)
 
 // Add clickEvent to proceed to check out with all products from cart
 
-document.querySelector('#checkout-btn')!.addEventListener('click', e => {
+dqs('#checkout-btn').addEventListener('click', e => {
     const target = e.target as HTMLButtonElement
     
     if (target.id === 'checkout-btn') {
@@ -564,26 +540,25 @@ form.addEventListener('submit', async e => {
 
 
 // remove saved customer data when reset button is clicked
-document.querySelector('.customer-details')!.addEventListener('reset', () => {
+dqs('.customer-details').addEventListener('reset', () => {
     localStorage.removeItem('Customer data')
     checkbox.checked = false
-    document.querySelector('.send-order')!.setAttribute('disabled', 'disabled')
+    dqs('.send-order').setAttribute('disabled', 'disabled')
 })
 
 // go back to product page once back button is clicked
-document.querySelector('.back-button')!.addEventListener('click', () => {
-
-    document.querySelector('.content-wrapper')!.classList.remove('banner-checkout')
-    document.querySelector('.content-display')!.classList.remove('d-none')
-    document.querySelector('#title-cart')!.classList.remove('d-none')
-    document.querySelector('#order-content')!.classList.add('d-none')
-    document.querySelector('.customer-details')!.classList.add('d-none')
-    document.querySelector('.back-button')!.classList.add('d-none')
-    document.querySelector('#main')!.classList.remove('d-none')
-    document.querySelector('footer')!.classList.remove('d-none')
+dqs('.back-button').addEventListener('click', () => {
+    display('.content-display')
+    display('#title-cart')
+    display('#main')
+    display('footer')
+    hide('#order-content')
+    hide('.customer-details')
+    hide('.back-button')
+    dqs('.content-wrapper').classList.remove('banner-checkout')
 
     // empty HTML before checkout() runs again
-    document.querySelector('#order-content')!.innerHTML = ''
+    dqs('#order-content').innerHTML = ''
 })
 
 
