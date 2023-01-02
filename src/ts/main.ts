@@ -63,7 +63,7 @@ const countTotalPrice = () => {
 }
 // Cart total price ends
 
-// Allt denna funktion ska göra är att hitta produkten man clickar på
+// Hitta produkten man clickar på bland hela sortimentet
 const findClickedProduct = async (clickedId: number): Promise<IProduct> => {
     const products = await fetchProducts()
     return products.data.find(prod => clickedId === prod.id) as IProduct
@@ -74,30 +74,28 @@ const findCartItem = (clickedId: number) => cartItems.find(item => item.id === c
 
 const renderCartItems = () => {
     dqs('#cart-list').innerHTML = cartItems
-    .map(item => `
-        <li class="cart-item">
-            <img class="cart-image" src="https://www.bortakvall.se${item.images.thumbnail}" alt="${item.name}">
-            <div class="card-body cart-descript">
-                <p class="card-title text-dark">${item.name}</p>
-                
-                <p class="cart-adjust">
-                    <span data-product-id="${item.id}" class="decrease">-</span>
-                    <input class="prod-qty" data-input-id="${item.id}" id="input-${item.id}" value="${item.qty}" style="width: 30px; text-align: center">
-                    <span data-product-id="${item.id}" class="increase">+</span>
-                </p>
-                <p class="card-text-cart text-dark cart-item-price">${item.price} kr/st  </p>
-                
-                <p class="card-text-cart text-dark" id="item-price-${item.id}">${item.price * item.qty} kr</p>
-            </div>
-            <svg xmlns="http://www.w3.org/2000/svg" class="bi-trash cart-remove-item" data-product-id="${item.id}" width="40" height="40" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
-                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
-            </svg>
-            
-        </li>
-    `)
-    .join('')
-                // disable checkout button if product qty < 1
+        .map(item => `
+            <li class="cart-item">
+                <img class="cart-image" src="https://www.bortakvall.se${item.images.thumbnail}" alt="${item.name}">
+                <div class="card-body cart-descript">
+                    <p class="card-title text-dark">${item.name}</p>
+                    <p class="cart-adjust">
+                        <span data-product-id="${item.id}" class="decrease">-</span>
+                        <input class="prod-qty" data-input-id="${item.id}" id="input-${item.id}" value="${item.qty}" style="width: 30px; text-align: center">
+                        <span data-product-id="${item.id}" class="increase">+</span>
+                    </p>
+                    <p class="card-text-cart text-dark cart-item-price">${item.price} kr/st  </p>
+                    <p class="card-text-cart text-dark" id="item-price-${item.id}">${item.price * item.qty} kr</p>
+                </div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="bi-trash cart-remove-item" data-product-id="${item.id}" width="40" height="40" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                </svg>
+            </li>
+        `)
+        .join('')
+        
+    // disable checkout button if product qty < 1
     if (cartItems.length === 0) {
         document.querySelector('#checkout-btn')!.setAttribute('disabled', 'disabled')
     } else {
@@ -111,7 +109,6 @@ dqs('#cart-list').addEventListener('keyup', e => {
     const clickedId = Number(target.dataset.inputId)
     if (!clickedId) return
     const inCartItem = findCartItem(clickedId)
-    // const inCartItem = 
     const inputField = dqs(`#input-${clickedId}`) as HTMLInputElement
     inCartItem.qty = Number(inputField.value)
     saveCart()
@@ -263,7 +260,6 @@ dqs('main').addEventListener('click', async e => {
         renderInfo(clickedProduct)
         document.body.style.overflow = 'hidden'
     } 
-    
 })
 
 // View cart
