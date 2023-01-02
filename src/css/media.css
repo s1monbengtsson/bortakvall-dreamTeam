@@ -192,4 +192,25 @@
     .cart-item-price {
         padding-left: 1rem;
     }
+    .checkout-wrap {
+        width: 100vw;
+    }
+    .customer-details {
+        width: 100%;
+    }
+    #order-content {
+        width: 100%;
+    }
+    .customer-details {
+        width: 100%;
+        margin: 0 0;
+    }
+    .checkout-img {
+        height: 45px;
+        width: 45px;
+    }
+    .form-heading {
+        margin-top: 0 !important;
+    }
+
 }
