@@ -331,10 +331,10 @@ dqs('.info-background').addEventListener('click', async e => {
         renderCart()
         
         document.body.style.removeProperty('overflow');
-        dqs('#cart-wrap').classList.add('shake')
+        dqs('#title-cart').classList.add('shake')
         setTimeout( () => { 
             hide('.info-background')
-            dqs('#cart-wrap').classList.remove('shake')
+            dqs('#title-cart').classList.remove('shake')
         },950)
     }
     else if (target.tagName === 'svg','path') {
