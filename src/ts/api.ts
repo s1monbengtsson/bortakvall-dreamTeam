@@ -1,13 +1,9 @@
 import { IData, IOrder, IPostData, } from "./interface";
 
 
-/* Fetch products from api */
-
 const BASE_URL = 'https://www.bortakvall.se/api'
 const PRODUCTS = '/products'
 const ORDERS = '/orders'
-// const orders = '/orders'
-// response vid order
 
 
 export const fetchProducts = async () => {
