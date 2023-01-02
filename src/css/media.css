@@ -1,6 +1,8 @@
 /* @media screen and (max-width: 768px) {
 } */
 /* Tablet screen size */
+
+
 @media screen and (max-width: 1024px) {
     .content-container {
         width: 95vw;
