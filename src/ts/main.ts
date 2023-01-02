@@ -97,9 +97,9 @@ const renderCartItems = () => {
         
     // disable checkout button if product qty < 1
     if (cartItems.length === 0) {
-        document.querySelector('#checkout-btn')!.setAttribute('disabled', 'disabled')
+        dqs('#checkout-btn').setAttribute('disabled', 'disabled')
     } else {
-        document.querySelector('#checkout-btn')!.removeAttribute('disabled')
+        dqs('#checkout-btn').removeAttribute('disabled')
     }
 }
 
@@ -181,7 +181,7 @@ const renderProducts = (): void => {
 
     dqs('.product-main').innerHTML = products.data
     .map( prod => `
-        <div class="col- 12 col-sm-6 col-md-6 col-lg-3 product-cards">
+        <div class="col-12 col-sm-6 col-md-6 col-lg-3 product-cards">
             <div class="card product-wrap border-0">
                 <img src="https://www.bortakvall.se${prod.images.thumbnail}" alt="${prod.name}" class="card-img-top card-img product-click-event" data-product-id="${prod.id}">
                 <div class="card-body">
@@ -360,8 +360,9 @@ const checkout = () => {
 
         let productTotal = (product.price * product.qty)
 
+
         dqs('#order-content').innerHTML += `
-            <li class="list-group-item d-flex justify-content-between align-items-center text-center">
+            <li class="list-group-item d-flex justify-content-between align-items-center text-center rounded">
                 <img src="https://www.bortakvall.se/${product.images.thumbnail}" alt="${product.name}" class="checkout-img">
                 ${product.name}<br>x ${product.qty}<span>Á pris: <br>${product.price} kr</span><span>Total:<br> ${productTotal} kr</span>
             </li>
@@ -396,7 +397,7 @@ const renderForm = () => {
 // enable submit button when checkbox is checked
 const checkbox = dqs('#customer-checkbox') as HTMLInputElement
 
-
+// listen for change of state on checkbox and toggle attribute disabled
 checkbox.addEventListener('change', () => {
     dqs('.send-order').toggleAttribute('disabled' )
 })
@@ -408,6 +409,7 @@ let jsonCustomerData = localStorage.getItem('Customer data') ?? '[]'
 let customerData: ICustomerInfo = JSON.parse(jsonCustomerData)
 
 
+// saving customer data to localStorage
 const saveCustomerData = () => {
 
     customerData = {
@@ -430,36 +432,29 @@ console.log("customer data:", customerData)
 }
 
 // Add clickEvent to proceed to check out with all products from cart
-
 dqs('#checkout-btn').addEventListener('click', e => {
     const target = e.target as HTMLButtonElement
     
     if (target.id === 'checkout-btn') {
-        console.log('clicked on checkout')
         checkout()
         renderForm()
     }
 })
 
+// if error posting to server
 const errorWarning = () => {
     document.querySelector('.order-confirmation')!.innerHTML = `
     <div class="alert alert-danger">Your order could not be placed. Please try again</div>
     `
 }
 
-
-
-
 // listen for submits, and save customer data to localStorage
 form.addEventListener('submit', async e => {
     e.preventDefault()
     saveCustomerData()
 
-
-    
     // mapping over cartItems to store only needed keys
     const orderedItems = cartItems.map(item => ({product_id: item.id, qty: item.qty, item_price: item.price, item_total:item.price*item.qty}))
-    
 
     // object containing order content
     const newOrder: IOrder =   {
@@ -475,34 +470,40 @@ form.addEventListener('submit', async e => {
 
         }
 
+        display('#spinner')
         
     // store ordered items and print to DOM
     const orderConfirmation = async () => {
         const orderInfo:IPostData = await createNewOrder(newOrder)
 
+    
+        setTimeout(() => {
+            
+            // creating order confirmation template
         try{
-            document.querySelector('.checkout-wrap')!.classList.add('d-none')
-            document.querySelector('.back-button')!.classList.add('d-none')
-            document.querySelector('.order-confirmation')!.innerHTML += `
+            hide('.checkout-wrap')!
+            hide('.back-button')!
+            dqs('.order-confirmation')!.innerHTML += `
             <h2 class="mb-3"> Tack för din beställning!</h2>
             <div class="w-75 row mx-auto pt-3 col-12 border rounded confirmation-wrapper">
                 <h3 class="mb-3"> Orderbekräftelse</h3>
-                <div class="customer-info col">
-                    <p><strong>Beställare:</strong> ${customerData.customer_first_name} ${customerData.customer_last_name}</p>
-                    <p><strong>Leveransadress:</strong> ${customerData.customer_address}, ${customerData.customer_postcode}, ${customerData.customer_city}</p>
-                    <p><strong>Kontaktuppgifter:</strong><br>Telefon: ${customerData.customer_phone}<br>Email: ${customerData.customer_email}
+                <div class="customer-info col text-center mx-5">
+                    <p><strong>Beställare</strong><br>${customerData.customer_first_name} ${customerData.customer_last_name}</p>
+                    <p><strong>Leveransadress</strong><br>${customerData.customer_address}, ${customerData.customer_postcode}, ${customerData.customer_city}</p>
+                    <p><strong>Kontaktuppgifter</strong><br>Telefon: ${customerData.customer_phone}<br>Email: ${customerData.customer_email}
                 </div>
-                <div class="order-details col">
-                    <p><strong>Ordernummer:</strong> ${orderInfo.data.id}</p>
-                    <p><strong>Beställningsdatum:</strong> ${orderInfo.data.order_date}</p>
-                    <p><strong>Betalt:</strong> ${orderInfo.data.order_total} kr</p>
+                <div class="order-details col text-center mx-5">
+                    <p><strong>Ordernummer</strong><br>${orderInfo.data.id}</p>
+                    <p><strong>Beställningsdatum</strong><br>${orderInfo.data.order_date}</p>
+                    <p><strong>Betalt</strong><br>${orderInfo.data.order_total} kr</p>
                 </div>
                 <ul class="list-group item-container px-0"></ul>
             </div>
             
         `
+        // prints every ordered item to order confirmation
         cartItems.forEach(product => {
-            document.querySelector('.item-container')!.innerHTML += `
+            dqs('.item-container')!.innerHTML += `
             <li class="list-group-item d-flex align-items-center col-12">
                 <img class="confirmation-img col-6 img-fluid mx-auto" src="https://www.bortakvall.se/${product.images.thumbnail}" alt="${product.name}">
                 <p class="col-6 my-auto">${product.name}<br>x ${product.qty}</p>
@@ -510,27 +511,33 @@ form.addEventListener('submit', async e => {
             `
         })
 
-        document.querySelector('.order-confirmation')!.innerHTML += `
+        // button for closing the page
+        dqs('.order-confirmation')!.innerHTML += `
             <p class="mt-5 text-muted">Du kan nu stänga sidan!</p>
             <button class="btn btn-dark close mb-5">Stäng</button>
         `
-        document.querySelector('.close')!.addEventListener('click', () => {
+
+        // when closing page, site is refreshed and cart and localStorage shopping cart reset
+        dqs('.close')!.addEventListener('click', () => {
             window.location.reload()
             localStorage.removeItem('Total price')
             localStorage.removeItem('Shopping cart')
         })
             
+        // if post errror occurs, print error message
         }
         catch {
             errorWarning()
             
         }
-
-
+        hide('#spinner')
         console.log("order info:", orderInfo)
+
+        }, 2000)
+        
   }
 
-   await orderConfirmation()
+    await orderConfirmation()
 
 })
 
