@@ -303,7 +303,8 @@ const renderInfo = (productInfo: IProduct) => {
                     <span>kr</span>
                 </span>
             </p>
-            <button class="product-btn m-2 p-2" data-product-id="${productInfo.id}" style="font-weight: bold;" ${(productInfo.stock_status === 'outofstock') ? 'disabled' : ''}>${(productInfo.stock_status === 'outofstock') ? 'SLUT I LAGER' : 'LÄGG TILL I VARUKORG'}</button>
+            <button class="product-btn m-2 p-2 ${(productInfo.stock_status === 'outofstock') ? 'product-btn-outofstock' : ''}" data-product-id="${productInfo.id}" style="font-weight: bold;" ${(productInfo.stock_status === 'outofstock') ? 'disabled' : ''}>${(productInfo.stock_status === 'outofstock') ? 'SLUT I LAGER' : 'LÄGG TILL I VARUKORG'}</button>
+            <p class="stock-qty">Antal i lager: ${(productInfo.stock_quantity === null) ? '0': productInfo.stock_quantity} </p>
         </div>
         <div class="info-section-r">
             <h3>Beskrivning</h3>
