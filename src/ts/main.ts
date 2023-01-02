@@ -56,9 +56,9 @@ const renderTotalPrice = () => {
 }
 
 const countTotalPrice = () => {
-    let cartPrices = [0]
-    cartPrices = [0, ...cartItems.map(item => item.price * item.qty)]
-    cartTotal = cartPrices.reduce((price, sum) => sum += price)
+    cartTotal = [0, ...cartItems
+        .map(item => item.price * item.qty)]
+        .reduce((price, sum) => sum += price)
     localStorage.setItem('Total price', JSON.stringify(cartTotal))
 }
 // Cart total price ends
@@ -258,7 +258,7 @@ dqs('main').addEventListener('click', async e => {
     // Om man klickar någon annan stans på produkten. (info)
     else {
         renderInfo(clickedProduct)
-        document.body.style.overflow = 'hidden';
+        document.body.style.overflow = 'hidden'
     } 
     
 })
@@ -266,14 +266,14 @@ dqs('main').addEventListener('click', async e => {
 // View cart
 dqs('#title-cart').addEventListener('click', () => {
     dqs('.cart-background').classList.add('show')
-    document.body.style.overflow = 'hidden';
+    document.body.style.overflow = 'hidden'
     
 })
 
 // Close cart
 dqs('#cart-close').addEventListener('click', () => {
     dqs('.cart-background').classList.remove('show')
-    document.body.style.removeProperty('overflow');
+    document.body.style.removeProperty('overflow')
 
 })
 
@@ -285,7 +285,7 @@ dqs('#clear-cart-btn').addEventListener('click', async () => {
     renderCart()
     setTimeout(() => {
     dqs('.cart-background').classList.remove('show')
-    document.body.style.removeProperty('overflow');
+    document.body.style.removeProperty('overflow')
     },500)
 })
 
@@ -328,8 +328,9 @@ dqs('.info-background').addEventListener('click', async e => {
         addProduct(clickedProduct)
         renderCart()
         
-        document.body.style.removeProperty('overflow');
+        document.body.style.removeProperty('overflow')
         dqs('#cart-wrap').classList.add('shake')
+
         setTimeout( () => { 
             hide('.info-background')
             dqs('#cart-wrap').classList.remove('shake')
@@ -337,7 +338,7 @@ dqs('.info-background').addEventListener('click', async e => {
     }
     else if (target.tagName === 'svg','path') {
         hide('.info-background')
-        document.body.style.removeProperty('overflow');
+        document.body.style.removeProperty('overflow')
     }
 })
 // end info-section
@@ -357,7 +358,7 @@ const checkout = () => {
     dqs('.cart-background').classList.remove('show')
 
     cartItems.map(product => {
-        document.body.style.removeProperty('overflow');
+        document.body.style.removeProperty('overflow')
 
         let productTotal = (product.price * product.qty)
 
