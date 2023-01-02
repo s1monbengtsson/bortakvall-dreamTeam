@@ -35,6 +35,9 @@ let cartItems: IProduct[] = JSON.parse(jsonCartItems)
 let jsonCartTotal = localStorage.getItem('Total price') ?? '0'
 let cartTotal: number = JSON.parse(jsonCartTotal)
 
+let jsonCustomerData = localStorage.getItem('Customer data') ?? '[]'
+let customerData: ICustomerInfo = JSON.parse(jsonCustomerData)
+
 const saveCart = () => {
     dqs('#cart-item-count').textContent = String(cartItems
         .map( item => item.qty )
@@ -360,7 +363,6 @@ const checkout = () => {
 
         let productTotal = (product.price * product.qty)
 
-
         dqs('#order-content').innerHTML += `
             <li class="list-group-item d-flex justify-content-between align-items-center text-center rounded">
                 <img src="https://www.bortakvall.se/${product.images.thumbnail}" alt="${product.name}" class="checkout-img">
@@ -370,14 +372,12 @@ const checkout = () => {
     })
 
     dqs('#order-content').innerHTML += `
-
-            <h3 class="text-center mt-3">Att betala: ${cartTotal} kr</h3>
-        `
+        <h3 class="text-center mt-3">Att betala: ${cartTotal} kr</h3>
+    `
 }
 
     // prefill form with customer data on page load
     const formAutoFill = () => {
-    
         customerFirstName.value = customerData.customer_first_name ?? ''
         customerLastName.value = customerData.customer_last_name ?? ''
         customerAddress.value = customerData.customer_address ?? ''
@@ -385,7 +385,6 @@ const checkout = () => {
         customerCity.value = customerData.customer_city ?? ''
         customerPhone.value = customerData.customer_phone ?? ''
         customerEmail.value = customerData.customer_email ?? ''
-
     }
 
 // function that renders form to DOM
@@ -402,33 +401,23 @@ checkbox.addEventListener('change', () => {
     dqs('.send-order').toggleAttribute('disabled' )
 })
 
-// get json data from localStorage
-let jsonCustomerData = localStorage.getItem('Customer data') ?? '[]'
-
-// parse json data into object
-let customerData: ICustomerInfo = JSON.parse(jsonCustomerData)
-
-
 // saving customer data to localStorage
 const saveCustomerData = () => {
-
     customerData = {
-    customer_first_name: customerFirstName.value,
-    customer_last_name:  customerLastName.value,
-    customer_address: customerAddress.value,
-    customer_postcode: customerPostal.value,
-    customer_city: customerCity.value,
-    customer_phone: customerPhone.value,
-    customer_email: customerEmail.value
-}
+        customer_first_name: customerFirstName.value,
+        customer_last_name:  customerLastName.value,
+        customer_address: customerAddress.value,
+        customer_postcode: customerPostal.value,
+        customer_city: customerCity.value,
+        customer_phone: customerPhone.value,
+        customer_email: customerEmail.value
+    }
 
-// converts customerData to JSON
-const json = JSON.stringify(customerData)
+    // converts customerData to JSON
+    const json = JSON.stringify(customerData)
 
-// saves JSON to localStorage
-localStorage.setItem('Customer data', json)
-
-console.log("customer data:", customerData)
+    // saves JSON to localStorage
+    localStorage.setItem('Customer data', json)
 }
 
 // Add clickEvent to proceed to check out with all products from cart
@@ -444,7 +433,7 @@ dqs('#checkout-btn').addEventListener('click', e => {
 // if error posting to server
 const errorWarning = () => {
     document.querySelector('.order-confirmation')!.innerHTML = `
-    <div class="alert alert-danger">Your order could not be placed. Please try again</div>
+        <div class="alert alert-danger">Your order could not be placed. Please try again</div>
     `
 }
 
@@ -458,89 +447,80 @@ form.addEventListener('submit', async e => {
 
     // object containing order content
     const newOrder: IOrder =   {
-            customer_first_name: customerFirstName.value,
-            customer_last_name: customerLastName.value,
-            customer_address: customerAddress.value,
-            customer_postcode: customerPostal.value,
-            customer_city: customerCity.value,
-            customer_email: customerEmail.value,
-            customer_phone: customerPhone.value,
-            order_total: cartTotal,
-            order_items: orderedItems
+        customer_first_name: customerFirstName.value,
+        customer_last_name: customerLastName.value,
+        customer_address: customerAddress.value,
+        customer_postcode: customerPostal.value,
+        customer_city: customerCity.value,
+        customer_email: customerEmail.value,
+        customer_phone: customerPhone.value,
+        order_total: cartTotal,
+        order_items: orderedItems
+    }
 
-        }
-
-        display('#spinner')
+    display('#spinner')
         
     // store ordered items and print to DOM
     const orderConfirmation = async () => {
         const orderInfo:IPostData = await createNewOrder(newOrder)
 
-    
         setTimeout(() => {
-            
             // creating order confirmation template
-        try{
-            hide('.checkout-wrap')!
-            hide('.back-button')!
+            try{
+                hide('.checkout-wrap')!
+                hide('.back-button')!
+                dqs('.order-confirmation')!.innerHTML += `
+                    <h2 class="mb-3"> Tack för din beställning!</h2>
+                    <div class="w-75 row mx-auto pt-3 col-12 border rounded confirmation-wrapper">
+                        <h3 class="mb-3"> Orderbekräftelse</h3>
+                        <div class="customer-info col text-center mx-5">
+                            <p><strong>Beställare</strong><br>${customerData.customer_first_name} ${customerData.customer_last_name}</p>
+                            <p><strong>Leveransadress</strong><br>${customerData.customer_address}, ${customerData.customer_postcode}, ${customerData.customer_city}</p>
+                            <p><strong>Kontaktuppgifter</strong><br>Telefon: ${customerData.customer_phone}<br>Email: ${customerData.customer_email}
+                        </div>
+                        <div class="order-details col text-center mx-5">
+                            <p><strong>Ordernummer</strong><br>${orderInfo.data.id}</p>
+                            <p><strong>Beställningsdatum</strong><br>${orderInfo.data.order_date}</p>
+                            <p><strong>Betalt</strong><br>${orderInfo.data.order_total} kr</p>
+                        </div>
+                        <ul class="list-group item-container px-0"></ul>
+                    </div>
+                `
+            // prints every ordered item to order confirmation
+            cartItems.forEach(product => {
+                dqs('.item-container')!.innerHTML += `
+                    <li class="list-group-item d-flex align-items-center col-12">
+                        <img class="confirmation-img col-6 img-fluid mx-auto" src="https://www.bortakvall.se/${product.images.thumbnail}" alt="${product.name}">
+                        <p class="col-6 my-auto">${product.name}<br>x ${product.qty}</p>
+                    </li>
+                `
+            })
+
+            // button for closing the page
             dqs('.order-confirmation')!.innerHTML += `
-            <h2 class="mb-3"> Tack för din beställning!</h2>
-            <div class="w-75 row mx-auto pt-3 col-12 border rounded confirmation-wrapper">
-                <h3 class="mb-3"> Orderbekräftelse</h3>
-                <div class="customer-info col text-center mx-5">
-                    <p><strong>Beställare</strong><br>${customerData.customer_first_name} ${customerData.customer_last_name}</p>
-                    <p><strong>Leveransadress</strong><br>${customerData.customer_address}, ${customerData.customer_postcode}, ${customerData.customer_city}</p>
-                    <p><strong>Kontaktuppgifter</strong><br>Telefon: ${customerData.customer_phone}<br>Email: ${customerData.customer_email}
-                </div>
-                <div class="order-details col text-center mx-5">
-                    <p><strong>Ordernummer</strong><br>${orderInfo.data.id}</p>
-                    <p><strong>Beställningsdatum</strong><br>${orderInfo.data.order_date}</p>
-                    <p><strong>Betalt</strong><br>${orderInfo.data.order_total} kr</p>
-                </div>
-                <ul class="list-group item-container px-0"></ul>
-            </div>
-            
-        `
-        // prints every ordered item to order confirmation
-        cartItems.forEach(product => {
-            dqs('.item-container')!.innerHTML += `
-            <li class="list-group-item d-flex align-items-center col-12">
-                <img class="confirmation-img col-6 img-fluid mx-auto" src="https://www.bortakvall.se/${product.images.thumbnail}" alt="${product.name}">
-                <p class="col-6 my-auto">${product.name}<br>x ${product.qty}</p>
-            </li>
+                <p class="mt-5 text-muted">Du kan nu stänga sidan!</p>
+                <button class="btn btn-dark close mb-5">Stäng</button>
             `
-        })
 
-        // button for closing the page
-        dqs('.order-confirmation')!.innerHTML += `
-            <p class="mt-5 text-muted">Du kan nu stänga sidan!</p>
-            <button class="btn btn-dark close mb-5">Stäng</button>
-        `
+            // when closing page, site is refreshed and cart and localStorage shopping cart reset
+            dqs('.close')!.addEventListener('click', () => {
+                window.location.reload()
+                localStorage.removeItem('Total price')
+                localStorage.removeItem('Shopping cart')
+            })
+                
+            // if post errror occurs, print error message
+            }
+            catch {
+                errorWarning()
+            }
 
-        // when closing page, site is refreshed and cart and localStorage shopping cart reset
-        dqs('.close')!.addEventListener('click', () => {
-            window.location.reload()
-            localStorage.removeItem('Total price')
-            localStorage.removeItem('Shopping cart')
-        })
-            
-        // if post errror occurs, print error message
-        }
-        catch {
-            errorWarning()
-            
-        }
-        hide('#spinner')
-        console.log("order info:", orderInfo)
-
+            hide('#spinner')
         }, 2000)
-        
-  }
+    }
 
     await orderConfirmation()
-
 })
-
 
 // remove saved customer data when reset button is clicked
 dqs('.customer-details').addEventListener('reset', () => {
@@ -564,10 +544,6 @@ dqs('.back-button').addEventListener('click', () => {
     dqs('#order-content').innerHTML = ''
 })
 
-
-
-
 /* functions that are called when the page loads */
 getProducts()
-    
 renderCart()
