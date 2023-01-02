@@ -27,7 +27,6 @@ const customerPhone = dqs('#customer-phone') as HTMLInputElement
 const customerEmail = dqs('#customer-email') as HTMLInputElement
 
 let products: IData
-// let products: IProduct[] = []
 
 // localStorage starts
 let jsonCartItems = localStorage.getItem('Shopping cart') ?? '[]'
@@ -213,12 +212,10 @@ const noMoreCandy = (candy: IProduct) => {
     }, 2000)
 }
 
-const addProduct = async (target: HTMLElement) => {
-    const clickedId = Number(target.dataset.productId)
-    const clickedProduct = await findClickedProduct(clickedId)
+const addProduct = (clickedProduct: IProduct) => {
+    const clickedId = clickedProduct.id
     const inCartIds = cartItems.map(item => item.id)       
-    const inCartItem = cartItems.find(item => item.id === clickedId) as IProduct  // Hitta produkten i cart som har samma ID som produkten jag klickade på
-
+    const inCartItem = cartItems.find(item => item.id === clickedId) as IProduct  // Hitta produkten i cart som har samma ID som produkten jag klickade på (finns inte alltid och har inte 'qty')
     // Kolla om produkten redan finns i varukorgen
     if (!inCartItem || !inCartIds.includes(clickedId)) {
         clickedProduct.qty = 1
@@ -226,7 +223,6 @@ const addProduct = async (target: HTMLElement) => {
     }
     else if (inCartIds.includes(clickedId)) {
         increaseQty(inCartItem)
-        
     }
 }
 
@@ -244,15 +240,14 @@ const increaseQty = (prod: IProduct) => {
 dqs('main').addEventListener('click', async e => {
     const target = e.target as HTMLElement
     const clickedId = Number(target.dataset.productId)
-    const clickedProduct = await findClickedProduct(clickedId)
+    const clickedProduct = await findClickedProduct(clickedId) // Hitta produkten bland alla produkter som har samma ID som produkten jag klickade på
 
     // Skippa allt efter denna rad om man inte klicka på rätt ställe
     if (!target.getAttribute('class')?.includes('product-click-event')) return
     
     // 'Lägg till i varukorgen' knappen på en produkt
     if (target.tagName === 'BUTTON') {
-
-        await addProduct(target)
+        addProduct(clickedProduct)
         renderCart()
 
         dqs('#title-cart').classList.add('shake')
@@ -325,9 +320,11 @@ const renderInfo = (productInfo: IProduct) => {
 // Click event on info-section
 dqs('.info-background').addEventListener('click', async e => {
     const target = e.target as HTMLElement
+    const clickedId = Number(target.dataset.productId)
+    const clickedProduct = await findClickedProduct(clickedId) // Hitta produkten bland alla produkter som har samma ID som produkten jag klickade på
 
     if (target.tagName === 'BUTTON') {      
-        await addProduct(target)
+        addProduct(clickedProduct)
         renderCart()
         
         document.body.style.removeProperty('overflow');
