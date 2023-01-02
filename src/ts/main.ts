@@ -66,9 +66,11 @@ const countTotalPrice = () => {
 // Allt denna funktion ska göra är att hitta produkten man clickar på
 const findClickedProduct = async (clickedId: number): Promise<IProduct> => {
     const products = await fetchProducts()
-    const foundProduct: IProduct = products.data.find(prod => clickedId === prod.id) as IProduct
-    return foundProduct
+    return products.data.find(prod => clickedId === prod.id) as IProduct
 }
+
+// Hitta produkten i cart som har samma ID som produkten jag klickade på (är inte samma som findClickedProduct()) (finns inte alltid och har inte 'qty')
+const findCartItem = (clickedId: number) => cartItems.find(item => item.id === clickedId) as IProduct
 
 const renderCartItems = () => {
     dqs('#cart-list').innerHTML = cartItems
@@ -96,11 +98,11 @@ const renderCartItems = () => {
     `)
     .join('')
                 // disable checkout button if product qty < 1
-if (cartItems.length === 0) {
-    document.querySelector('#checkout-btn')!.setAttribute('disabled', 'disabled')
-} else {
-    document.querySelector('#checkout-btn')!.removeAttribute('disabled')
-}
+    if (cartItems.length === 0) {
+        document.querySelector('#checkout-btn')!.setAttribute('disabled', 'disabled')
+    } else {
+        document.querySelector('#checkout-btn')!.removeAttribute('disabled')
+    }
 }
 
 // Input field on every cart item starts
@@ -108,7 +110,8 @@ dqs('#cart-list').addEventListener('keyup', e => {
     const target = e.target as HTMLElement
     const clickedId = Number(target.dataset.inputId)
     if (!clickedId) return
-    const inCartItem = cartItems.find(item => item.id === clickedId) as IProduct
+    const inCartItem = findCartItem(clickedId)
+    // const inCartItem = 
     const inputField = dqs(`#input-${clickedId}`) as HTMLInputElement
     inCartItem.qty = Number(inputField.value)
     saveCart()
@@ -121,7 +124,7 @@ dqs('#cart-list').addEventListener('focusout', e => {
     const target = e.target as HTMLElement
     const clickedId = Number(target.dataset.inputId)
     if (!clickedId) return
-    const inCartItem = cartItems.find(item => item.id === clickedId) as IProduct
+    const inCartItem = findCartItem(clickedId)
     if (!(inCartItem.qty > 0)) {
         cartItems.splice(cartItems.indexOf(inCartItem), 1)
         renderCart()
@@ -134,7 +137,7 @@ dqs('#cart-list').addEventListener('click', async e => {
     const target = e.target as HTMLElement
     const clickedId = Number(target.dataset.productId)
     if (!clickedId) return
-    const inCartItem = cartItems.find(item => item.id === clickedId) as IProduct  // Hitta produkten i cart som har samma ID som produkten jag klickade på
+    const inCartItem = findCartItem(clickedId)
 
     if (target.tagName === 'svg') {
         inCartItem.qty = 0
@@ -215,7 +218,7 @@ const noMoreCandy = (candy: IProduct) => {
 const addProduct = (clickedProduct: IProduct) => {
     const clickedId = clickedProduct.id
     const inCartIds = cartItems.map(item => item.id)       
-    const inCartItem = cartItems.find(item => item.id === clickedId) as IProduct  // Hitta produkten i cart som har samma ID som produkten jag klickade på (finns inte alltid och har inte 'qty')
+    const inCartItem = findCartItem(clickedId)
     // Kolla om produkten redan finns i varukorgen
     if (!inCartItem || !inCartIds.includes(clickedId)) {
         clickedProduct.qty = 1
