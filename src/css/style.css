@@ -39,6 +39,10 @@
 
 /* styling for navigation */
 
+.banner {
+    width: 100%;
+}
+
 .banner > h1 {
     font-size: 3rem;
     font-weight: bold;
@@ -589,5 +593,13 @@ footer > p {
 }
 
 .confirmation-img {
-    height: 50px;
+    height: 70px;
+    max-width: 70px;
+}
+
+
+.logo > span {
+    font-weight: bold;
+    font-size: 2.7rem;
+
 }

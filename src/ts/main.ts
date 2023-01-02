@@ -432,9 +432,6 @@ localStorage.setItem('Customer data', json)
 console.log("customer data:", customerData)
 }
 
-
-
-
 // Add clickEvent to proceed to check out with all products from cart
 
 dqs('#checkout-btn').addEventListener('click', e => {
@@ -461,9 +458,6 @@ form.addEventListener('submit', async e => {
     e.preventDefault()
     saveCustomerData()
 
-    document.querySelector('#spinner')!.classList.remove('d-none')
-    document.querySelector('.checkout-wrap')!.classList.add('d-none')
-
 
     
     // mapping over cartItems to store only needed keys
@@ -489,7 +483,6 @@ form.addEventListener('submit', async e => {
     const orderConfirmation = async () => {
         const orderInfo:IPostData = await createNewOrder(newOrder)
 
-
         try{
             document.querySelector('.checkout-wrap')!.classList.add('d-none')
             document.querySelector('.back-button')!.classList.add('d-none')
@@ -507,15 +500,15 @@ form.addEventListener('submit', async e => {
                     <p><strong>Beställningsdatum:</strong> ${orderInfo.data.order_date}</p>
                     <p><strong>Betalt:</strong> ${orderInfo.data.order_total} kr</p>
                 </div>
-                <ul class="list-group item-container"></ul>
+                <ul class="list-group item-container px-0"></ul>
             </div>
             
         `
         cartItems.forEach(product => {
             document.querySelector('.item-container')!.innerHTML += `
-            <li class="list-group-item d-flex justify-content-around align-items-center text-center">
-                <img class="confirmation-img"src="https://www.bortakvall.se/${product.images.thumbnail}" alt="${product.name}" class="checkout-img">
-                ${product.name}<br>x ${product.qty}
+            <li class="list-group-item d-flex align-items-center col-12">
+                <img class="confirmation-img col-6 img-fluid mx-auto" src="https://www.bortakvall.se/${product.images.thumbnail}" alt="${product.name}">
+                <p class="col-6 my-auto">${product.name}<br>x ${product.qty}</p>
             </li>
             `
         })
@@ -540,12 +533,7 @@ form.addEventListener('submit', async e => {
         console.log("order info:", orderInfo)
   }
 
-
-
    await orderConfirmation()
-
-   document.querySelector('#spinner')!.classList.add('d-none')
-
 
 })
 
