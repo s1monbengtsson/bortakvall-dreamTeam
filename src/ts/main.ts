@@ -324,7 +324,8 @@ const renderInfo = (productInfo: IProduct) => {
 dqs('.info-background').addEventListener('click', async e => {
     const target = e.target as HTMLElement
     const clickedId = Number(target.dataset.productId)
-    const clickedProduct = await findClickedProduct(clickedId) // Hitta produkten bland alla produkter som har samma ID som produkten jag klickade på
+    const clickedProduct = await findClickedProduct(clickedId)
+    console.log(target.tagName)
 
     if (target.tagName === 'BUTTON') {      
         addProduct(clickedProduct)
@@ -337,14 +338,12 @@ dqs('.info-background').addEventListener('click', async e => {
             dqs('#title-cart').classList.remove('shake')
         },950)
     }
-    else if (target.tagName === 'svg','path') {
+    else if (target.tagName === 'svg' || target.tagName === 'path' || target.className.includes('info-background')) {
         hide('.info-background')
         document.body.style.removeProperty('overflow')
     }
 })
 // end info-section
-
-
 
 // function that renders checkout-page and form to DOM
 const checkout = () => {
