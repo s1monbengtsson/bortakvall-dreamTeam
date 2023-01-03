@@ -58,9 +58,8 @@ const renderCart = () => {
     renderCartItems()
     renderTotalPrice()
 }
-// localStorage ends
 
-// Cart total price starts
+// Cart total price 
 const renderTotalPrice = () => {
     dqs('#cart-total').textContent = `${cartTotal}kr`
 }
@@ -71,15 +70,15 @@ const countTotalPrice = () => {
         .reduce((price, sum) => sum += price)
     localStorage.setItem('Total price', JSON.stringify(cartTotal))
 }
-// Cart total price ends
 
-// Hitta produkten man clickar på bland hela sortimentet
+
+// find the clicked product
 const findClickedProduct = async (clickedId: number): Promise<IProduct> => {
     const products = await fetchProducts()
     return products.data.find(prod => clickedId === prod.id) as IProduct
 }
 
-// Hitta produkten i cart som har samma ID som produkten jag klickade på (är inte samma som findClickedProduct()) (finns inte alltid och har inte 'qty')
+// find the product in cart that has same ID as the one clicked
 const findCartItem = (clickedId: number) => cartItems.find(item => item.id === clickedId) as IProduct
 
 const renderCartItems = () => {
@@ -113,7 +112,7 @@ const renderCartItems = () => {
     }
 }
 
-// Input field on every cart item starts
+// input field on every cart item starts
 dqs('#cart-list').addEventListener('keyup', e => {
     const target = e.target as HTMLElement
     const clickedId = Number(target.dataset.inputId)
@@ -137,9 +136,8 @@ dqs('#cart-list').addEventListener('focusout', e => {
         renderCart()
     }
 })
-// Input field on every cart item ends
 
-// Remove, + and - starts
+// remove, + and - starts
 dqs('#cart-list').addEventListener('click', async e => {
     const target = e.target as HTMLElement
     const clickedId = Number(target.dataset.productId)
@@ -161,8 +159,9 @@ dqs('#cart-list').addEventListener('click', async e => {
     }
     renderCart()
 })
-// Remove, + and - ends
 
+
+// get products from API
 const getProducts = async (): Promise<void> => {
     display('#spinner')
     try {
@@ -176,13 +175,17 @@ const getProducts = async (): Promise<void> => {
     hide('#spinner')
 }
 
+// render products 
 const renderProducts = (): void => {
-    const itemsInStock = products.data // räknar antal produkter instock och totalt antal produkter
+
+    // counts number of products and number of products in stock
+    const itemsInStock = products.data 
     .map( prod => prod.stock_status)
     .filter(x => x === 'instock').length
     dqs('#output').innerHTML = `Vi har ${itemsInStock} st av ${products.data.length} st produkter i lager`
      
-    products.data // sorteras efter produktnamn
+    // sorts products alphabetically
+    products.data
     .sort((a, b) => a.name
     .localeCompare(b.name))
 
@@ -211,6 +214,7 @@ const renderProducts = (): void => {
     .join('')
 }
 
+// when candy is out of stock
 const noMoreCandy = (candy: IProduct) => {
     dqs('#no-more-candy').innerHTML = `<p>${candy.name}<br> är inte längre tillgängligt.</p>`
     display('#no-more-candy')
@@ -224,7 +228,7 @@ const addProduct = (clickedProduct: IProduct) => {
     const inCartIds = cartItems.map(item => item.id)       
     const inCartItem = findCartItem(clickedId)
 
-    // Kolla om produkten redan finns i varukorgen
+    // check if product already exist in cart
     if (!inCartItem || !inCartIds.includes(clickedId)) {
         clickedProduct.qty = 1
         cartItems.push(clickedProduct)
@@ -248,42 +252,42 @@ const increaseQty = (prod: IProduct) => {
     }
 }
 
-// Click event on each product
+// click event on each product
 dqs('main').addEventListener('click', async e => {
     const target = e.target as HTMLElement
     const clickedId = Number(target.dataset.productId)
-    const clickedProduct = await findClickedProduct(clickedId) // Hitta produkten bland alla produkter som har samma ID som produkten jag klickade på
 
-    // Skippa allt efter denna rad om man inte klicka på rätt ställe
+    // find product with the same id as the one clicked
+    const clickedProduct = await findClickedProduct(clickedId) 
+
+    // checks if click happens on product, returns otherwise
     if (!target.getAttribute('class')?.includes('product-click-event')) return
     
-    // 'Lägg till i varukorgen' knappen på en produkt
+    // add to cart
     if (target.tagName === 'BUTTON') {
         addProduct(clickedProduct)
         renderCart()
-    }
-    // Om man klickar någon annan stans på produkten. (info)
-    else {
+    } else {
         renderInfo(clickedProduct)
         document.body.style.overflow = 'hidden'
     } 
 })
 
-// View cart
+// view cart
 dqs('#title-cart').addEventListener('click', () => {
     dqs('.cart-background').classList.add('show')
     document.body.style.overflow = 'hidden'
     
 })
 
-// Close cart
+// close cart
 dqs('#cart-close').addEventListener('click', () => {
     dqs('.cart-background').classList.remove('show')
     document.body.style.removeProperty('overflow')
 
 })
 
-// Remove items from local storage(cart)
+// remove items from local storage(cart)
 dqs('#clear-cart-btn').addEventListener('click', async () => {
     localStorage.removeItem('Shopping cart')
     jsonCartItems = localStorage.getItem('Shopping cart') ?? '[]'
@@ -295,7 +299,7 @@ dqs('#clear-cart-btn').addEventListener('click', async () => {
     },500)
 })
 
-// Info-section start
+// info-section start
 const renderInfo = (productInfo: IProduct) => {
     display('.info-background')
     dqs('.info-background').classList.add('show-info')
@@ -324,7 +328,7 @@ const renderInfo = (productInfo: IProduct) => {
     `
 }
 
-// Click event on info-section
+// click event on info-section
 dqs('.info-background').addEventListener('click', async e => {
     const target = e.target as HTMLElement
     const clickedId = Number(target.dataset.productId)
@@ -341,7 +345,6 @@ dqs('.info-background').addEventListener('click', async e => {
         document.body.style.removeProperty('overflow');
     }
 })
-// end info-section
 
 // function that renders checkout-page and form to DOM
 const checkout = () => {
@@ -453,6 +456,8 @@ form.addEventListener('submit', async e => {
         
     // store ordered items and print to DOM
     const orderConfirmation = async () => {
+        window.scrollTo(0,0)
+
         const orderInfo:IPostData = await createNewOrder(newOrder)    
         // creating order confirmation template
         try{
