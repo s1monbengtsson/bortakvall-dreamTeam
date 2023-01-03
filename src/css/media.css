@@ -80,6 +80,7 @@
     .cart-background {
         box-shadow: 0px 0px 3px 1px rgba(18, 18, 18, 0.75);
         width: 95vw;
+        height: 90vh;
     }
     #title-cart {
         background-color: #d6576c;
