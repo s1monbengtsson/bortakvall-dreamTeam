@@ -125,14 +125,14 @@
     border-radius: 15px;
     padding: 1rem;
     margin: auto;
-    width: 600px;
+    width: 800px;
     display: flex;
     color: #000;
-    max-height: 100vh;
+    max-height: 90vh;
+    overflow-y: auto;
 }
 .info-section-l {
     margin: auto 0;
-    overflow-y: auto;
     width: 50%;
 }
 .info-name {
@@ -144,7 +144,6 @@
 }
 .info-section-r {
     margin: auto 0;
-    overflow-y: auto;
     width: 50%;
     font-size: 0.8rem;
     padding-top: 2rem;
