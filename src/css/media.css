@@ -232,6 +232,9 @@
         width: 100%;
         order: 2;
     }
+    .order-content-wrap {
+        width: 100%;
+    }
     #order-content {
         width: 100%;
         order: 1;
