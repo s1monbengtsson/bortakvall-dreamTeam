@@ -603,13 +603,17 @@ footer > p {
     font-size: 2.7rem;
 }
 
+.send-order {
+    padding: 1rem 0.25rem;
+}
+
 .send-order > svg {
     margin-right: 10px;
 }
 
 .empty-btn {
     background: #b22222;
-    padding: 0.75rem 0.25rem;
+    padding: 1rem 0.25rem;
     margin-bottom: 0.2rem;
     font-size: 0.8rem;
     font-weight: bold;
@@ -626,9 +630,6 @@ footer > p {
     transition: all 0.3s ease 0s;
 }
 
-#order-content {
-    width: 75%;
-}
 
 .customer-details {
     width: 50%;

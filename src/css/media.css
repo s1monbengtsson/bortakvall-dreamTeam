@@ -195,13 +195,16 @@
         padding-left: 1rem;
     }
     .checkout-wrap {
-        width: 100vw;
+        display: flex;
+        flex-direction: column;
     }
     .customer-details {
         width: 100%;
+        order: 2;
     }
     #order-content {
         width: 100%;
+        order: 1;
     }
     .customer-details {
         width: 100%;
@@ -211,8 +214,6 @@
         height: 45px;
         width: 45px;
     }
-    .form-heading {
-        margin-top: 0 !important;
-    }
+
 
 }

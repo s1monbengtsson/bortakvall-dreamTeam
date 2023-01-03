@@ -1,6 +1,13 @@
 import 'bootstrap/dist/css/bootstrap.css'
 import '../css/style.css'
 import '../css/media.css'
+// import '../css/cart.css'
+// import '../css/checkout.css'
+// import '../css/footer.css'
+// import '../css/header.css'
+// import '../css/products.css'
+
+
 import { fetchProducts, createNewOrder } from "./api"
 import { IData, IProduct, IOrder, ICustomerInfo, IPostData } from "./interface"
 
@@ -392,13 +399,6 @@ const renderForm = () => {
     formAutoFill()            
 }
 
-// enable submit button when checkbox is checked
-const checkbox = dqs('#customer-checkbox') as HTMLInputElement
-
-// listen for change of state on checkbox and toggle attribute disabled
-checkbox.addEventListener('change', () => {
-    dqs('.send-order').toggleAttribute('disabled' )
-})
 
 // saving customer data to localStorage
 const saveCustomerData = () => {
@@ -436,10 +436,21 @@ const errorWarning = () => {
     `
 }
 
+
+let formSubmitted = false;
+
 // listen for submits, and save customer data to localStorage
 form.addEventListener('submit', async e => {
     e.preventDefault()
     saveCustomerData()
+
+    // prevents user from spamming button and order confirmation being printed several times
+    formSubmitted = true;
+
+    if (formSubmitted) {
+        dqs('.send-order').setAttribute('disabled', 'disabled')
+    }
+
 
     // mapping over cartItems to store only needed keys
     const orderedItems = cartItems.map(item => ({product_id: item.id, qty: item.qty, item_price: item.price, item_total:item.price*item.qty}))
@@ -462,69 +473,72 @@ form.addEventListener('submit', async e => {
     // store ordered items and print to DOM
     const orderConfirmation = async () => {
         const orderInfo:IPostData = await createNewOrder(newOrder)
-
-        setTimeout(() => {
+            
             // creating order confirmation template
-            try{
-                hide('.checkout-wrap')!
-                hide('.back-button')!
-                dqs('.order-confirmation')!.innerHTML += `
-                    <h2 class="mb-3"> Tack för din beställning!</h2>
-                    <div class="w-75 row mx-auto pt-3 col-12 border rounded confirmation-wrapper">
-                        <h3 class="mb-3"> Orderbekräftelse</h3>
-                        <div class="customer-info col text-center mx-5">
-                            <p><strong>Beställare</strong><br>${customerData.customer_first_name} ${customerData.customer_last_name}</p>
-                            <p><strong>Leveransadress</strong><br>${customerData.customer_address}, ${customerData.customer_postcode}, ${customerData.customer_city}</p>
-                            <p><strong>Kontaktuppgifter</strong><br>Telefon: ${customerData.customer_phone}<br>Email: ${customerData.customer_email}
-                        </div>
-                        <div class="order-details col text-center mx-5">
-                            <p><strong>Ordernummer</strong><br>${orderInfo.data.id}</p>
-                            <p><strong>Beställningsdatum</strong><br>${orderInfo.data.order_date}</p>
-                            <p><strong>Betalt</strong><br>${orderInfo.data.order_total} kr</p>
-                        </div>
-                        <ul class="list-group item-container px-0"></ul>
-                    </div>
-                `
-            // prints every ordered item to order confirmation
-            cartItems.forEach(product => {
-                dqs('.item-container')!.innerHTML += `
-                    <li class="list-group-item d-flex align-items-center col-12">
-                        <img class="confirmation-img col-6 img-fluid mx-auto" src="https://www.bortakvall.se/${product.images.thumbnail}" alt="${product.name}">
-                        <p class="col-6 my-auto">${product.name}<br>x ${product.qty}</p>
-                    </li>
-                `
-            })
+        try{
+            hide('.checkout-wrap')
+            hide('.back-button')
+            dqs('.order-confirmation').innerHTML += `
+            <h2 class="mb-3"> Tack för din beställning!</h2>
+            <div class="w-75 row mx-auto pt-3 col-12 border rounded confirmation-wrapper">
+                <h3 class="mb-3"> Orderbekräftelse</h3>
+                <div class="customer-info col text-center mx-5">
+                    <p><strong>Beställare</strong><br>${customerData.customer_first_name} ${customerData.customer_last_name}</p>
+                    <p><strong>Leveransadress</strong><br>${customerData.customer_address}, ${customerData.customer_postcode}, ${customerData.customer_city}</p>
+                    <p><strong>Kontaktuppgifter</strong><br>Telefon: ${customerData.customer_phone}<br>Email: ${customerData.customer_email}
+                </div>
+                <div class="order-details col text-center mx-5">
+                    <p><strong>Ordernummer</strong><br>${orderInfo.data.id}</p>
+                    <p><strong>Beställningsdatum</strong><br>${orderInfo.data.order_date}</p>
+                    <p><strong>Betalt</strong><br>${orderInfo.data.order_total} kr</p>
+                </div>
+                <ul class="list-group item-container px-0"></ul>
+            </div>
+            
+        `
+        // prints every ordered item to order confirmation
+        cartItems.forEach(product => {
+            dqs('.item-container').innerHTML += `
+            <li class="list-group-item d-flex align-items-center col-12">
+                <img class="confirmation-img col-4 img-fluid mx-auto" src="https://www.bortakvall.se/${product.images.thumbnail}" alt="${product.name}">
+                <p class="col-4 my-auto">${product.name}<br>x ${product.qty}</p>
+                <p class="col-4 my-auto">Total<br>${product.qty*product.price} kr</p>
+            </li>
+            `
+        })
 
             // button for closing the page
-            dqs('.order-confirmation')!.innerHTML += `
+            dqs('.order-confirmation').innerHTML += `
                 <p class="mt-5 text-muted">Du kan nu stänga sidan!</p>
                 <button class="btn btn-dark close mb-5">Stäng</button>
             `
 
-            // when closing page, site is refreshed and cart and localStorage shopping cart reset
-            dqs('.close')!.addEventListener('click', () => {
-                window.location.reload()
-                localStorage.removeItem('Total price')
-                localStorage.removeItem('Shopping cart')
-            })
-                
-            // if post errror occurs, print error message
-            }
-            catch {
-                errorWarning()
-            }
+        // when closing page, site is refreshed and cart and localStorage shopping cart reset
+        dqs('.close').addEventListener('click', () => {
+            window.location.reload()
+            localStorage.removeItem('Total price')
+            localStorage.removeItem('Shopping cart')
+        })
+            
+        // if post errror occurs, print error message
+        }
+        catch {
+            errorWarning()
+            
+        }
+        
+        console.log("order info:", orderInfo)
 
-            hide('#spinner')
-        }, 2000)
-    }
+  }
 
     await orderConfirmation()
+    dqs('.send-order').removeAttribute('disabled')
+
 })
 
 // remove saved customer data when reset button is clicked
 dqs('.customer-details').addEventListener('reset', () => {
     localStorage.removeItem('Customer data')
-    checkbox.checked = false
     dqs('.send-order').setAttribute('disabled', 'disabled')
 })
 
