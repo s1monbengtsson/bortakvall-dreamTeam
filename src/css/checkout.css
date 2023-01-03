@@ -16,7 +16,7 @@
 #order-content {
     width: 100%;
 }
-.order-content-wrap{
+.order-content-wrap {
     width: 50%;
 }
 .checkout-btn-wrap,
@@ -74,6 +74,5 @@
 }
 #customer-checkbox {
     height: 20px;
-    width: 30px;
-    
+    width: 20px;
 }
