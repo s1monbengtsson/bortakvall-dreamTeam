@@ -1,11 +1,10 @@
 import 'bootstrap/dist/css/bootstrap.css'
-import '../css/style.css'
+import '../css/header.css'
+import '../css/products.css'
+import '../css/cart.css'
+import '../css/checkout.css'
+import '../css/footer.css'
 import '../css/media.css'
-// import '../css/cart.css'
-// import '../css/checkout.css'
-// import '../css/footer.css'
-// import '../css/header.css'
-// import '../css/products.css'
 
 
 import { fetchProducts, createNewOrder } from "./api"
@@ -505,7 +504,7 @@ form.addEventListener('submit', async e => {
             // button for closing the page
             dqs('.order-confirmation').innerHTML += `
                 <p class="mt-5 text-muted">Du kan nu stänga sidan!</p>
-                <button class="btn btn-dark close mb-5">Stäng</button>
+                <button class="btn btn-dark close mb-5">Återgå</button>
             `
 
         // when closing page, site is refreshed and cart and localStorage shopping cart reset

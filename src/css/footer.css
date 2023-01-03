@@ -1,0 +1,27 @@
+footer {
+    border-top: 2px solid #ffc107;
+    background-color: #d6576c;
+    padding: 1rem;
+}
+footer > div {
+    display: flex;
+    justify-content: space-evenly;
+    padding: 1rem;
+}
+footer > div > ul {
+    padding-left: 0;
+    list-style: none;
+}
+footer > div > ul > li {
+    margin: 0.5rem;
+    padding: 0.5rem;
+    text-align: center;
+    color: #dfdfdf;
+    text-transform: uppercase;
+}
+footer > p {
+    color: #fff;
+    font-size: 1.5rem;
+    text-align: center;
+    padding: 1rem 0;
+}
