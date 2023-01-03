@@ -374,7 +374,7 @@ const checkout = () => {
     })
 
     dqs('#order-content').innerHTML += `
-        <h3 class="text-center mt-3">Att betala: ${cartTotal} kr</h3>
+        <h3 class="text-center mt-4">Att betala: ${cartTotal} kr</h3>
     `
 }
 
@@ -466,7 +466,7 @@ form.addEventListener('submit', async e => {
             hide('.back-button')
             dqs('.order-confirmation').innerHTML += `
                 <h2 class="mb-3"> Tack för din beställning!</h2>
-                <div class="w-75 row mx-auto pt-3 col-12 border rounded confirmation-wrapper">
+                <div class="row mx-auto pt-3 col-12 border rounded confirmation-wrapper">
                     <h3 class="mb-3"> Orderbekräftelse</h3>
                     <div class="customer-info col text-center mx-5">
                         <p><strong>Beställare</strong><br>${customerData.customer_first_name} ${customerData.customer_last_name}</p>

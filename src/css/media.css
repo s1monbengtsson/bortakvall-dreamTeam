@@ -7,6 +7,12 @@
     .content-container {
         width: 95vw;
     }
+    .checkout-wrap {
+        width: 100%
+    }
+    #order-content {
+        width: 50%;
+    }
 }
 
 @media screen and (max-width: 768px) {
@@ -172,7 +178,17 @@
         margin-bottom: 2em;
     }
     #order-content {
-        max-width: initial;
+        width: 75%;
+    }
+    #order-content > h3 {
+        margin-bottom: 0;
+    }
+
+    .customer-details {
+        border-top: 2px solid #dfdfdf;
+        padding-top: 45px;
+        max-width: 75%;
+        width: 75%;
     }
     .checkout-btn-wrap,
     #check-box {
@@ -199,6 +215,7 @@
         flex-direction: column;
     }
     .customer-details {
+        max-width: 100%;
         width: 100%;
         order: 2;
     }
@@ -213,6 +230,9 @@
     .checkout-img {
         height: 45px;
         width: 45px;
+    }
+    .confirmation-wrapper {
+        width: 100%;
     }
 
 

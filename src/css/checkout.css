@@ -6,12 +6,15 @@
     background: white;
 }
 .checkout-wrap {
+    max-width: 1710px;
     display: flex;
     gap: 1em;
     padding: 1em;
+    margin: 0 auto;
+    width: 85%;
 }
 #order-content {
-    max-width: 50%;
+    width: 50%;
 }
 .checkout-btn-wrap,
 #check-box {
@@ -52,5 +55,16 @@
     transition: all 0.3s ease 0s;
 }
 .customer-details {
-    width: 50%;
+    max-width: 50%;
+}
+
+.confirmation-wrapper {
+    width: 75%;
+}
+.back-button {
+    position: relative;
+    left: 7.5%;
+}
+.form-group {
+    margin-bottom: 1.2rem;
 }
