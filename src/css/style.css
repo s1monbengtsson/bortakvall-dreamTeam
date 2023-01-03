@@ -201,6 +201,7 @@
     max-height: 100vh;
 }
 .info-section-l {
+    margin: auto 0;
     overflow-y: auto;
     width: 50%;
 }
@@ -212,6 +213,7 @@
     font-size: 1.9rem;
 }
 .info-section-r {
+    margin: auto 0;
     overflow-y: auto;
     width: 50%;
     font-size: 0.8rem;

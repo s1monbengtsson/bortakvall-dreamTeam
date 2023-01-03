@@ -175,9 +175,6 @@ const getProducts = async (): Promise<void> => {
 }
 
 const renderProducts = (): void => {
-    // console.log(products.data)
-    // console.log(products.data.map(sale => sale.on_sale))
-    // console.log('Produkter on_sale:',products.data.map(sale => sale.on_sale).filter(x => x === true).length)
     const itemsInStock = products.data // räknar antal produkter instock och totalt antal produkter
     .map( prod => prod.stock_status)
     .filter(x => x === 'instock').length
@@ -347,7 +344,6 @@ dqs('.info-background').addEventListener('click', async e => {
     else if (target.tagName === 'svg' || target.tagName === 'path' || target.getAttribute('class')?.includes('info-background')) {
         hide('.info-background')
         document.body.style.removeProperty('overflow');
-        console.log(target.tagName)
     }
 })
 // end info-section
@@ -386,23 +382,19 @@ const checkout = () => {
         `
 }
 
-    // prefill form with customer data on page load
-    const formAutoFill = () => {
-    
-        customerFirstName.value = customerData.customer_first_name ?? ''
-        customerLastName.value = customerData.customer_last_name ?? ''
-        customerAddress.value = customerData.customer_address ?? ''
-        customerPostal.value = customerData.customer_postcode ?? ''
-        customerCity.value = customerData.customer_city ?? ''
-        customerPhone.value = customerData.customer_phone ?? ''
-        customerEmail.value = customerData.customer_email ?? ''
 
-    }
 
 // function that renders form to DOM
 const renderForm = () => {
     display('.customer-details')
-    formAutoFill()            
+    // prefill form with customer data on page load
+    customerFirstName.value = customerData.customer_first_name ?? ''
+    customerLastName.value = customerData.customer_last_name ?? ''
+    customerAddress.value = customerData.customer_address ?? ''
+    customerPostal.value = customerData.customer_postcode ?? ''
+    customerCity.value = customerData.customer_city ?? ''
+    customerPhone.value = customerData.customer_phone ?? ''
+    customerEmail.value = customerData.customer_email ?? ''
 }
 
 
@@ -432,7 +424,6 @@ const json = JSON.stringify(customerData)
 // saves JSON to localStorage
 localStorage.setItem('Customer data', json)
 
-console.log("customer data:", customerData)
 }
 
 // Add clickEvent to proceed to check out with all products from cart
@@ -544,7 +535,6 @@ form.addEventListener('submit', async e => {
             
         }
         
-        console.log("order info:", orderInfo)
 
   }
 
