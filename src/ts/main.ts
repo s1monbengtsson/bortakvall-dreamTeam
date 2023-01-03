@@ -366,9 +366,9 @@ const checkout = () => {
         let productTotal = (product.price * product.qty)
 
         dqs('#order-content').innerHTML += `
-            <li class="list-group-item d-flex justify-content-between align-items-center text-center rounded">
-                <img src="https://www.bortakvall.se/${product.images.thumbnail}" alt="${product.name}" class="checkout-img">
-                ${product.name}<br>x ${product.qty}<span>Á pris: <br>${product.price} kr</span><span>Total:<br> ${productTotal} kr</span>
+            <li class="list-group-item d-flex justify-content-between align-items-center text-center rounded col-12">
+                <img src="https://www.bortakvall.se/${product.images.thumbnail}" alt="${product.name}" class="checkout-img col-3">
+                <p class="col-3">${product.name}<br>x ${product.qty}</p><p class="col-3">Á pris: <br>${product.price} kr</p><p class="col-3">Total:<br> ${productTotal} kr</p>
             </li>
         `
     })

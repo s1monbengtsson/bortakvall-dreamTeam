@@ -9,7 +9,7 @@
     max-width: 1710px;
     display: flex;
     gap: 1em;
-    padding: 1em;
+    padding: 1em 0;
     margin: 0 auto;
     width: 85%;
 }
@@ -61,10 +61,11 @@
 .confirmation-wrapper {
     width: 75%;
 }
-.back-button {
-    position: relative;
-    left: 7.5%;
-}
+
 .form-group {
     margin-bottom: 1.2rem;
+}
+.arrow-wrapper {
+    max-width: 1710px;
+    width: 85vw;
 }

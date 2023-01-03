@@ -5,13 +5,17 @@
 
 @media screen and (max-width: 1024px) {
     .content-container {
-        width: 95vw;
+        width: 100vw;
     }
     .checkout-wrap {
-        width: 100%
+        width: 95vw;
     }
     #order-content {
         width: 50%;
+    }
+    .arrow-wrapper {
+        width: 100vw;
+        padding-left: 1rem;
     }
 }
 
