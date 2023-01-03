@@ -10,6 +10,7 @@ import '../css/media.css'
 import { fetchProducts, createNewOrder } from "./api"
 import { IData, IProduct, IOrder, ICustomerInfo, IPostData } from "./interface"
 
+
 /**
  ********************************************************************************************
  * DOCUMENTATION
@@ -344,6 +345,7 @@ dqs('.info-background').addEventListener('click', async e => {
 
 // function that renders checkout-page and form to DOM
 const checkout = () => {
+    window.scrollTo(0,0)
     hide('.content-display')
     hide('#title-cart')
     hide('#main')
