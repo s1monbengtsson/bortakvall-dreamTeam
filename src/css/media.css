@@ -11,12 +11,13 @@
         width: 95vw;
     }
     #order-content {
-        width: 50%;
+        width: 100%;
     }
     .arrow-wrapper {
         width: 100vw;
         padding-left: 1rem;
     }
+
 }
 
 @media screen and (max-width: 768px) {
@@ -183,7 +184,10 @@
         margin-bottom: 2em;
     }
     #order-content {
-        width: 75%;
+        width: 100%;
+    }
+    .order-content-wrap {
+        width: 100%;
     }
     #order-content > h3 {
         margin-bottom: 0;
