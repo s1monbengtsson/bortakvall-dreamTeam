@@ -34,7 +34,6 @@ const customerPhone = dqs('#customer-phone') as HTMLInputElement
 const customerEmail = dqs('#customer-email') as HTMLInputElement
 
 let products: IData
-// let products: IProduct[] = []
 
 // localStorage starts
 let jsonCartItems = localStorage.getItem('Shopping cart') ?? '[]'
@@ -42,6 +41,9 @@ let cartItems: IProduct[] = JSON.parse(jsonCartItems)
 
 let jsonCartTotal = localStorage.getItem('Total price') ?? '0'
 let cartTotal: number = JSON.parse(jsonCartTotal)
+
+let jsonCustomerData = localStorage.getItem('Customer data') ?? '[]'
+let customerData: ICustomerInfo = JSON.parse(jsonCustomerData)
 
 const saveCart = () => {
     dqs('#cart-item-count').textContent = String(cartItems
@@ -64,51 +66,51 @@ const renderTotalPrice = () => {
 }
 
 const countTotalPrice = () => {
-    let cartPrices = [0]
-    cartPrices = [0, ...cartItems.map(item => item.price * item.qty)]
-    cartTotal = cartPrices.reduce((price, sum) => sum += price)
+    cartTotal = [0, ...cartItems
+        .map(item => item.price * item.qty)]
+        .reduce((price, sum) => sum += price)
     localStorage.setItem('Total price', JSON.stringify(cartTotal))
 }
 // Cart total price ends
 
-// Allt denna funktion ska göra är att hitta produkten man clickar på
+// Hitta produkten man clickar på bland hela sortimentet
 const findClickedProduct = async (clickedId: number): Promise<IProduct> => {
     const products = await fetchProducts()
-    const foundProduct: IProduct = products.data.find(prod => clickedId === prod.id) as IProduct
-    return foundProduct
+    return products.data.find(prod => clickedId === prod.id) as IProduct
 }
+
+// Hitta produkten i cart som har samma ID som produkten jag klickade på (är inte samma som findClickedProduct()) (finns inte alltid och har inte 'qty')
+const findCartItem = (clickedId: number) => cartItems.find(item => item.id === clickedId) as IProduct
 
 const renderCartItems = () => {
     dqs('#cart-list').innerHTML = cartItems
-    .map(item => `
-        <li class="cart-item">
-            <img class="cart-image" src="https://www.bortakvall.se${item.images.thumbnail}" alt="${item.name}">
-            <div class="card-body cart-descript">
-                <p class="card-title text-dark">${item.name}</p>
-                
-                <p class="cart-adjust">
-                    <span data-product-id="${item.id}" class="decrease">-</span>
-                    <input class="prod-qty" data-input-id="${item.id}" id="input-${item.id}" value="${item.qty}" style="width: 30px; text-align: center">
-                    <span data-product-id="${item.id}" class="increase">+</span>
-                </p>
-                <p class="card-text-cart text-dark cart-item-price">${item.price} kr/st  </p>
-                
-                <p class="card-text-cart text-dark" id="item-price-${item.id}">${item.price * item.qty} kr</p>
-            </div>
-            <svg xmlns="http://www.w3.org/2000/svg" class="bi-trash cart-remove-item" data-product-id="${item.id}" width="40" height="40" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
-                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
-            </svg>
-            
-        </li>
-    `)
-    .join('')
-                // disable checkout button if product qty < 1
-if (cartItems.length === 0) {
-    dqs('#checkout-btn').setAttribute('disabled', 'disabled')
-} else {
-    dqs('#checkout-btn').removeAttribute('disabled')
-}
+        .map(item => `
+            <li class="cart-item">
+                <img class="cart-image" src="https://www.bortakvall.se${item.images.thumbnail}" alt="${item.name}">
+                <div class="card-body cart-descript">
+                    <p class="card-title text-dark">${item.name}</p>
+                    <p class="cart-adjust">
+                        <span data-product-id="${item.id}" class="decrease">-</span>
+                        <input class="prod-qty" data-input-id="${item.id}" id="input-${item.id}" value="${item.qty}" style="width: 30px; text-align: center">
+                        <span data-product-id="${item.id}" class="increase">+</span>
+                    </p>
+                    <p class="card-text-cart text-dark cart-item-price">${item.price} kr/st  </p>
+                    <p class="card-text-cart text-dark" id="item-price-${item.id}">${item.price * item.qty} kr</p>
+                </div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="bi-trash cart-remove-item" data-product-id="${item.id}" width="40" height="40" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                </svg>
+            </li>
+        `)
+        .join('')
+        
+    // disable checkout button if product qty < 1
+    if (cartItems.length === 0) {
+        dqs('#checkout-btn').setAttribute('disabled', 'disabled')
+    } else {
+        dqs('#checkout-btn').removeAttribute('disabled')
+    }
 }
 
 // Input field on every cart item starts
@@ -116,7 +118,7 @@ dqs('#cart-list').addEventListener('keyup', e => {
     const target = e.target as HTMLElement
     const clickedId = Number(target.dataset.inputId)
     if (!clickedId) return
-    const inCartItem = cartItems.find(item => item.id === clickedId) as IProduct
+    const inCartItem = findCartItem(clickedId)
     const inputField = dqs(`#input-${clickedId}`) as HTMLInputElement
     inCartItem.qty = Number(inputField.value)
     saveCart()
@@ -129,7 +131,7 @@ dqs('#cart-list').addEventListener('focusout', e => {
     const target = e.target as HTMLElement
     const clickedId = Number(target.dataset.inputId)
     if (!clickedId) return
-    const inCartItem = cartItems.find(item => item.id === clickedId) as IProduct
+    const inCartItem = findCartItem(clickedId)
     if (!(inCartItem.qty > 0)) {
         cartItems.splice(cartItems.indexOf(inCartItem), 1)
         renderCart()
@@ -142,7 +144,7 @@ dqs('#cart-list').addEventListener('click', async e => {
     const target = e.target as HTMLElement
     const clickedId = Number(target.dataset.productId)
     if (!clickedId) return
-    const inCartItem = cartItems.find(item => item.id === clickedId) as IProduct  // Hitta produkten i cart som har samma ID som produkten jag klickade på
+    const inCartItem = findCartItem(clickedId)
 
     if (target.tagName === 'svg') {
         inCartItem.qty = 0
@@ -217,12 +219,10 @@ const noMoreCandy = (candy: IProduct) => {
     }, 2000)
 }
 
-const addProduct = async (target: HTMLElement) => {
-    const clickedId = Number(target.dataset.productId)
-    const clickedProduct = await findClickedProduct(clickedId)
+const addProduct = (clickedProduct: IProduct) => {
+    const clickedId = clickedProduct.id
     const inCartIds = cartItems.map(item => item.id)       
-    const inCartItem = cartItems.find(item => item.id === clickedId) as IProduct  // Hitta produkten i cart som har samma ID som produkten jag klickade på
-
+    const inCartItem = findCartItem(clickedId)
     // Kolla om produkten redan finns i varukorgen
     if (!inCartItem || !inCartIds.includes(clickedId)) {
         clickedProduct.qty = 1
@@ -230,7 +230,6 @@ const addProduct = async (target: HTMLElement) => {
     }
     else if (inCartIds.includes(clickedId)) {
         increaseQty(inCartItem)
-        
     }
 }
 
@@ -248,15 +247,14 @@ const increaseQty = (prod: IProduct) => {
 dqs('main').addEventListener('click', async e => {
     const target = e.target as HTMLElement
     const clickedId = Number(target.dataset.productId)
-    const clickedProduct = await findClickedProduct(clickedId)
+    const clickedProduct = await findClickedProduct(clickedId) // Hitta produkten bland alla produkter som har samma ID som produkten jag klickade på
 
     // Skippa allt efter denna rad om man inte klicka på rätt ställe
     if (!target.getAttribute('class')?.includes('product-click-event')) return
     
     // 'Lägg till i varukorgen' knappen på en produkt
     if (target.tagName === 'BUTTON') {
-
-        await addProduct(target)
+        addProduct(clickedProduct)
         renderCart()
 
         dqs('#title-cart').classList.add('shake')
@@ -267,22 +265,21 @@ dqs('main').addEventListener('click', async e => {
     // Om man klickar någon annan stans på produkten. (info)
     else {
         renderInfo(clickedProduct)
-        document.body.style.overflow = 'hidden';
+        document.body.style.overflow = 'hidden'
     } 
-    
 })
 
 // View cart
 dqs('#title-cart').addEventListener('click', () => {
     dqs('.cart-background').classList.add('show')
-    document.body.style.overflow = 'hidden';
+    document.body.style.overflow = 'hidden'
     
 })
 
 // Close cart
 dqs('#cart-close').addEventListener('click', () => {
     dqs('.cart-background').classList.remove('show')
-    document.body.style.removeProperty('overflow');
+    document.body.style.removeProperty('overflow')
 
 })
 
@@ -294,7 +291,7 @@ dqs('#clear-cart-btn').addEventListener('click', async () => {
     renderCart()
     setTimeout(() => {
     dqs('.cart-background').classList.remove('show')
-    document.body.style.removeProperty('overflow');
+    document.body.style.removeProperty('overflow')
     },500)
 })
 
@@ -312,7 +309,8 @@ const renderInfo = (productInfo: IProduct) => {
                     <span>kr</span>
                 </span>
             </p>
-            <button class="product-btn m-2 p-2" data-product-id="${productInfo.id}" style="font-weight: bold;" ${(productInfo.stock_status === 'outofstock') ? 'disabled' : ''}>${(productInfo.stock_status === 'outofstock') ? 'SLUT I LAGER' : 'LÄGG TILL I VARUKORG'}</button>
+            <button class="product-btn m-2 p-2 ${(productInfo.stock_status === 'outofstock') ? 'product-btn-outofstock' : ''}" data-product-id="${productInfo.id}" style="font-weight: bold;" ${(productInfo.stock_status === 'outofstock') ? 'disabled' : ''}>${(productInfo.stock_status === 'outofstock') ? 'SLUT I LAGER' : 'LÄGG TILL I VARUKORG'}</button>
+            <p class="stock-qty">Antal i lager: ${(productInfo.stock_quantity === null) ? '0': productInfo.stock_quantity} </p>
         </div>
         <div class="info-section-r">
             <h3>Beskrivning</h3>
@@ -329,9 +327,12 @@ const renderInfo = (productInfo: IProduct) => {
 // Click event on info-section
 dqs('.info-background').addEventListener('click', async e => {
     const target = e.target as HTMLElement
+    const clickedId = Number(target.dataset.productId)
+    const clickedProduct = await findClickedProduct(clickedId)
+    console.log(target.tagName)
 
     if (target.tagName === 'BUTTON') {      
-        await addProduct(target)
+        addProduct(clickedProduct)
         renderCart()
         
         document.body.style.removeProperty('overflow');
@@ -341,14 +342,12 @@ dqs('.info-background').addEventListener('click', async e => {
             dqs('#title-cart').classList.remove('shake')
         },950)
     }
-    else if (target.tagName === 'svg' || target.tagName === 'path' || target.getAttribute('class')?.includes('info-background')) {
+    else if (target.tagName === 'svg' || target.tagName === 'path' || target.className.includes('info-background')) {
         hide('.info-background')
         document.body.style.removeProperty('overflow');
     }
 })
 // end info-section
-
-
 
 // function that renders checkout-page and form to DOM
 const checkout = () => {
@@ -363,10 +362,9 @@ const checkout = () => {
     dqs('.cart-background').classList.remove('show')
 
     cartItems.map(product => {
-        document.body.style.removeProperty('overflow');
+        document.body.style.removeProperty('overflow')
 
         let productTotal = (product.price * product.qty)
-
 
         dqs('#order-content').innerHTML += `
             <li class="list-group-item d-flex justify-content-between align-items-center text-center rounded">
@@ -377,11 +375,9 @@ const checkout = () => {
     })
 
     dqs('#order-content').innerHTML += `
-
-            <h3 class="text-center mt-3">Att betala: ${cartTotal} kr</h3>
-        `
+        <h3 class="text-center mt-3">Att betala: ${cartTotal} kr</h3>
+    `
 }
-
 
 
 // function that renders form to DOM
@@ -398,28 +394,20 @@ const renderForm = () => {
 }
 
 
-// get json data from localStorage
-let jsonCustomerData = localStorage.getItem('Customer data') ?? '[]'
-
-// parse json data into object
-let customerData: ICustomerInfo = JSON.parse(jsonCustomerData)
-
-
 // saving customer data to localStorage
 const saveCustomerData = () => {
-
     customerData = {
-    customer_first_name: customerFirstName.value,
-    customer_last_name:  customerLastName.value,
-    customer_address: customerAddress.value,
-    customer_postcode: customerPostal.value,
-    customer_city: customerCity.value,
-    customer_phone: customerPhone.value,
-    customer_email: customerEmail.value
-}
+        customer_first_name: customerFirstName.value,
+        customer_last_name:  customerLastName.value,
+        customer_address: customerAddress.value,
+        customer_postcode: customerPostal.value,
+        customer_city: customerCity.value,
+        customer_phone: customerPhone.value,
+        customer_email: customerEmail.value
+    }
 
-// converts customerData to JSON
-const json = JSON.stringify(customerData)
+    // converts customerData to JSON
+    const json = JSON.stringify(customerData)
 
 // saves JSON to localStorage
 localStorage.setItem('Customer data', json)
@@ -439,7 +427,7 @@ dqs('#checkout-btn').addEventListener('click', e => {
 // if error posting to server
 const errorWarning = () => {
     document.querySelector('.order-confirmation')!.innerHTML = `
-    <div class="alert alert-danger">Your order could not be placed. Please try again</div>
+        <div class="alert alert-danger">Your order could not be placed. Please try again</div>
     `
 }
 
@@ -464,19 +452,18 @@ form.addEventListener('submit', async e => {
 
     // object containing order content
     const newOrder: IOrder =   {
-            customer_first_name: customerFirstName.value,
-            customer_last_name: customerLastName.value,
-            customer_address: customerAddress.value,
-            customer_postcode: customerPostal.value,
-            customer_city: customerCity.value,
-            customer_email: customerEmail.value,
-            customer_phone: customerPhone.value,
-            order_total: cartTotal,
-            order_items: orderedItems
+        customer_first_name: customerFirstName.value,
+        customer_last_name: customerLastName.value,
+        customer_address: customerAddress.value,
+        customer_postcode: customerPostal.value,
+        customer_city: customerCity.value,
+        customer_email: customerEmail.value,
+        customer_phone: customerPhone.value,
+        order_total: cartTotal,
+        order_items: orderedItems
+    }
 
-        }
-
-        display('#spinner')
+    display('#spinner')
         
     // store ordered items and print to DOM
     const orderConfirmation = async () => {
@@ -515,11 +502,11 @@ form.addEventListener('submit', async e => {
             `
         })
 
-        // button for closing the page
-        dqs('.order-confirmation').innerHTML += `
-            <p class="mt-5 text-muted">Du kan nu stänga sidan!</p>
-            <button class="btn btn-dark close mb-5">Stäng</button>
-        `
+            // button for closing the page
+            dqs('.order-confirmation').innerHTML += `
+                <p class="mt-5 text-muted">Du kan nu stänga sidan!</p>
+                <button class="btn btn-dark close mb-5">Stäng</button>
+            `
 
         // when closing page, site is refreshed and cart and localStorage shopping cart reset
         dqs('.close').addEventListener('click', () => {
@@ -543,7 +530,6 @@ form.addEventListener('submit', async e => {
 
 })
 
-
 // remove saved customer data when reset button is clicked
 dqs('.customer-details').addEventListener('reset', () => {
     localStorage.removeItem('Customer data')
@@ -565,7 +551,6 @@ dqs('.back-button').addEventListener('click', () => {
     dqs('#order-content').innerHTML = ''
 })
 
-
 /* functions that are called when the page loads */
-getProducts()  
+getProducts()
 renderCart()
