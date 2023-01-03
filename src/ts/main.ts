@@ -222,6 +222,7 @@ const addProduct = (clickedProduct: IProduct) => {
     const clickedId = clickedProduct.id
     const inCartIds = cartItems.map(item => item.id)       
     const inCartItem = findCartItem(clickedId)
+
     // Kolla om produkten redan finns i varukorgen
     if (!inCartItem || !inCartIds.includes(clickedId)) {
         clickedProduct.qty = 1
@@ -230,6 +231,10 @@ const addProduct = (clickedProduct: IProduct) => {
     else if (inCartIds.includes(clickedId)) {
         increaseQty(inCartItem)
     }
+    dqs('#title-cart').classList.add('shake')
+    setTimeout( () => {
+        dqs('#title-cart').classList.remove('shake')                
+    },950)
 }
 
 const increaseQty = (prod: IProduct) => {
@@ -255,11 +260,6 @@ dqs('main').addEventListener('click', async e => {
     if (target.tagName === 'BUTTON') {
         addProduct(clickedProduct)
         renderCart()
-
-        dqs('#title-cart').classList.add('shake')
-        setTimeout( () => {
-            dqs('#title-cart').classList.remove('shake')                
-        },950)
     }
     // Om man klickar någon annan stans på produkten. (info)
     else {
@@ -328,18 +328,12 @@ dqs('.info-background').addEventListener('click', async e => {
     const target = e.target as HTMLElement
     const clickedId = Number(target.dataset.productId)
     const clickedProduct = await findClickedProduct(clickedId)
-    console.log(target.tagName)
 
     if (target.tagName === 'BUTTON') {      
         addProduct(clickedProduct)
         renderCart()
         
         document.body.style.removeProperty('overflow');
-        dqs('#title-cart').classList.add('shake')
-        setTimeout( () => { 
-            hide('.info-background')
-            dqs('#title-cart').classList.remove('shake')
-        },950)
     }
     else if (target.tagName === 'svg' || target.tagName === 'path' || target.className.includes('info-background')) {
         hide('.info-background')
@@ -354,7 +348,7 @@ const checkout = () => {
     hide('#title-cart')
     hide('#main')
     hide('footer')
-    display('#order-content')
+    display('.order-content-wrap')
     display('.customer-details')
     display('.back-button')
     dqs('.content-wrapper').classList.add('banner-checkout')
@@ -412,13 +406,11 @@ localStorage.setItem('Customer data', json)
 }
 
 // Add clickEvent to proceed to check out with all products from cart
-dqs('#checkout-btn').addEventListener('click', e => {
-    const target = e.target as HTMLButtonElement
-    
-    if (target.id === 'checkout-btn') {
-        checkout()
-        renderForm()
-    }
+dqs('#checkout-btn').addEventListener('click',() => {
+    checkout()
+    renderForm()
+    const looseFocus = dqs('#checkout-btn') as HTMLElement
+    looseFocus.blur()    
 })
 
 // if error posting to server
@@ -528,7 +520,7 @@ dqs('.back-button').addEventListener('click', () => {
     display('#title-cart')
     display('#main')
     display('footer')
-    hide('#order-content')
+    hide('.order-content-wrap')
     hide('.customer-details')
     hide('.back-button')
     dqs('.content-wrapper').classList.remove('banner-checkout')
