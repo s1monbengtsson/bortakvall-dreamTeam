@@ -10,18 +10,9 @@ import '../css/media.css'
 import { fetchProducts, createNewOrder } from "./api"
 import { IData, IProduct, IOrder, ICustomerInfo, IPostData } from "./interface"
 
-/**
- ********************************************************************************************
- * DOCUMENTATION
- */
-
 const dqs = (el: string) => document.querySelector(`${el}`)!
 const hide = (element: string) => dqs(element).classList.add('d-none')
 const display = (element: string) => dqs(element).classList.remove('d-none')
-
-/**
- ********************************************************************************************
- */
 
 const form = dqs('.customer-details') as HTMLFormElement
 const customerFirstName = dqs('#customer-first-name') as HTMLInputElement
@@ -34,7 +25,7 @@ const customerEmail = dqs('#customer-email') as HTMLInputElement
 
 let products: IData
 
-// localStorage starts
+// localStorage 
 let jsonCartItems = localStorage.getItem('Shopping cart') ?? '[]'
 let cartItems: IProduct[] = JSON.parse(jsonCartItems)
 
@@ -57,9 +48,8 @@ const renderCart = () => {
     renderCartItems()
     renderTotalPrice()
 }
-// localStorage ends
 
-// Cart total price starts
+// cart total price
 const renderTotalPrice = () => {
     dqs('#cart-total').textContent = `${cartTotal}kr`
 }
@@ -70,15 +60,14 @@ const countTotalPrice = () => {
         .reduce((price, sum) => sum += price)
     localStorage.setItem('Total price', JSON.stringify(cartTotal))
 }
-// Cart total price ends
 
-// Hitta produkten man clickar på bland hela sortimentet
+// find the product clicked
 const findClickedProduct = async (clickedId: number): Promise<IProduct> => {
     const products = await fetchProducts()
     return products.data.find(prod => clickedId === prod.id) as IProduct
 }
 
-// Hitta produkten i cart som har samma ID som produkten jag klickade på (är inte samma som findClickedProduct()) (finns inte alltid och har inte 'qty')
+// find product in cart with same ID as the clicked product
 const findCartItem = (clickedId: number) => cartItems.find(item => item.id === clickedId) as IProduct
 
 const renderCartItems = () => {
@@ -112,7 +101,7 @@ const renderCartItems = () => {
     }
 }
 
-// Input field on every cart item starts
+// input field on every cart item
 dqs('#cart-list').addEventListener('keyup', e => {
     const target = e.target as HTMLElement
     const clickedId = Number(target.dataset.inputId)
@@ -136,9 +125,8 @@ dqs('#cart-list').addEventListener('focusout', e => {
         renderCart()
     }
 })
-// Input field on every cart item ends
 
-// Remove, + and - starts
+// remove, increment or decrement products from cart
 dqs('#cart-list').addEventListener('click', async e => {
     const target = e.target as HTMLElement
     const clickedId = Number(target.dataset.productId)
@@ -156,12 +144,12 @@ dqs('#cart-list').addEventListener('click', async e => {
     }
 
     if (!(inCartItem.qty > 0)) {
-        cartItems.splice(cartItems.indexOf(inCartItem), 1) // removes it from cart-array
+        cartItems.splice(cartItems.indexOf(inCartItem), 1)
     }
     renderCart()
 })
-// Remove, + and - ends
 
+// gets products from API
 const getProducts = async (): Promise<void> => {
     display('#spinner')
     try {
@@ -176,12 +164,15 @@ const getProducts = async (): Promise<void> => {
 }
 
 const renderProducts = (): void => {
-    const itemsInStock = products.data // räknar antal produkter instock och totalt antal produkter
+
+    // counts products in assortment and products in stock
+    const itemsInStock = products.data 
     .map( prod => prod.stock_status)
     .filter(x => x === 'instock').length
     dqs('#output').innerHTML = `Vi har ${itemsInStock} st av ${products.data.length} st produkter i lager`
      
-    products.data // sorteras efter produktnamn
+    // sorts products by alphabetical order
+    products.data 
     .sort((a, b) => a.name
     .localeCompare(b.name))
 
@@ -210,6 +201,7 @@ const renderProducts = (): void => {
     .join('')
 }
 
+// when candy is out of stock
 const noMoreCandy = (candy: IProduct) => {
     dqs('#no-more-candy').innerHTML = `<p>${candy.name}<br> är inte längre tillgängligt.</p>`
     display('#no-more-candy')
@@ -218,6 +210,7 @@ const noMoreCandy = (candy: IProduct) => {
     }, 2000)
 }
 
+// adding a product to cart
 const addProduct = (clickedProduct: IProduct) => {
     const clickedId = clickedProduct.id
     const inCartIds = cartItems.map(item => item.id)       
@@ -237,6 +230,7 @@ const addProduct = (clickedProduct: IProduct) => {
     },950)
 }
 
+// increment qty of a specific product
 const increaseQty = (prod: IProduct) => {
     if (!(prod.stock_quantity > prod.qty)) {
         noMoreCandy(prod)
@@ -247,42 +241,42 @@ const increaseQty = (prod: IProduct) => {
     }
 }
 
-// Click event on each product
+// click event on each product
 dqs('main').addEventListener('click', async e => {
     const target = e.target as HTMLElement
     const clickedId = Number(target.dataset.productId)
-    const clickedProduct = await findClickedProduct(clickedId) // Hitta produkten bland alla produkter som har samma ID som produkten jag klickade på
+    const clickedProduct = await findClickedProduct(clickedId) 
 
-    // Skippa allt efter denna rad om man inte klicka på rätt ställe
+    // if click did not happen on specific class, return
     if (!target.getAttribute('class')?.includes('product-click-event')) return
     
-    // 'Lägg till i varukorgen' knappen på en produkt
+    // add clicked product to cart
     if (target.tagName === 'BUTTON') {
         addProduct(clickedProduct)
         renderCart()
     }
-    // Om man klickar någon annan stans på produkten. (info)
+    // if click is not done on product
     else {
         renderInfo(clickedProduct)
         document.body.style.overflow = 'hidden'
     } 
 })
 
-// View cart
+// view cart
 dqs('#title-cart').addEventListener('click', () => {
     dqs('.cart-background').classList.add('show')
     document.body.style.overflow = 'hidden'
     
 })
 
-// Close cart
+// close cart
 dqs('#cart-close').addEventListener('click', () => {
     dqs('.cart-background').classList.remove('show')
     document.body.style.removeProperty('overflow')
 
 })
 
-// Remove items from local storage(cart)
+// remove items from local storage(cart)
 dqs('#clear-cart-btn').addEventListener('click', async () => {
     localStorage.removeItem('Shopping cart')
     jsonCartItems = localStorage.getItem('Shopping cart') ?? '[]'
@@ -294,7 +288,7 @@ dqs('#clear-cart-btn').addEventListener('click', async () => {
     },500)
 })
 
-// Info-section start
+// info-section start
 const renderInfo = (productInfo: IProduct) => {
     display('.info-background')
     dqs('.info-background').classList.add('show-info')
@@ -323,7 +317,7 @@ const renderInfo = (productInfo: IProduct) => {
     `
 }
 
-// Click event on info-section
+// click event on info-section
 dqs('.info-background').addEventListener('click', async e => {
     const target = e.target as HTMLElement
     const clickedId = Number(target.dataset.productId)
@@ -340,10 +334,11 @@ dqs('.info-background').addEventListener('click', async e => {
         document.body.style.removeProperty('overflow');
     }
 })
-// end info-section
 
-// function that renders checkout-page and form to DOM
+
+// renders checkout-page to DOM
 const checkout = () => {
+    window.scrollTo(0,0)
     hide('.content-display')
     hide('#title-cart')
     hide('#main')
@@ -373,7 +368,7 @@ const checkout = () => {
 }
 
 
-// function that renders form to DOM
+// renders form to DOM
 const renderForm = () => {
     display('.customer-details')
     // prefill form with customer data on page load
@@ -385,6 +380,7 @@ const renderForm = () => {
     customerPhone.value = customerData.customer_phone ?? ''
     customerEmail.value = customerData.customer_email ?? ''
 }
+
 
 // saving customer data to localStorage
 const saveCustomerData = () => {
@@ -402,8 +398,8 @@ const saveCustomerData = () => {
 
 // saves JSON to localStorage
 localStorage.setItem('Customer data', json)
-
 }
+
 
 // Add clickEvent to proceed to check out with all products from cart
 dqs('#checkout-btn').addEventListener('click',() => {
@@ -420,6 +416,8 @@ const errorWarning = () => {
     `
 }
 
+
+// sets default value for formSubmitted
 let formSubmitted = false;
 
 // listen for submits, and save customer data to localStorage
@@ -451,7 +449,10 @@ form.addEventListener('submit', async e => {
         
     // store ordered items and print to DOM
     const orderConfirmation = async () => {
-        const orderInfo:IPostData = await createNewOrder(newOrder)    
+        window.scrollTo(0,0)
+
+        const orderInfo:IPostData = await createNewOrder(newOrder)
+
         // creating order confirmation template
         try{
             hide('.checkout-wrap')
@@ -502,12 +503,10 @@ form.addEventListener('submit', async e => {
         catch {
             errorWarning()
         }
-        
-
   }
-
     await orderConfirmation()
 })
+
 
 // remove saved customer data when reset button is clicked
 dqs('.customer-details').addEventListener('reset', () => {
