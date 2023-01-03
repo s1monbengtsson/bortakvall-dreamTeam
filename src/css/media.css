@@ -2,7 +2,6 @@
 } */
 /* Tablet screen size */
 
-
 @media screen and (max-width: 1024px) {
     .content-container {
         width: 100vw;
@@ -41,11 +40,15 @@
     .info-background {
         margin: 0;
         overflow-y: auto;
+        /* align-items: flex-start; */
     }
     .info-wrap {
         width: 90%;
         height: fit-content;
         display: block;
+        max-height: 80%;
+        margin-bottom: 10%;
+        position: relative;
     }
     .info-img {
         width: 200px;
@@ -62,8 +65,13 @@
         margin: 0.5rem auto;
         width: 100%;
     }
-    .info-close {
-        padding-top: 0;
+    p.info-close {
+        padding: 0;
+        margin: 0;
+        width: fit-content;
+        position: absolute;
+        top: 1rem;
+        left: 1rem;
     }
     .hero-images {
         height: 250px;
@@ -228,6 +236,9 @@
         width: 100%;
         order: 2;
     }
+    .order-content-wrap {
+        width: 100%;
+    }
     #order-content {
         width: 100%;
         order: 1;
@@ -243,6 +254,4 @@
     .confirmation-wrapper {
         width: 100%;
     }
-
-
 }

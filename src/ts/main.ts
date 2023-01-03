@@ -10,6 +10,7 @@ import '../css/media.css'
 import { fetchProducts, createNewOrder } from "./api"
 import { IData, IProduct, IOrder, ICustomerInfo, IPostData } from "./interface"
 
+
 const dqs = (el: string) => document.querySelector(`${el}`)!
 const hide = (element: string) => dqs(element).classList.add('d-none')
 const display = (element: string) => dqs(element).classList.remove('d-none')
@@ -163,6 +164,7 @@ const getProducts = async (): Promise<void> => {
     hide('#spinner')
 }
 
+// render products 
 const renderProducts = (): void => {
 
     // counts products in assortment and products in stock
@@ -216,7 +218,7 @@ const addProduct = (clickedProduct: IProduct) => {
     const inCartIds = cartItems.map(item => item.id)       
     const inCartItem = findCartItem(clickedId)
 
-    // Kolla om produkten redan finns i varukorgen
+    // check if product already exist in cart
     if (!inCartItem || !inCartIds.includes(clickedId)) {
         clickedProduct.qty = 1
         cartItems.push(clickedProduct)
@@ -339,6 +341,7 @@ dqs('.info-background').addEventListener('click', async e => {
 // renders checkout-page to DOM
 const checkout = () => {
     window.scrollTo(0,0)
+    window.scrollTo(0,0)
     hide('.content-display')
     hide('#title-cart')
     hide('#main')
@@ -401,7 +404,7 @@ localStorage.setItem('Customer data', json)
 }
 
 
-// Add clickEvent to proceed to check out with all products from cart
+// add clickEvent to proceed to check out with all products from cart
 dqs('#checkout-btn').addEventListener('click',() => {
     checkout()
     renderForm()
