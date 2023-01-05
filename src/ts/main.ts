@@ -121,9 +121,20 @@ dqs('#cart-list').addEventListener('focusout', e => {
     const clickedId = Number(target.dataset.inputId)
     if (!clickedId) return
     const inCartItem = findCartItem(clickedId)
+
     if (!(inCartItem.qty > 0)) {
         cartItems.splice(cartItems.indexOf(inCartItem), 1)
         renderCart()
+    }
+    else if (inCartItem.qty > inCartItem.stock_quantity) {
+        const inputField = dqs(`#input-${clickedId}`) as HTMLInputElement
+
+        inputField.value = String(inCartItem.stock_quantity)
+        inCartItem.qty = Number(inputField.value)
+        
+        console.log(inCartItem.qty)
+        renderCart()
+        noMoreCandy(inCartItem)
     }
 })
 
