@@ -3,54 +3,61 @@
     font-size: 3rem;
     text-decoration: none;
 }
+
 .orange {
     color: rgb(223, 158, 37);
 }
+
 .white {
     color: white;
 }
+
 .yellow {
     color: rgb(231, 202, 9);
 }
+
 .pink {
     color: #d6576c;
 }
+
 .blue {
     color: rgb(52, 170, 255);
 }
+
 .green {
     color: #09f609a9;
 }
+
 .content-wrapper {
     background-color: #e6e6e6;
-}
-.content-container {
-    width: 85vw;
-    max-width: 1710px;
-    margin: 0 auto;
 }
 
 /* styling for navigation */
 .banner {
     width: 100%;
 }
-.banner > h1 {
+
+.banner>h1 {
     font-size: 3rem;
     font-weight: bold;
 }
+
 .nav-menu {
     background-color: #d6576c;
 }
+
 .nav-item {
     text-decoration: none;
     color: white;
     font-size: 0.85rem;
     font-weight: bold;
 }
+
 .nav-item:hover {
     text-decoration: none;
     color: white;
 }
+
 .status-output {
     background-color: #d6576c;
     border-top: 2px solid #ffc107;

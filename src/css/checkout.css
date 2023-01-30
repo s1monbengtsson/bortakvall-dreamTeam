@@ -1,24 +1,30 @@
 .checkout-img {
-    height: 70px;
-    width: 70px;
+
+    height: 45px;
+    width: 45px;
 }
+
 .banner-checkout {
     background: white;
 }
+
 .checkout-wrap {
-    max-width: 1710px;
     display: flex;
     gap: 1em;
     padding: 1em 0;
     margin: 0 auto;
     width: 85%;
+    order: 1;
 }
+
 #order-content {
     width: 100%;
 }
+
 .order-content-wrap {
-    width: 50%;
+    width: 100%;
 }
+
 .checkout-btn-wrap,
 #check-box {
     margin-top: 1em;
@@ -26,20 +32,25 @@
     justify-content: center;
     gap: 2em;
 }
+
 .confirmation-img {
     height: 70px;
     max-width: 70px;
 }
-.logo > span {
+
+.logo>span {
     font-weight: bold;
     font-size: 2.7rem;
 }
+
 .send-order {
     padding: 1rem 0.25rem;
 }
-.send-order > svg {
+
+.send-order>svg {
     margin-right: 10px;
 }
+
 .empty-btn {
     background: #de6363;
     padding: 1rem 0.25rem;
@@ -53,25 +64,31 @@
     box-shadow: 1px 1px 10px #e5e5e5;
     color: white;
 }
+
 .empty-btn:hover {
     transform: scale(1.1);
     transition: all 0.3s ease 0s;
 }
+
 .customer-details {
-    max-width: 50%;
+    border-top: 2px solid #dfdfdf;
+    max-width: 100%;
+    width: 100%;
+    order: 2;
 }
 
 .confirmation-wrapper {
-    width: 75%;
+    width: 100%;
 }
 
 .form-group {
     margin-bottom: 1.2rem;
 }
+
 .arrow-wrapper {
-    max-width: 1710px;
     width: 85vw;
 }
+
 #customer-checkbox {
     height: 20px;
     width: 20px;
