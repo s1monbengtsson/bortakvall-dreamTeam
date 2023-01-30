@@ -18,10 +18,6 @@
         font-weight: bold;
     }
 
-    .header-wrapper {
-        width: 100vw;
-    }
-
     .content-wrapper {
         background: none;
     }
@@ -128,6 +124,7 @@
 
     .confirmation-wrapper {
         width: 100%;
+        max-width: 1710px;
     }
 
     #title-cart {
@@ -429,6 +426,23 @@
 
 
 @media screen and (min-width: 1024px) {
+
+    .banner {
+        max-width: 1710px;
+        width: 100%;
+    }
+
+    .order-confirmation {
+        max-width: 1710px;
+        width: 85vw;
+        margin: 0 auto;
+    }
+
+    .content-wrapper {
+        max-width: 1710px;
+        width: 85vw;
+        margin: 0 auto;
+    }
 
     .content-container {
         max-width: 1710px;
