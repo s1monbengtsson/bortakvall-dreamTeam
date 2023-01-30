@@ -134,6 +134,8 @@
         top: initial;
         bottom: 0.5rem;
         right: 0.5rem;
+        padding: 1.75rem 0rem 0.6rem 0.75rem;
+        border-radius: 20px;
     }
 
     #title-cart:hover {
