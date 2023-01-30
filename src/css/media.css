@@ -131,8 +131,8 @@
     }
 
     #title-cart {
-        top: 80vh;
-        bottom: 10vh;
+        top: initial;
+        bottom: 0.5rem;
         right: 0.5rem;
     }
 
