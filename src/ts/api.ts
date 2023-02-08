@@ -1,7 +1,7 @@
 import { IData, IOrder, IPostData, } from "./interface";
 
 
-const BASE_URL = 'https://splendid-erin-sunbonnet.cyclic.app/'
+const BASE_URL = 'https://www.bortakvall.se/api'
 const PRODUCTS = '/products'
 const ORDERS = '/orders'
 
